@@ -17,20 +17,15 @@ const initialValuesLogin = {
   password: '',
 };
 
-
-
-
-
-
 const Loginpage = () => {
   const container = useRef(null);
   const [pageType, setPageType] = useState('login');
-  const [userexist,setUserexist] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const [userexist, setUserexist] = useState(false);
+  const [useLoginErr, setUserLoginErr] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const isLogin = pageType === "login"
   // const isRegister = pageType === "register"
-
 
   // style
   const signin = () => {
@@ -44,9 +39,6 @@ const Loginpage = () => {
     setPageType('register');
     container.current.classList.add('sign-up-mode');
   };
-
-
-
 
   useEffect(() => {
     console.log(pageType);
@@ -76,12 +68,12 @@ const Loginpage = () => {
           )
             .then((response) => response.json())
             .then((data) => {
-              if(!data.error){
-                signin()
-              }else{
-                setUserexist(true)
+              if (!data.error) {
+                signin();
+              } else {
+                setUserexist(true);
               }
-              
+
               console.log('success', data);
             })
             .catch((error) => {
@@ -107,17 +99,21 @@ const Loginpage = () => {
             .then((response) => response.json())
             .then((data) => {
               console.log('success', data);
-              console.log(data.user)
-              console.log(data.token)
+              console.log(data.user);
+              console.log(data.token);
               // setting token and naviate to home page
-              dispatch(
-                setLogin({
-                  user: data.user,
-                  token: data.token,
-                })
-              );
-              navigate("/home");
 
+              if (!data.msg) {
+                dispatch(
+                  setLogin({
+                    user: data.user,
+                    token: data.token,
+                  })
+                );
+                navigate('/home');
+              } else {
+                setUserLoginErr(true);
+              }
             })
             .catch((error) => {
               console.log('Err', error);
@@ -130,28 +126,30 @@ const Loginpage = () => {
       },
     });
 
-  
-
   return (
     <>
       <div ref={container} className="container">
         <div className="forms-container">
           <div className="signin-signup">
-
             {/* login form */}
 
-            <form onSubmit={handleSubmit}  action="#" method="post" className="sign-in-form">
+            <form
+              onSubmit={handleSubmit}
+              action="#"
+              method="post"
+              className="sign-in-form"
+            >
               <h2 className="title">Sign in</h2>
               <div className="input-field">
                 <i className="fas fa-user" />
                 <input
-                     value={values.username}
-                     onChange={handleChange}
-                     onBlur={handleBlur}
-                     name="username"
-                     type="text"
-                     placeholder="Username"
-                      />
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="username"
+                  type="text"
+                  placeholder="Username"
+                />
               </div>
               {errors.username && touched.username ? (
                 <p style={{ color: 'red' }} className="form-error">
@@ -162,22 +160,28 @@ const Loginpage = () => {
               <div className="input-field">
                 <i className="fas fa-lock" />
                 <input
-                
-          
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                name="password"
-                type="password"
-                placeholder="Password"
-
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="password"
+                  type="password"
+                  placeholder="Password"
                 />
               </div>
-     {errors.password && touched.password ? (
+              {errors.password && touched.password ? (
                 <p style={{ color: 'red' }} className="form-error">
                   {errors.password}
                 </p>
               ) : null}
+
+              {/* wrong password */}
+
+              {useLoginErr && (
+                <p style={{ color: 'red' }} className="form-error">
+                  Wrong password !
+                </p>
+              )}
+
               <input type="submit" defaultValue="Login" className="btn solid" />
 
               <p className="social-text">Or Sign in with social platforms</p>
@@ -249,10 +253,10 @@ const Loginpage = () => {
                   {errors.password}
                 </p>
               ) : null}
-              
+
               {userexist && (
                 <p style={{ color: 'red' }} className="register-error">
-                  User alredy exists ! 
+                  User alredy exists !
                 </p>
               )}
 
