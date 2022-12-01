@@ -2,6 +2,27 @@ import React, { useRef } from 'react';
 import './loginPage.css';
 import loginPageImage from './img/log.svg';
 import registerPageImage from './img/register.svg';
+// import { Formik } from "formik";
+// import * as yup from "yu";
+import {Formik} from 'formik'
+import * as yup from 'yup'
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { setLogin } from '../../../redux/userState/index';
+
+
+// register
+const registerSchema = yup.object().shape({
+  firstName: yup.string().required("required"),
+  lastName: yup.string().required("required"),
+  email: yup.string().email("invalid email").required("required"),
+  password: yup.string().required("required"),
+  location: yup.string().required("required"),
+  occupation: yup.string().required("required"),
+  picture: yup.string().required("required"),
+});
+
+
 
 const Loginpage = () => {
   const container = useRef(null);
