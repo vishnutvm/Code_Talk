@@ -8,14 +8,13 @@ export const register = async (req, res) => {
 
   try {
     // destructuring data
-    const { username, email, phone, password } = req.body;
+    const { username, email, password } = req.body;
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
     const user = new User({
       username,
       email,
-      phone,
       password: passwordHash,
     });
     const insertedUser = await user.save();

@@ -22,16 +22,16 @@ import {
 } from '@mui/icons-material';
 
 import { useDispatch, useSelector } from 'react-redux';
-// import { setMode, setLogout } from 'redux/userState';
 import { setMode,setLogout } from '../../../redux/userState/index';
 import { useNavigate } from 'react-router';
-// import FlexBetween from '../../../components/FlexBetween.jsx';
 import FlexBetween from '../../../components/FlexBetween.jsx';
 const Navbar = () => {
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state);
+
+  console.log(user)
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -39,9 +39,10 @@ const Navbar = () => {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
+
 // managing error
-  // const username = user.username;
- let username = "vishnu"
+  const username = user.user.username;
+//  let username = "vishnu"
 
  console.log(username)
  console.log(user)
