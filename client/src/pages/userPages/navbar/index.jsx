@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import VideoChatOutlinedIcon from '@mui/icons-material/VideoChatOutlined';
 import {
   Box,
   IconButton,
@@ -16,7 +17,6 @@ import {
   DarkMode,
   LightMode,
   Notifications,
-  Help,
   Menu,
   Close,
 } from '@mui/icons-material';
@@ -81,17 +81,19 @@ const Navbar = () => {
 
       {isNotMobileScreen ? (
         <FlexBetween gap="2rem">
-          <IconButton onClick={() => dispatch(setMode())}>
+        
+      
+          <VideoChatOutlinedIcon sx={{ fontSize: '25px' }} />
+          <Message sx={{ fontSize: '25px' }} />
+          <Notifications sx={{ fontSize: '25px' }} />
+  <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === 'dark' ? (
               <DarkMode sx={{ fontsize: '25px' }} />
             ) : (
               <LightMode sx={{ color: dark, fontsize: '25px' }} />
             )}
           </IconButton>
-      
-          <Message sx={{ fontSize: '25px' }} />
-          <Notifications sx={{ fontSize: '25px' }} />
-          <Help sx={{ fontSize: '25px' }} />
+
           <FormControl variant="standard" value={username} />
 
           <Select
@@ -151,6 +153,10 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
+    
+            <VideoChatOutlinedIcon sx={{ fontSize: '25px' }} />
+            <Message sx={{ fontSize: '25px' }} />
+            <Notifications sx={{ fontSize: '25px' }} />
             <IconButton onClick={() => dispatch(setMode())}>
               {theme.palette.mode === 'dark' ? (
                 <DarkMode sx={{ fontsize: '25px' }} />
@@ -158,9 +164,6 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontsize: '25px' }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: '25px' }} />
-            <Notifications sx={{ fontSize: '25px' }} />
-            <Help sx={{ fontSize: '25px' }} />
             <FormControl variant="standard" value={username} />
 
             <Select
