@@ -1,0 +1,8 @@
+// make easy to import files form one to onother setup
+{
+
+    "compilerOptions": {
+        "baseUrl": "src"
+    },
+    "include": ["src"]
+}

@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     require: true,
     min: 3,
   },
-  firends: {
+  friends: {
     type: Array,
     default: [],
   },
@@ -35,7 +35,15 @@ const UserSchema = new mongoose.Schema({
     default:[]
   },
   location: String,
-  verified:Boolean,
+  verified:{
+    type:Boolean,
+    default:false
+  },
+  joindDate:{
+    type:String,
+    default:()=>new Date
+    ().toString(),
+  }
 });
 
 
