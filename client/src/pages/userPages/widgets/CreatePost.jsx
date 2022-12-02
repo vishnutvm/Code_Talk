@@ -26,7 +26,7 @@ import UserImage from '../../../components/userProfilePIcture';
 import FlexBetween from '../../../components/FlexBetween';
 import WidgetWrapper from '../../../components/WindgetWrapper';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setPosts } from '../../../redux/userState';
 
@@ -45,12 +45,12 @@ const CreatePost = ({ postImgPath }) => {
   const handlePost = async () => {
     const formData = new FormData();
     formData.append('userId', _id);
-    formData.append('description', post);
+    formData.append('discription', post);
     if (image) {
       formData.append('picture', image);
       formData.append('picturePath', image.name);
     }
-
+    console.log(formData, '');
     const response = await fetch(`http://localhost:3001/createPost`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -58,7 +58,8 @@ const CreatePost = ({ postImgPath }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
+        console.log(formData, 'formdata');
         const posts = data;
         dispatch(setPosts({ posts }));
         // reset the state
@@ -68,14 +69,11 @@ const CreatePost = ({ postImgPath }) => {
       .catch((err) => {
         console.log('err', err);
       });
-
-    // const posts = await response.json();
-
-    // dispatch(setPosts({ posts }));
-    // // reset the state
-    // setImage(null);
-    // setPost('');
   };
+
+  useEffect(() => {
+    console.log(post);
+  }, [post]);
 
   return (
     <WidgetWrapper>
@@ -172,7 +170,7 @@ const CreatePost = ({ postImgPath }) => {
           <FlexBetween gap="0.25rem">
             <MoreHorizOutlined sx={{ color: mediumMain }} />
           </FlexBetween>
-        )}
+        )}  
 
         <Button
           // if there is not post value desable the button

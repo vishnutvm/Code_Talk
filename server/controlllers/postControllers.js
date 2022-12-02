@@ -2,16 +2,16 @@
 import Post from '../models/Post.js';
 
 export const createPost = async (req, res) => {
-  console.log("post creation trigger")
+  console.log('post creation trigger');
   try {
-    const { userId, description, filepath } = req.body;
-    console.log(req.body)
+    const { userId, discription, picturePath } = req.body;
+    console.log(req.body);
 
     // const user = await User.findById(userId)
 
     const newPost = new Post({
-      filepath,
-      description,
+      picturePath,
+      discription,
       createdBy: userId,
       like: {},
       Comments: [],
@@ -35,6 +35,7 @@ export const getFeedPosts = async (req, res) => {
 };
 
 export const getUserPosts = async (req, res) => {
+  console.log("get user post")
   try {
     const { userId } = req.params;
 
@@ -47,24 +48,22 @@ export const getUserPosts = async (req, res) => {
 
 export const likePost = async (req, res) => {
   try {
-    const {id} = req.params
-    const {userId} = req.body
-    const post = await Post.findById(id)
-    const isLiked = post.like.get(userId)
+    const { id } = req.params;
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+    const isLiked = post.like.get(userId);
 
-    if(isLiked){
-        post
-        .like.delete(userId)
-    }else{
-        post.like.set(userId,true)
+    if (isLiked) {
+      post.like.delete(userId);
+    } else {
+      post.like.set(userId, true);
     }
 
     const updatedPost = await Post.findByIdAndUpdate(
-        id,
-        {like:post
-        .like
-    },{new:true}
-    )
+      id,
+      { like: post.like },
+      { new: true }
+    );
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ error: err.message });

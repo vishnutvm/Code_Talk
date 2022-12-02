@@ -26,7 +26,7 @@ export const userAuthSlice = createSlice({
       (state.user = null), (state.token = null);
     },
     // update frieds
-    seFriends: (state, action) => {
+    setFriends: (state, action) => {
       if (state.user) {
         state.user.friends = action.payload.friends;
       } else {

@@ -48,10 +48,13 @@ const upload = multer({ storage });
 // app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.post('/createPost', upload.single('picture'), createPost);
 
-// Routs
+// RoutssignUpRouts
 app.use('/user', signUpRouts);
 app.use('/user', loginRouts);
 app.use('/user', homeRouts);
+app.use('/posts', postRouts);
+
+
 
 //Mongoos and port
 const PORT = process.env.PORT || 4001;
