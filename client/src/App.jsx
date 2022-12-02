@@ -18,7 +18,7 @@ function App() {
   .mode)
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state)=> state.token))
-
+  console.log(isUserAuth)
   return (
 <div className='app'>
 
@@ -28,7 +28,7 @@ function App() {
   <CssBaseline />
  <Routes>
 
-<Route  path='/' element={<Loginpage/>}/>
+<Route  path='/' element={isUserAuth ?<HomePage/> : <Loginpage/>}/>
 <Route  path='/home' element={isUserAuth ? <HomePage/> : <Navigate to="/" />}/>
 <Route  path='/profile/:userId' element={isUserAuth ?  <ProfilePage/> : <Navigate to="/"/>}/>
 

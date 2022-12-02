@@ -5,7 +5,7 @@ const postSchema = mongoose.Schema(
       
         createdBy:{
             type:mongoose.ObjectId,
-            ref:'Users',
+            ref:'User',
         },
         discription:String,
         filepath:String,

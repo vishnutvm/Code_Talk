@@ -28,7 +28,7 @@ const UserWidget = ({ userId, profilePicture }) => {
   const getUserDetails = async () => {
     const response = await fetch(`http://localhost:3001/user/${userId}`, {
       method: 'GET',
-      // headers:{Authorization: `Bearer ${token}`}
+    //   headers:{Authorization: `Bearer ${token}`}
     });
 
     const data = await response.json();
@@ -81,23 +81,17 @@ const UserWidget = ({ userId, profilePicture }) => {
       {/* second */}
 
       <Box p="1rem 0">
-
-{
-    location && 
-     <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
-        </Box>
-}
-       
+        {location && (
+          <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+            <LocationOnOutlined fontSize="large" sx={{ color: main }} />
+            <Typography color={medium}>{location}</Typography>
+          </Box>
+        )}
 
         <Box display="flex" alignItems="center" gap="1rem">
           <EmailOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{email}</Typography>
         </Box>
-
-
-
       </Box>
 
       <Divider />

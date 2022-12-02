@@ -1,11 +1,14 @@
-import User from '../models/User.js';
+// import User from '../models/User.js';
 import Post from '../models/Post.js';
 
 export const createPost = async (req, res) => {
+  console.log("post creation trigger")
   try {
     const { userId, description, filepath } = req.body;
+    console.log(req.body)
 
     // const user = await User.findById(userId)
+
     const newPost = new Post({
       filepath,
       description,

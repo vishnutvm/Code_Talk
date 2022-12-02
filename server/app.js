@@ -13,12 +13,11 @@ import { fileURLToPath } from 'url';
 // Routs
 import signUpRouts from './routes/user/signUpRout.js';
 import loginRouts from './routes/user/loginRout.js';
-import homeRouts from './routes/user/homeRout.js'
-import postRouts from './routes/post/postRouts.js'
+import homeRouts from './routes/user/homeRout.js';
+import postRouts from './routes/post/postRouts.js';
 
 import { createPost } from './controlllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
-
 
 // Config
 let __filename = fileURLToPath(import.meta.url);
@@ -45,21 +44,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-
 // routs with file upload
-app
-.post("/post",verifyToken,upload.single("picture"),createPost)
-
+// app.post('/createPost', verifyToken, upload.single('picture'), createPost);
+app.post('/createPost', upload.single('picture'), createPost);
 
 // Routs
 app.use('/user', signUpRouts);
 app.use('/user', loginRouts);
-app.use('/user',homeRouts)
-
-
-
-
-
+app.use('/user', homeRouts);
 
 //Mongoos and port
 const PORT = process.env.PORT || 4001;
