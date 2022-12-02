@@ -40,6 +40,7 @@ const Navbar = () => {
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
+  
 // managing error
   const username = user.user.username;
 //  let username = "vishnu"

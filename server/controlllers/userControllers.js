@@ -55,6 +55,7 @@ export const login = async (req, res) => {
 
 // getuser detais
 export const getUser = async (req, res) => {
+  console.log("here")
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -62,6 +63,7 @@ export const getUser = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
+    console.log("error hooo")
     res.status(500).json({ error: err.message });
   }
 };
