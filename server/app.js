@@ -46,7 +46,7 @@ const upload = multer({ storage });
 
 // routs with file upload
 // app.post('/createPost', verifyToken, upload.single('picture'), createPost);
-app.post('/createPost', upload.single('picture'), createPost);
+app.post('/createPost',verifyToken, upload.single('picture'), createPost);
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);

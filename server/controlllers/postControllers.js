@@ -1,6 +1,7 @@
 // import User from '../models/User.js';
 import Post from '../models/Post.js';
 
+
 export const createPost = async (req, res) => {
   console.log('post creation trigger');
   try {
@@ -26,6 +27,7 @@ export const createPost = async (req, res) => {
 };
 
 export const getFeedPosts = async (req, res) => {
+  console.log("working")
   try {
     const post = await Post.find().populate('createdBy');
     res.status(200).json(post);
@@ -47,6 +49,7 @@ export const getUserPosts = async (req, res) => {
 };
 
 export const likePost = async (req, res) => {
+  console.log("like rout gettin")
   try {
     const { id } = req.params;
     const { userId } = req.body;

@@ -25,6 +25,7 @@ const HomePage = () => {
           gap="0.5rem"
           justifyContent="space-between"
         >
+          
           <Box flexBasis={isNotMobileScreen ? '26px' : undefined}>
             <UserWidget userId={_id} picturePath={picturePath} />
           </Box>

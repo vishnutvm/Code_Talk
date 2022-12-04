@@ -1,5 +1,13 @@
 import jwt from 'jsonwebtoken';
+// require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config()
+
 export const verifyToken = async (req, res, next) => {
+  console.log("test1",process.env.JWT_SECRET)
+  let ref = req.header("Authorization");
+  console.log("token ref")
+  console.log(ref)
   try {
     let token = req.header("Authorization");
 
@@ -7,14 +15,19 @@ export const verifyToken = async (req, res, next) => {
       return res.status(403).send("Access Denied");
     }
 
-    if (token.startsWith("Bearer ")) {
-      token = token.slice(7, token.length).trimLeft();
+    if (token.startsWith("Bearer")) {
+      console.log("enterd")
+      token = token.slice(7,token.length).trimLeft();
+      console.log(token,"token slice")
     }
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("secret",process.env.JWT_SECRET)
+    const verified = jwt.verify(token,process.env.JWT_SECRET);
     req.user = verified;
+    console.log(verified,"token success")
     next();
   } catch (err) {
+    console.log("jwt error")
     res.status(500).json({ error: err.message });
   }
 };

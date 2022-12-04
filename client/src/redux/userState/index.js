@@ -35,7 +35,7 @@ export const userAuthSlice = createSlice({
     },
     // update post
     setPosts: (state, action) => {
-      state.posts = action.payload.posts;
+      state.posts = action.payload.posts.reverse();
     },
     setPost: (state, action) => {
       const updatedPosts = state.posts.map((post) => {
@@ -49,6 +49,6 @@ export const userAuthSlice = createSlice({
   },
 });
 
-export const { setPosts, setPost, seFriends, setMode, setLogin, setLogout } =
+export const { setPosts, setPost, setFriends, setMode, setLogin, setLogout } =
   userAuthSlice.actions;
 export default userAuthSlice.reducer;

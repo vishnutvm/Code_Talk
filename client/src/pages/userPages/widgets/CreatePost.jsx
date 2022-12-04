@@ -1,10 +1,8 @@
 import {
   EditOutlined,
   DeleteOutlined,
-  AttachFileOutlined,
-  GifBoxOutlined,
+  VideocamOutlined,
   ImageOutlined,
-  MicOutlined,
   MoreHorizOutlined,
 } from '@mui/icons-material';
 
@@ -71,9 +69,9 @@ const CreatePost = ({ postImgPath }) => {
       });
   };
 
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
+  // useEffect(() => {
+  //   console.log(post);
+  // }, [post]);
 
   return (
     <WidgetWrapper>
@@ -149,28 +147,10 @@ const CreatePost = ({ postImgPath }) => {
           </Typography>
         </FlexBetween>
 
-        {isNotMobileScreen ? (
-          <>
-            <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Clip</Typography>
-            </FlexBetween>
-
-            <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Attachment</Typography>
-            </FlexBetween>
-
-            <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Audio</Typography>
-            </FlexBetween>
-          </>
-        ) : (
-          <FlexBetween gap="0.25rem">
-            <MoreHorizOutlined sx={{ color: mediumMain }} />
-          </FlexBetween>
-        )}  
+        <FlexBetween gap="0.25rem">
+          <VideocamOutlined sx={{ color: mediumMain }} />
+          <Typography color={mediumMain}>Video</Typography>
+        </FlexBetween>
 
         <Button
           // if there is not post value desable the button

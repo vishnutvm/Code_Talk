@@ -23,19 +23,17 @@ const PostWidget = ({
   comments,
 }) => {
   const [isComments, setIsComments] = useState(false);
-
-  const loggedInUserId = useSelector((state) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
-  // const isLiked = false;
-
-  const likeCount = Object.keys(likes).length;
-
   const dispatch = useDispatch();
+  const loggedInUserId = useSelector((state) => state.user._id);
+  // const isLiked = Boolean(likes[loggedInUserId]);
+  // const likeCount = Object.keys(likes).length;
 
   const token = useSelector((state) => state.token);
   const { palette } = useTheme();
   const primary = palette.primary.medium;
   const main = palette.neutral.main;
+  const [isLiked, setIsLiked] = useState(Boolean(likes[loggedInUserId]));
+  const [likeCount, setlikeCount] = useState(Object.keys(likes).length);
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
@@ -48,6 +46,8 @@ const PostWidget = ({
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
+    setlikeCount(isLiked ? likeCount - 1 : likeCount+1);
+    setIsLiked(!isLiked);
   };
 
   return (

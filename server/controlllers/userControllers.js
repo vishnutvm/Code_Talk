@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import dotenv from 'dotenv';
 
 // Register user
 export const register = async (req, res) => {
@@ -40,7 +41,7 @@ export const login = async (req, res) => {
 
     // jwt token
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SERCRET);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     //  to prevent password going to the frontend
     delete user.password;
 
@@ -94,6 +95,8 @@ export const getUserFriends = async (req, res) => {
 // add or remove friends list
 
 export const addRemoveFriends = async (req, res) => {
+  
+  console.log("addFriends")
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);

@@ -28,7 +28,7 @@ const UserWidget = ({ userId, profilePicture }) => {
   const getUserDetails = async () => {
     const response = await fetch(`http://localhost:3001/user/${userId}`, {
       method: 'GET',
-    //   headers:{Authorization: `Bearer ${token}`}
+        headers:{Authorization: `Bearer ${token}`}
     });
 
     const data = await response.json();

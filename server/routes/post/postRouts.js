@@ -9,16 +9,15 @@ import { verifyToken } from '../../middleware/token.js';
 const router = express.Router();
 
 // provide posts to home page
-// router.get
-// ("/",verifyToken,getFeedPosts)
-router.get('/', getFeedPosts);
+router.get("/",verifyToken,getFeedPosts)
+// router.get('/', getFeedPosts);
 
 // view specific users posts
 // router.get("/:userId/posts",verifyToken,getUserPosts)
-router.get('/:userId/posts', getUserPosts);
+router.get('/:userId/posts',verifyToken, getUserPosts);
 
 // like post
-// router.get('/:id/like', verifyToken, likePost);
-router.get('/:id/like', likePost);
+router.patch('/:id/like', verifyToken, likePost);
+// router.patch('/:id/like', likePost);
 
 export default router;

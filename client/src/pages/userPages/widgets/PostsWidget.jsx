@@ -18,7 +18,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     });
 
     const data = await response.json();
-    dispatch(setPosts({ posts: data.reverse() }));
+    dispatch(setPosts({ posts: data }));
     console.log(data);
   };
 
@@ -37,20 +37,20 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     dispatch(setPosts({ posts: data }));
   };
 
-  //   use effect action swich between user post and all user post
+    // use effect action swich between user post and all user post
 
-  // useEffect(() => {
-  //   if (isProfile) {
-  //     getUserPost();
-  //   } else {
-  //     getPost();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isProfile) {
+      getUserPost();
+    } else {
+      getPost();
+    }
+  }, []);
 
   useEffect(() => {
     getPost();
-    console.log(posts);
-  }, [posts]);
+
+  },[]);
 
   return (
     <>
