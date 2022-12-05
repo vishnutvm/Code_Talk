@@ -13,8 +13,8 @@ router.get("/",verifyToken,getFeedPosts)
 // router.get('/', getFeedPosts);
 
 // view specific users posts
-// router.get("/:userId/posts",verifyToken,getUserPosts)
-router.get('/:userId/posts',verifyToken, getUserPosts);
+router.get("/:userId/posts",getUserPosts)
+// router.get('/:userId/posts',verifyToken, getUserPosts);
 
 // like post
 router.patch('/:id/like', verifyToken, likePost);

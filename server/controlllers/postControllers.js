@@ -41,7 +41,7 @@ export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const post = await Post.find({ createdBy }).populate('createdBy');
+    const post = await Post.find({ createdBy:userId }).populate('createdBy');
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ error: err.message });
