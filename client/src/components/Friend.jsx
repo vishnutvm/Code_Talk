@@ -20,7 +20,6 @@ const Friend = ({ profilePicture, friendId, username }) => {
   const main = palette.neutral.main;
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
-
   const isFriend = friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {

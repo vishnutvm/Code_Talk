@@ -69,8 +69,10 @@ export const getUser = async (req, res) => {
   }
 };
 
+
 // get Users friends list
 export const getUserFriends = async (req, res) => {
+  console.log("Getuser ")
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -91,6 +93,8 @@ export const getUserFriends = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 // add or remove friends list
 

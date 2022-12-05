@@ -5,6 +5,7 @@ import Navbar from '../navbar';
 import UserWidget from '../widgets/UserWidget';
 import CreatePost from  '../widgets/CreatePost'
 import PostsWidget from '../widgets/PostsWidget';
+import FriendsListWidgest from '../widgets/FriendsListWidgest';
 const HomePage = () => {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   // const {_id,picturePath} = useSelector((state)=>state.user)
@@ -41,7 +42,9 @@ const HomePage = () => {
             <Box flexBasis="26%">
               {/* <AdvertWidget />
             <Box m="2rem 0" />
-            <FriendListWidget userId={_id} /> */}
+          */
+          }
+             <FriendsListWidgest  userId={_id} />
             </Box>
           )}
         </Box>
