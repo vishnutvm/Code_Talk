@@ -1,5 +1,6 @@
+/* eslint-disable import/extensions */
 import express from 'express';
-import { login } from '../../controlllers/userControllers.js';
+import { login } from '../../controllers/userControllers.js';
 
 const router = express.Router();
 router.post('/login', login);

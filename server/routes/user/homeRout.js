@@ -1,13 +1,15 @@
+/* eslint-disable import/extensions */
 import express from 'express';
-const router = express.Router();
 
 import {
   getUser,
   getUserFriends,
   addRemoveFriends,
-} from '../../controlllers/userControllers.js';
+} from '../../controllers/userControllers.js';
 
 import { verifyToken } from '../../middleware/token.js';
+
+const router = express.Router();
 
 // router.get('/:id', verifyToken, getUser);
 router.get('/:id', verifyToken, getUser);

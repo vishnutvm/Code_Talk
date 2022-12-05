@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './loginPage.css';
-import loginPageImage from './img/log.svg';
-import registerPageImage from './img/register.svg';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { setLogin } from '../../../redux/userState/index.js';
 import { useFormik } from 'formik';
+import loginPageImage from './img/log.svg';
+import registerPageImage from './img/register.svg';
+import { setLogin } from '../../../redux/userState/index';
 import { registerSchema, loginSchema } from '../../../formSchemas';
+
 const initialValuesRegister = {
   username: '',
   email: '',
@@ -17,7 +18,7 @@ const initialValuesLogin = {
   password: '',
 };
 
-const Loginpage = () => {
+function Loginpage() {
   const container = useRef(null);
   const [pageType, setPageType] = useState('login');
   const [userexist, setUserexist] = useState(false);
@@ -44,87 +45,91 @@ const Loginpage = () => {
     console.log(pageType);
   });
 
-  const { values, errors, handleBlur, handleChange, handleSubmit, touched } =
-    useFormik({
-      initialValues:
+  const {
+    values, errors, handleBlur, handleChange, handleSubmit, touched,
+  } = useFormik({
+    initialValues:
         pageType === 'register' ? initialValuesRegister : initialValuesLogin,
-      validationSchema: pageType === 'register' ? registerSchema : loginSchema,
+    validationSchema: pageType === 'register' ? registerSchema : loginSchema,
 
-      onSubmit: async (values) => {
-        if (pageType === 'register') {
-          const formDataJson = JSON.stringify(values);
-          console.log(formDataJson);
-          const savedUserResponse = await fetch(
-            'http://localhost:3001/user/register',
-            {
-              method: 'POST',
-              //Set the headers that specify you're sending a JSON body request and accepting JSON response
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: formDataJson,
+    // eslint-disable-next-line no-shadow
+    onSubmit: async (values) => {
+      if (pageType === 'register') {
+        const formDataJson = JSON.stringify(values);
+        console.log(formDataJson);
+        const savedUserResponse = await fetch(
+          'http://localhost:3001/user/register',
+          {
+            method: 'POST',
+            // eslint-disable-next-line max-len
+            // Set the headers that specify you're sending a JSON body request and accepting JSON response
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: formDataJson,
+          },
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.error) {
+              signin();
+            } else {
+              setUserexist(true);
             }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              if (!data.error) {
-                signin();
-              } else {
-                setUserexist(true);
-              }
 
-              console.log('success', data);
-            })
-            .catch((error) => {
-              console.log('Err', error);
-            });
+            console.log('success', data);
+          })
+          .catch((error) => {
+            console.log('Err', error);
+          });
 
-          console.log(savedUserResponse.error);
-        } else {
-          const formDataJson = JSON.stringify(values);
-          console.log(formDataJson);
-          const loginUserResponse = await fetch(
-            'http://localhost:3001/user/login',
-            {
-              method: 'POST',
-              //Set the headers that specify you're sending a JSON body request and accepting JSON response
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: formDataJson,
+        console.log(savedUserResponse.error);
+      } else {
+        const formDataJson = JSON.stringify(values);
+        console.log(formDataJson);
+        const loginUserResponse = await fetch(
+          'http://localhost:3001/user/login',
+          {
+            method: 'POST',
+            // eslint-disable-next-line max-len
+            // Set the headers that specify you're sending a JSON body request and accepting JSON response
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: formDataJson,
+          },
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('success', data);
+            console.log(data.user);
+            console.log(data.token);
+            // setting token and naviate to home page
+
+            if (!data.msg) {
+              dispatch(
+                setLogin({
+                  user: data.user,
+                  token: data.token,
+                }),
+              );
+              navigate('/home');
+            } else {
+              setUserLoginErr(true);
             }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('success', data);
-              console.log(data.user);
-              console.log(data.token);
-              // setting token and naviate to home page
+          })
+          .catch((error) => {
+            console.log('Err', error);
+          });
 
-              if (!data.msg) {
-                dispatch(
-                  setLogin({
-                    user: data.user,
-                    token: data.token,
-                  })
-                );
-                navigate('/home');
-              } else {
-                setUserLoginErr(true);
-              }
-            })
-            .catch((error) => {
-              console.log('Err', error);
-            });
+        console.log(loginUserResponse.error);
+      }
 
-          console.log(loginUserResponse.error);
-        }
-
-        console.log(values);
-      },
-    });
+      console.log(values);
+    },
+  });
 
   return (
     <>
@@ -186,16 +191,16 @@ const Loginpage = () => {
 
               <p className="social-text">Or Sign in with social platforms</p>
               <div className="social-media">
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-facebook-f" />
                 </a>
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-twitter" />
                 </a>
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-google" />
                 </a>
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-linkedin-in" />
                 </a>
               </div>
@@ -264,16 +269,16 @@ const Loginpage = () => {
 
               <p className="social-text">Or Sign up with social platforms</p>
               <div className="social-media">
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-facebook-f" />
                 </a>
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-twitter" />
                 </a>
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-google" />
                 </a>
-                <a href="#" className="social-icon">
+                <a href="/" className="social-icon">
                   <i className="fab fa-linkedin-in" />
                 </a>
               </div>
@@ -289,6 +294,7 @@ const Loginpage = () => {
                 developers across the globe and promote your projects as well.
               </p>
               <button
+                type="submit"
                 onClick={signup}
                 className="btn transparent"
                 id="sign-up-btn"
@@ -306,6 +312,7 @@ const Loginpage = () => {
                 developers across the globe. Lets grow Together
               </p>
               <button
+                type="submit"
                 onClick={signin}
                 className="btn transparent"
                 id="sign-in-btn"
@@ -320,6 +327,6 @@ const Loginpage = () => {
       ;
     </>
   );
-};
+}
 
 export default Loginpage;

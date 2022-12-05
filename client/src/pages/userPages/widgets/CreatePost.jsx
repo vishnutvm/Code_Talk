@@ -1,9 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import {
   EditOutlined,
   DeleteOutlined,
   VideocamOutlined,
   ImageOutlined,
-  MoreHorizOutlined,
 } from '@mui/icons-material';
 
 import {
@@ -14,21 +14,21 @@ import {
   useTheme,
   Button,
   IconButton,
-  useMediaQuery,
 } from '@mui/material';
 
 // drop down
 
 import Dropzone from 'react-dropzone';
-import UserImage from '../../../components/userProfilePIcture';
+import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+import UserImage from '../../../components/UserProfilePicture';
 import FlexBetween from '../../../components/FlexBetween';
 import WidgetWrapper from '../../../components/WindgetWrapper';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { setPosts } from '../../../redux/userState';
 
-const CreatePost = ({ postImgPath }) => {
+// eslint-disable-next-line react/prop-types
+function CreatePost({ postImgPath }) {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -36,9 +36,9 @@ const CreatePost = ({ postImgPath }) => {
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
-  const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
-  const mediumMain = palette.neutral.mediumMain;
-  const medium = palette.neutral.medium;
+  // const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
+  const { mediumMain } = palette.neutral;
+  const { medium } = palette.neutral;
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -49,7 +49,8 @@ const CreatePost = ({ postImgPath }) => {
       formData.append('picturePath', image.name);
     }
     console.log(formData, '');
-    const response = await fetch(`http://localhost:3001/createPost`, {
+    // eslint-disable-next-line no-unused-vars
+    const res = fetch('http://localhost:3001/createPost', {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -68,10 +69,6 @@ const CreatePost = ({ postImgPath }) => {
         console.log('err', err);
       });
   };
-
-  // useEffect(() => {
-  //   console.log(post);
-  // }, [post]);
 
   return (
     <WidgetWrapper>
@@ -167,6 +164,6 @@ const CreatePost = ({ postImgPath }) => {
       </FlexBetween>
     </WidgetWrapper>
   );
-};
+}
 
 export default CreatePost;

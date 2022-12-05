@@ -1,27 +1,28 @@
 import React from 'react';
 import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import {
+  Box, IconButton, Typography, useTheme,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFriends } from '../redux/userState';
 import FlexBetween from './FlexBetween';
-import UserImage from './userProfilePIcture';
+import UserImage from './UserProfilePicture';
 
-
-const Friend = ({ profilePicture, friendId, username }) => {
+// eslint-disable-next-line react/prop-types
+function Friend({ profilePicture, friendId, username }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
-  console.log(friends,"frendte")
+  // checking if friedns comming
+  console.log(friends, 'frendte');
   const { palette } = useTheme();
-  const medium = palette.neutral.medium;
-  const main = palette.neutral.main;
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const isFriend = friends.find((friend) => friend._id === friendId);
-
+  const { main } = palette.neutral;
   const patchFriend = async () => {
     const response = await fetch(
       `http://localhost:3001/user/${_id}/${friendId}`,
@@ -31,7 +32,7 @@ const Friend = ({ profilePicture, friendId, username }) => {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     const data = await response.json();
@@ -39,59 +40,45 @@ const Friend = ({ profilePicture, friendId, username }) => {
   };
 
   return (
-    <>
-      <FlexBetween>
-        <FlexBetween gap="1rem">
-          <UserImage image={profilePicture} size="55px" />
-          <Box
-            onClick={() => {
-              navigate(`/profile/${friendId}`);
-              navigate(0);
+    <FlexBetween>
+      <FlexBetween gap="1rem">
+        <UserImage image={profilePicture} size="55px" />
+        <Box
+          onClick={() => {
+            navigate(`/profile/${friendId}`);
+            navigate(0);
+          }}
+        >
+          <Typography
+            color={main}
+            variant="h5"
+            fontWeight="500"
+            sx={{
+              '&:hover': {
+                color: palette.primary.light,
+                cursor: 'pointer',
+              },
             }}
           >
-            <Typography
-              color={main}
-              variant="h5"
-              fontWeight="500"
-              sx={{
-                '&:hover': {
-                  color: palette.primary.light,
-                  cursor: 'pointer',
-                },
-              }}
-            >
-              {username}
-            </Typography>
-          </Box>
-        </FlexBetween>
+            {username}
+          </Typography>
+        </Box>
+      </FlexBetween>
 
-
-
-
-{
-  _id  != friendId &&   <IconButton
+      {_id !== friendId && (
+        <IconButton
           onClick={() => patchFriend()}
           sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
         >
-
-          { isFriend ? (
+          {isFriend ? (
             <PersonRemoveOutlined sx={{ color: primaryDark }} />
           ) : (
             <PersonAddOutlined sx={{ color: primaryDark }} />
           )}
-
-
         </IconButton>
-
-
-
-}
-      
-
-
-      </FlexBetween>
-    </>
+      )}
+    </FlexBetween>
   );
-};
+}
 
 export default Friend;

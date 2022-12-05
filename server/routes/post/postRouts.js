@@ -1,20 +1,21 @@
+/* eslint-disable import/extensions */
 import express from 'express';
 import {
   getFeedPosts,
   getUserPosts,
   likePost,
-} from '../../controlllers/postControllers.js';
+} from '../../controllers/postControllers.js';
 import { verifyToken } from '../../middleware/token.js';
 
 const router = express.Router();
 
 // provide posts to home page
-router.get("/",verifyToken,getFeedPosts)
+router.get('/', verifyToken, getFeedPosts);
 // router.get('/', getFeedPosts);
 
 // view specific users posts
-router.get("/:userId/posts",getUserPosts)
-// router.get('/:userId/posts',verifyToken, getUserPosts);
+// router.get('/:userId/posts', getUserPosts);
+router.get('/:userId/posts', verifyToken, getUserPosts);
 
 // like post
 router.patch('/:id/like', verifyToken, likePost);

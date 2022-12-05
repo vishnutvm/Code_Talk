@@ -22,31 +22,31 @@ import {
 } from '@mui/icons-material';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setMode,setLogout } from '../../../redux/userState/index';
 import { useNavigate } from 'react-router';
-import FlexBetween from '../../../components/FlexBetween.jsx';
-const Navbar = () => {
+import { setMode, setLogout } from '../../../redux/userState/index';
+import FlexBetween from '../../../components/FlexBetween';
+
+function Navbar() {
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state);
 
-  console.log(user)
+  console.log(user);
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
-  const dark = theme.palette.neutral.dark;
+  const { dark } = theme.palette.neutral;
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
-  const alt = theme.palette.background.alt;
+  const { alt } = theme.palette.background;
 
-  
-// managing error
-  const username = user.user.username;
-//  let username = "vishnu"
+  // managing error
+  const { username } = user.user;
+  //  let username = "vishnu"
 
- console.log(username)
- console.log(user)
+  console.log(username);
+  console.log(user);
   return (
     <FlexBetween padding="1rem 2rem" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -83,12 +83,10 @@ const Navbar = () => {
 
       {isNotMobileScreen ? (
         <FlexBetween gap="2rem">
-        
-      
           <VideoChatOutlinedIcon sx={{ fontSize: '25px' }} />
           <Message sx={{ fontSize: '25px' }} />
           <Notifications sx={{ fontSize: '25px' }} />
-  <IconButton onClick={() => dispatch(setMode())}>
+          <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === 'dark' ? (
               <DarkMode sx={{ fontsize: '25px' }} />
             ) : (
@@ -155,7 +153,6 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
-    
             <VideoChatOutlinedIcon sx={{ fontSize: '25px' }} />
             <Message sx={{ fontSize: '25px' }} />
             <Notifications sx={{ fontSize: '25px' }} />
@@ -195,6 +192,6 @@ const Navbar = () => {
       )}
     </FlexBetween>
   );
-};
+}
 
 export default Navbar;

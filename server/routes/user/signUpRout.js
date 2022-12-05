@@ -1,5 +1,6 @@
+/* eslint-disable import/extensions */
 import express from 'express';
-import { register } from '../../controlllers/userControllers.js';
+import { register } from '../../controllers/userControllers.js';
 
 const router = express.Router();
 router.post('/register', register);

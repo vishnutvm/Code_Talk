@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-extraneous-dependencies */
 // the type as changed to modules so use imort rather than require
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -16,11 +18,11 @@ import loginRouts from './routes/user/loginRout.js';
 import homeRouts from './routes/user/homeRout.js';
 import postRouts from './routes/post/postRouts.js';
 
-import { createPost } from './controlllers/postControllers.js';
+import { createPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 
 // Config
-let __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
@@ -35,10 +37,10 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 // file storage
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination(req, file, cb) {
     cb(null, 'public/assets');
   },
-  filename: function (req, file, cb) {
+  filename(req, file, cb) {
     cb(null, file.originalname);
   },
 });
@@ -46,7 +48,7 @@ const upload = multer({ storage });
 
 // routs with file upload
 // app.post('/createPost', verifyToken, upload.single('picture'), createPost);
-app.post('/createPost',verifyToken, upload.single('picture'), createPost);
+app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);
@@ -54,9 +56,7 @@ app.use('/user', loginRouts);
 app.use('/user', homeRouts);
 app.use('/posts', postRouts);
 
-
-
-//Mongoos and port
+// Mongoos and port
 const PORT = process.env.PORT || 4001;
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -64,8 +64,6 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () =>
-      console.log(`Server successfully connected to ${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`Server successfully connected to ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));

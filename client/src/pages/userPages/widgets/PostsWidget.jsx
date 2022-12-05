@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../../../redux/userState';
 
 import PostWidget from './PostWidget';
 
-const PostsWidget = ({ userId, isProfile = false }) => {
+function PostsWidget({ userId, isProfile = false }) {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
@@ -30,14 +31,14 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
 
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
   };
 
-    // use effect action swich between user post and all user post
+  // use effect action swich between user post and all user post
 
   useEffect(() => {
     if (isProfile) {
@@ -49,14 +50,11 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   useEffect(() => {
     getPost();
-
-  },[]);
+  }, []);
 
   return (
     <>
-      {
-   
-      posts.map(
+      {posts.map(
         ({
           _id,
           createdBy,
@@ -77,10 +75,10 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             likes={like}
             comments={Comments}
           />
-        )
+        ),
       )}
     </>
   );
-};
+}
 
 export default PostsWidget;

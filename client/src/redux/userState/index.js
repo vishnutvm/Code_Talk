@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -23,6 +25,7 @@ export const userAuthSlice = createSlice({
 
     // user Logout clearing token and user state
     setLogout: (state) => {
+      // eslint-disable-next-line no-sequences
       (state.user = null), (state.token = null);
     },
     // update frieds
@@ -49,6 +52,6 @@ export const userAuthSlice = createSlice({
   },
 });
 
-export const { setPosts, setPost, setFriends, setMode, setLogin, setLogout } =
-  userAuthSlice.actions;
+export const { setPosts, setPost, setFriends, setMode, setLogin, setLogout,
+} = userAuthSlice.actions;
 export default userAuthSlice.reducer;

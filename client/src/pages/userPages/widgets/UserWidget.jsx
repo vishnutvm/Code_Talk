@@ -1,34 +1,35 @@
-import React from 'react';
-
+/* eslint-disable no-unused-vars */
 import {
   ManageAccountsOutlined,
-  EditOutlined,
   LocationOnOutlined,
   EmailOutlined,
 } from '@mui/icons-material';
-import { Box, Typography, Divider, useTheme } from '@mui/material';
-import UserImage from '../../../components/userProfilePIcture.jsx';
-import FlexBetween from '../../../components/FlexBetween';
-import WidgetWrapper from '../../../components/WindgetWrapper.jsx';
+import {
+  Box, Typography, Divider, useTheme,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserImage from '../../../components/UserProfilePicture';
+import FlexBetween from '../../../components/FlexBetween';
+import WidgetWrapper from '../../../components/WindgetWrapper';
 
-const UserWidget = ({ userId, profilePicture }) => {
+// eslint-disable-next-line react/prop-types
+function UserWidget({ userId, profilePicture }) {
   const [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
-  const dark = palette.neutral.dark;
-  const medium = palette.neutral.medium;
-  const main = palette.neutral.main;
+  const { dark } = palette.neutral;
+  const { medium } = palette.neutral;
+  const { main } = palette.neutral;
 
   //    fetching the user data
 
   const getUserDetails = async () => {
     const response = await fetch(`http://localhost:3001/user/${userId}`, {
       method: 'GET',
-        headers:{Authorization: `Bearer ${token}`}
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await response.json();
@@ -43,7 +44,15 @@ const UserWidget = ({ userId, profilePicture }) => {
     return null;
   }
 
-  const { username, email, friends, location, posts, phone } = user;
+  const {
+    // eslint-disable-next-line no-unused-vars
+    username,
+    email,
+    friends,
+    location,
+    posts,
+    phone,
+  } = user;
 
   return (
     <WidgetWrapper>
@@ -69,7 +78,11 @@ const UserWidget = ({ userId, profilePicture }) => {
             >
               {username}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            <Typography color={medium}>
+              {friends.length}
+              {' '}
+              friends
+            </Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
@@ -144,6 +157,6 @@ const UserWidget = ({ userId, profilePicture }) => {
  */}
     </WidgetWrapper>
   );
-};
+}
 
 export default UserWidget;

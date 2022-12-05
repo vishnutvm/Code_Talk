@@ -1,47 +1,33 @@
 import React, { useEffect } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import Friend from '../../../components/Friend';
 import WidgetWrapper from '../../../components/WindgetWrapper';
-import { useDispatch, useSelector } from 'react-redux';
 import { setFriends } from '../../../redux/userState';
 
-const FriendsListWidgest = ({ userId }) => {
+// eslint-disable-next-line react/prop-types
+function FriendsListWidgest({ userId }) {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = async () => {
-    
     const response = await fetch(
-        `http://localhost:3001/user/${userId}/friends`,
+      `http://localhost:3001/user/${userId}/friends`,
       {
-        method: "GET",
+        method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
-
 
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
   };
 
-
-//   const getFriends = async () => {
-//     const response = await fetch(
-//       `http://localhost:3001/users/${userId}/friends`,
-//       {
-//         method: "GET",
-//         headers: { Authorization: `Bearer ${token}` },
-//       }
-//     );
-//     const data = await response.json();
-//     dispatch(setFriends({ friends: data }));
-//   };
-
-
   useEffect(() => {
     getFriends();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -66,6 +52,6 @@ const FriendsListWidgest = ({ userId }) => {
       </Box>
     </WidgetWrapper>
   );
-};
+}
 
 export default FriendsListWidgest;
