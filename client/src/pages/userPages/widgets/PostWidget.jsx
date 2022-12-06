@@ -8,12 +8,13 @@ import {
   EditOutlined,
   DeleteOutline,
 } from '@mui/icons-material';
+import axios from 'axios';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import FlexBetween from '../../../components/FlexBetween';
 import Friend from '../../../components/Friend';
 import WidgetWrapper from '../../../components/WindgetWrapper';
-import { setPost } from '../../../redux/userState';
+import { setPost, deletePost } from '../../../redux/userState';
 
 function PostWidget({
   postId,
@@ -52,6 +53,22 @@ function PostWidget({
     dispatch(setPost({ post: updatedPost }));
     setlikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     setIsLiked(!isLiked);
+  };
+
+  const deleteThePost = async () => {
+    axios({
+      method: 'DELETE',
+      url: `http://localhost:3001/posts/${postId}/delete`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      console.log(response.data);
+      const updatedPost = response.data;
+      dispatch(deletePost);
+      dispatch(deletePost({ posts: updatedPost }));
+    });
   };
 
   return (
@@ -102,7 +119,7 @@ function PostWidget({
             <IconButton>
               <EditOutlined />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={deleteThePost}>
               <DeleteOutline />
             </IconButton>
           </FlexBetween>

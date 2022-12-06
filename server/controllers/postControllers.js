@@ -48,6 +48,24 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
+// delete the post
+export const deletePost = async (req, res) => {
+  console.log('delete user post');
+  try {
+    const { postId } = req.params;
+    console.log(postId);
+    // const post = Post.deleteB({ _id: postId });
+    Post.deleteOne({ _id: postId }).then(async () => {
+      const updatedProfile = await Post.find();
+      console.log(updatedProfile);
+      // const post = await Post.find({ createdBy: userId }).populate('createdBy');
+      res.status(200).json(updatedProfile);
+    });
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+
 export const likePost = async (req, res) => {
   console.log('like rout gettin');
   try {

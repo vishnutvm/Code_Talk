@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../../../redux/userState';
 
@@ -32,7 +32,7 @@ function PostsWidget({ userId, isProfile = false }) {
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      },
+      }
     );
 
     const data = await response.json();
@@ -48,6 +48,21 @@ function PostsWidget({ userId, isProfile = false }) {
       getPost();
     }
   }, []);
+
+  // useMemo(() => {
+  //   if (isProfile) {
+  //     getUserPost();
+  //   } else {
+  //     getPost();
+  //   }
+  // }, []);
+
+  // useCallback(() => getPost(), [posts]);
+
+  // useMemo(() => first, [second]);
+  // // useEffect(()=>{
+
+  // // },[post])
 
   return (
     <>
@@ -73,10 +88,10 @@ function PostsWidget({ userId, isProfile = false }) {
             comments={Comments}
             isProfile={isProfile}
           />
-        ),
+        )
       )}
     </>
   );
 }
 
-export default PostsWidget;
+export default memo(PostsWidget);
