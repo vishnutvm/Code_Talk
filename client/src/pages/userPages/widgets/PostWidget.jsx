@@ -4,7 +4,9 @@ import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
   FavoriteOutlined,
-  ShareOutlined,
+  // ShareOutlined,
+  EditOutlined,
+  DeleteOutline,
 } from '@mui/icons-material';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +23,7 @@ function PostWidget({
   picturePath,
   likes,
   comments,
+  isProfile,
 }) {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -34,6 +37,7 @@ function PostWidget({
   const { main } = palette.neutral;
   const [isLiked, setIsLiked] = useState(Boolean(likes[loggedInUserId]));
   const [likeCount, setlikeCount] = useState(Object.keys(likes).length);
+  const curUserId = useSelector((state) => state.user._id);
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
@@ -56,6 +60,7 @@ function PostWidget({
         friendId={postUserId}
         username={name}
         profilePicture={picturePath}
+        isProfile={isProfile}
       />
       <Typography color={main} sx={{ mt: '1rem' }}>
         {discription}
@@ -90,9 +95,18 @@ function PostWidget({
             <Typography>{comments.length}</Typography>
           </FlexBetween>
         </FlexBetween>
-        <IconButton>
-          <ShareOutlined />
-        </IconButton>
+        {/* <ShareOutlined /> */}
+
+        {curUserId === postUserId && (
+          <FlexBetween gap="0.7rem">
+            <IconButton>
+              <EditOutlined />
+            </IconButton>
+            <IconButton>
+              <DeleteOutline />
+            </IconButton>
+          </FlexBetween>
+        )}
       </FlexBetween>
 
       {isComments && (

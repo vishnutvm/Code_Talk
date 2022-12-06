@@ -43,16 +43,11 @@ function PostsWidget({ userId, isProfile = false }) {
 
   useEffect(() => {
     if (isProfile) {
-      // console.log('gettting user post');
       getUserPost();
     } else {
       getPost();
     }
   }, []);
-
-  // useEffect(() => {
-  //   getPost();
-  // }, []);
 
   return (
     <>
@@ -62,7 +57,7 @@ function PostsWidget({ userId, isProfile = false }) {
           createdBy,
           discription,
           picturePath,
-          // userPicturePath,
+          userPicturePath,
           like,
           Comments,
         }) => (
@@ -73,9 +68,10 @@ function PostsWidget({ userId, isProfile = false }) {
             name={createdBy.username}
             discription={discription}
             picturePath={picturePath}
-            // userPicturePath={userPicturePath}
+            userPicturePath={userPicturePath}
             likes={like}
             comments={Comments}
+            isProfile={isProfile}
           />
         ),
       )}

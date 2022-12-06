@@ -3,17 +3,17 @@ import {
   ManageAccountsOutlined,
   LocationOnOutlined,
   EmailOutlined,
+  PersonRemoveOutlined,
+  PersonAddOutlined,
 } from '@mui/icons-material';
-import {
-  Box, Typography, Divider, useTheme,
-} from '@mui/material';
-import { useSelector } from 'react-redux';
+import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserImage from '../../../components/UserProfilePicture';
 import FlexBetween from '../../../components/FlexBetween';
 import WidgetWrapper from '../../../components/WindgetWrapper';
-
+import { setFriends } from '../../../redux/userState';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
   const [user, setUser] = useState(null);
@@ -23,6 +23,14 @@ function UserWidget({ userId, profilePicture }) {
   const { dark } = palette.neutral;
   const { medium } = palette.neutral;
   const { main } = palette.neutral;
+  const { _id } = useSelector((state) => state.user);
+  const currentUserFriendList = useSelector((state) => state.user.friends);
+  const dispatch = useDispatch();
+  const primaryLight = palette.primary.light;
+  const primaryDark = palette.primary.dark;
+  const isFriend = currentUserFriendList.find(
+    (friend) => friend._id === userId,
+  );
 
   //    fetching the user data
 
@@ -53,6 +61,22 @@ function UserWidget({ userId, profilePicture }) {
     posts,
     phone,
   } = user;
+
+  const patchFriend = async () => {
+    const response = await fetch(
+      `http://localhost:3001/user/${_id}/${userId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    const data = await response.json();
+    dispatch(setFriends({ friends: data }));
+  };
 
   return (
     <WidgetWrapper>
@@ -85,7 +109,20 @@ function UserWidget({ userId, profilePicture }) {
             </Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
+        {_id === userId && <ManageAccountsOutlined />}
+
+        {_id !== userId && (
+          <IconButton
+            onClick={() => patchFriend()}
+            sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
+          >
+            {isFriend ? (
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            ) : (
+              <PersonAddOutlined sx={{ color: primaryDark }} />
+            )}
+          </IconButton>
+        )}
       </FlexBetween>
       <Divider />
 

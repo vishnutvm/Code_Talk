@@ -77,7 +77,6 @@ function Friend({ profilePicture, friendId, username, isProfile = false }) {
           )}
         </IconButton>
       )}
-
     </FlexBetween>
   );
 }
