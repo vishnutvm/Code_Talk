@@ -6,7 +6,7 @@ import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setFriends } from '../../../redux/userState';
 
 // eslint-disable-next-line react/prop-types
-function FriendsListWidgest({ userId }) {
+function FriendsListWidgest({ userId, isProfile = false }) {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
@@ -45,8 +45,9 @@ function FriendsListWidgest({ userId }) {
           <Friend
             key={friend._id}
             friendId={friend._id}
-            name={friend.username}
+            username={friend.username}
             userPicturePath={friend.picturePath}
+            isProfile={isProfile}
           />
         ))}
       </Box>

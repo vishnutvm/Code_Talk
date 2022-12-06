@@ -9,11 +9,11 @@ import FriendsListWidgest from '../widgets/FriendsListWidgest';
 
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
-  // const {_id,picturePath} = useSelector((state)=>state.user)
-  const { _id } = useSelector((state) => state.user);
+  const { _id, picturePath } = useSelector((state) => state.user);
+  // const { _id } = useSelector((state) => state.user);
 
   // presetting the user image
-  const picturePath = 'https://res.cloudinary.com/demo/image/twitter_name/BillClinton.jpg';
+  // const picturePath = 'https://res.cloudinary.com/demo/image/twitter_name/BillClinton.jpg';
 
   return (
     <Box>
@@ -25,7 +25,6 @@ function HomePage() {
         gap="0.5rem"
         justifyContent="space-between"
       >
-
         <Box flexBasis={isNotMobileScreen ? '26px' : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />
         </Box>
@@ -38,9 +37,9 @@ function HomePage() {
           <PostsWidget userId={_id} />
         </Box>
         {isNotMobileScreen && (
-        <Box flexBasis="26%">
-          <FriendsListWidgest userId={_id} />
-        </Box>
+          <Box flexBasis="26%">
+            <FriendsListWidgest userId={_id} />
+          </Box>
         )}
       </Box>
     </Box>

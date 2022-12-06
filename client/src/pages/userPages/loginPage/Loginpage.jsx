@@ -12,6 +12,7 @@ const initialValuesRegister = {
   username: '',
   email: '',
   password: '',
+  password2: '',
 };
 const initialValuesLogin = {
   email: '',
@@ -45,9 +46,7 @@ function Loginpage() {
     console.log(pageType);
   });
 
-  const {
-    values, errors, handleBlur, handleChange, handleSubmit, touched,
-  } = useFormik({
+  const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
     initialValues:
         pageType === 'register' ? initialValuesRegister : initialValuesLogin,
     validationSchema: pageType === 'register' ? registerSchema : loginSchema,
@@ -258,6 +257,27 @@ function Loginpage() {
                   {errors.password}
                 </p>
               ) : null}
+
+              {/* conform pass */}
+
+              <div className="input-field">
+                <i className="fas fa-lock" />
+                <input
+                  value={values.password2}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="password2"
+                  type="password"
+                  placeholder="Confrom password"
+                />
+              </div>
+              {errors.password2 && touched.password2 ? (
+                <p style={{ color: 'red' }} className="form-error">
+                  {errors.password2}
+                </p>
+              ) : null}
+
+              {/* conform pass */}
 
               {userexist && (
                 <p style={{ color: 'red' }} className="register-error">

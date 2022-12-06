@@ -9,6 +9,10 @@ export const registerSchema = yup.object().shape({
     .email('invalid email')
     .required('Please enter your email'),
   password: yup.string().min(6).required('Please enter your password'),
+  password2: yup
+    .string()
+    .required('Please enter your password')
+    .oneOf([yup.ref('password')], 'Your passwords do not match.'),
 });
 
 // login

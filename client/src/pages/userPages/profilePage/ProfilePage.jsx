@@ -22,6 +22,7 @@ function ProfilePage() {
     });
     const data = await response.json();
     setUser(data);
+    console.log('user posts', data);
   };
 
   useEffect(() => {
@@ -42,11 +43,10 @@ function ProfilePage() {
         gap="2rem"
         justifyContent="center"
       >
-
         <Box flexBasis={isNotMobileScreen ? '26%' : undefined}>
           <UserWidget userId={userId} picturePath={user.picturePath} />
           <Box m="2rem 0" />
-          <FriendsListWidgest userId={userId} />
+          <FriendsListWidgest userId={userId} isProfile />
         </Box>
         <Box
           flexBasis={isNotMobileScreen ? '42%' : undefined}

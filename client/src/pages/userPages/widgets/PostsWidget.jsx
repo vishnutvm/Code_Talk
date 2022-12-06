@@ -6,6 +6,7 @@ import { setPosts } from '../../../redux/userState';
 import PostWidget from './PostWidget';
 
 function PostsWidget({ userId, isProfile = false }) {
+  console.log(isProfile);
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
@@ -20,7 +21,7 @@ function PostsWidget({ userId, isProfile = false }) {
 
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
-    console.log(data);
+    // console.log(data);
   };
 
   // get user post
@@ -42,15 +43,16 @@ function PostsWidget({ userId, isProfile = false }) {
 
   useEffect(() => {
     if (isProfile) {
+      // console.log('gettting user post');
       getUserPost();
     } else {
       getPost();
     }
   }, []);
 
-  useEffect(() => {
-    getPost();
-  }, []);
+  // useEffect(() => {
+  //   getPost();
+  // }, []);
 
   return (
     <>

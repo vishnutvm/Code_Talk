@@ -10,14 +10,14 @@ import FlexBetween from './FlexBetween';
 import UserImage from './UserProfilePicture';
 
 // eslint-disable-next-line react/prop-types
-function Friend({ profilePicture, friendId, username }) {
+function Friend({ profilePicture, friendId, username, isProfile = false }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
   // checking if friedns comming
-  console.log(friends, 'frendte');
+  // console.log(friends, 'frendte');
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
@@ -65,7 +65,7 @@ function Friend({ profilePicture, friendId, username }) {
         </Box>
       </FlexBetween>
 
-      {_id !== friendId && (
+      { !isProfile && _id !== friendId && (
         <IconButton
           onClick={() => patchFriend()}
           sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
@@ -77,6 +77,7 @@ function Friend({ profilePicture, friendId, username }) {
           )}
         </IconButton>
       )}
+
     </FlexBetween>
   );
 }

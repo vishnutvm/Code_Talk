@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String,
-    default: '',
+    default: 'https://res.cloudinary.com/demo/image/twitter_name/BillClinton.jpg',
   },
   socialProfile: {
     type: Array,

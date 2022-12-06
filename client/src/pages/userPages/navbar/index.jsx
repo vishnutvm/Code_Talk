@@ -23,7 +23,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { setMode, setLogout } from '../../../redux/userState/index';
+import { setLogout, setMode } from '../../../redux/userState/index';
 import FlexBetween from '../../../components/FlexBetween';
 
 function Navbar() {
@@ -32,7 +32,7 @@ function Navbar() {
   const navigate = useNavigate();
   const user = useSelector((state) => state);
 
-  console.log(user);
+  // console.log(user);
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -45,8 +45,8 @@ function Navbar() {
   const { username } = user.user;
   //  let username = "vishnu"
 
-  console.log(username);
-  console.log(user);
+  // console.log(username);
+  // console.log(user);
   return (
     <FlexBetween padding="1rem 2rem" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">

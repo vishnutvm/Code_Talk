@@ -17,5 +17,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies,
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
+    'no-console': 'off',
   },
 };
