@@ -28,14 +28,15 @@ export const userAuthSlice = createSlice({
       // eslint-disable-next-line no-sequences
       (state.user = null), (state.token = null);
     },
+
     // update frieds
     setFriends: (state, action) => {
-      if (state.user) {
-        state.user.friends = action.payload.friends;
-      } else {
-        console.error('setFriends error');
-      }
+      // state.user.friends = action.payload.friends;
+      const { user } = state;
+      user.friends = action.payload.friends;
+      state.user = user;
     },
+
     // update post
     setPosts: (state, action) => {
       state.posts = action.payload.posts.reverse();
@@ -50,9 +51,6 @@ export const userAuthSlice = createSlice({
       state.posts = updatedPosts;
     },
     deletePost: (state, action) => {
-      // console.log(...state);
-      // console.log(...state);
-      // console.log(action);
       let { posts } = state;
       console.log(posts);
       console.log('on this step');
@@ -62,7 +60,6 @@ export const userAuthSlice = createSlice({
       );
       posts = updatedPost;
       return { ...state, posts };
-      // state.posts = action.payload.posts;
     },
   },
 });

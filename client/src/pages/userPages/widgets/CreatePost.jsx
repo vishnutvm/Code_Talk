@@ -28,7 +28,11 @@ import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setPosts } from '../../../redux/userState';
 
 // eslint-disable-next-line react/prop-types
-function CreatePost({ postImgPath }) {
+function CreatePost({ postImgPath, postId = null }) {
+  if (postId) {
+    console.log('working');
+  }
+  console.log(postId);
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -39,16 +43,19 @@ function CreatePost({ postImgPath }) {
   // const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const { mediumMain } = palette.neutral;
   const { medium } = palette.neutral;
+  const currentPosts = useSelector((state) => state.posts);
 
   const handlePost = async () => {
     const formData = new FormData();
     formData.append('userId', _id);
     formData.append('discription', post);
     if (image) {
+      console.log(image);
       formData.append('picture', image);
       formData.append('picturePath', image.name);
     }
     console.log(formData, '');
+
     // eslint-disable-next-line no-unused-vars
     const res = fetch('http://localhost:3001/createPost', {
       method: 'POST',
@@ -70,6 +77,10 @@ function CreatePost({ postImgPath }) {
       });
   };
 
+  if (postId) {
+    console.log('editing the post');
+    // const editingPost =
+  }
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">

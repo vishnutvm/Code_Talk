@@ -15,6 +15,7 @@ import FlexBetween from '../../../components/FlexBetween';
 import Friend from '../../../components/Friend';
 import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setPost, deletePost } from '../../../redux/userState';
+import CreatePost from './CreatePost';
 
 function PostWidget({
   postId,
@@ -39,6 +40,7 @@ function PostWidget({
   const [isLiked, setIsLiked] = useState(Boolean(likes[loggedInUserId]));
   const [likeCount, setlikeCount] = useState(Object.keys(likes).length);
   const curUserId = useSelector((state) => state.user._id);
+  const [edit, setedit] = useState(null);
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
@@ -55,6 +57,7 @@ function PostWidget({
     setIsLiked(!isLiked);
   };
 
+  // edit the post
   const deleteThePost = async () => {
     console.log('called delete post');
     axios({
@@ -70,6 +73,17 @@ function PostWidget({
     });
   };
 
+  const editThePost = () => {
+    setedit(true);
+  };
+
+  // if (changged === true) {
+  //   console.log('enterd in the ');
+  //   return <CreatePost picturePath={picturePath} postId={postId} />;
+  // }
+  if (edit) {
+    <CreatePost picturePath={picturePath} postId={postId} />;
+  }
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -115,7 +129,7 @@ function PostWidget({
 
         {curUserId === postUserId && (
           <FlexBetween gap="0.7rem">
-            <IconButton>
+            <IconButton onClick={editThePost}>
               <EditOutlined />
             </IconButton>
             <IconButton onClick={deleteThePost}>

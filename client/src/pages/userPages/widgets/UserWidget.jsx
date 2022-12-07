@@ -16,7 +16,8 @@ import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setFriends } from '../../../redux/userState';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
-  const [user, setUser] = useState(null);
+  // eslint-disable-next-line prefer-const
+  let [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
@@ -24,6 +25,7 @@ function UserWidget({ userId, profilePicture }) {
   const { medium } = palette.neutral;
   const { main } = palette.neutral;
   const { _id } = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.user);
   const currentUserFriendList = useSelector((state) => state.user.friends);
   const dispatch = useDispatch();
   const primaryLight = palette.primary.light;
@@ -44,14 +46,23 @@ function UserWidget({ userId, profilePicture }) {
     setUser(data);
   };
 
+  // useEffect(() => {
+  //   getUserDetails();
+  // }, []);
+
   useEffect(() => {
-    getUserDetails();
+    if (_id === userId) {
+      getUserDetails();
+    }
   }, []);
 
   if (!user) {
     return null;
   }
 
+  if (_id === userId) {
+    user = currentUser;
+  }
   const {
     // eslint-disable-next-line no-unused-vars
     username,
