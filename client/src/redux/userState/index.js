@@ -50,7 +50,19 @@ export const userAuthSlice = createSlice({
       state.posts = updatedPosts;
     },
     deletePost: (state, action) => {
-      state.posts = action.payload.posts;
+      // console.log(...state);
+      // console.log(...state);
+      // console.log(action);
+      let { posts } = state;
+      console.log(posts);
+      console.log('on this step');
+
+      const updatedPost = posts.filter(
+        (post) => post._id !== action.payload.id,
+      );
+      posts = updatedPost;
+      return { ...state, posts };
+      // state.posts = action.payload.posts;
     },
   },
 });

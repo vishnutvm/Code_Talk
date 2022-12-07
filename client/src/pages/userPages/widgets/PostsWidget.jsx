@@ -32,7 +32,7 @@ function PostsWidget({ userId, isProfile = false }) {
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
 
     const data = await response.json();
@@ -88,7 +88,7 @@ function PostsWidget({ userId, isProfile = false }) {
             comments={Comments}
             isProfile={isProfile}
           />
-        )
+        ),
       )}
     </>
   );

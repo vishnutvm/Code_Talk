@@ -56,6 +56,7 @@ function PostWidget({
   };
 
   const deleteThePost = async () => {
+    console.log('called delete post');
     axios({
       method: 'DELETE',
       url: `http://localhost:3001/posts/${postId}/delete`,
@@ -65,9 +66,7 @@ function PostWidget({
       },
     }).then((response) => {
       console.log(response.data);
-      const updatedPost = response.data;
-      dispatch(deletePost);
-      dispatch(deletePost({ posts: updatedPost }));
+      dispatch(deletePost({ id: postId }));
     });
   };
 
