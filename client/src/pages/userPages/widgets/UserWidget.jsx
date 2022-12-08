@@ -51,18 +51,18 @@ function UserWidget({ userId, profilePicture }) {
   // }, []);
 
   useEffect(() => {
-    if (_id === userId) {
+    if (_id !== userId) {
       getUserDetails();
     }
   }, []);
 
+  if (_id === userId) {
+    user = currentUser;
+  }
   if (!user) {
     return null;
   }
 
-  if (_id === userId) {
-    user = currentUser;
-  }
   const {
     // eslint-disable-next-line no-unused-vars
     username,

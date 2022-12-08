@@ -82,10 +82,10 @@ function PostWidget({
   //   return <CreatePost picturePath={picturePath} postId={postId} />;
   // }
   if (edit) {
-    <CreatePost picturePath={picturePath} postId={postId} />;
+    return <CreatePost picturePath={picturePath} postId={postId} />;
   }
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper m="2rem 1rem">
       <Friend
         friendId={postUserId}
         username={name}

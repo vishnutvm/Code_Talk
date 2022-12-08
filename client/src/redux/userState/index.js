@@ -7,6 +7,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
+  edit: false,
 };
 
 export const userAuthSlice = createSlice({
