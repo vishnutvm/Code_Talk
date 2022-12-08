@@ -33,12 +33,13 @@ import { setPosts } from '../../../redux/userState';
 function CreatePost({ postImgPath, postId = null }) {
   console.log(postId);
   const dispatch = useDispatch();
-  const [isImage, setIsImage] = useState(false);
   const [editing, setEditing] = useState(postId);
   const [close, setclose] = useState(null);
 
+  // image state
+
   const [image, setImage] = useState(null);
-  const [post, setPost] = useState('');
+
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
@@ -51,10 +52,15 @@ function CreatePost({ postImgPath, postId = null }) {
     state.posts.find((pos) => pos._id === postId)
   );
 
-  if (editingPost) {
-    const { _id, discription, picturePath } = editingPost;
-  }
-
+  const [post, setPost] = useState(editingPost ? editingPost.discription : '');
+  const [isImage, setIsImage] = useState(
+    !!(editingPost && editingPost.picturePath)
+  );
+  const [editPrev, setEditprev] = useState(
+    editingPost && editingPost.picturePath
+      ? `http://localhost:3001/assets/${editingPost.picturePath}`
+      : ''
+  );
   // handle post edit
   const handleEditPost = () => {
     console.log(editingPost);
@@ -149,17 +155,21 @@ function CreatePost({ postImgPath, postId = null }) {
                   >
                     <input {...getInputProps()} />
                     {!image ? (
-                      <p>Add Image Here</p>
+                      <p>Add New Image Here</p>
                     ) : (
                       <FlexBetween>
-                        <Typography>{image.name}</Typography>
+                        <Typography>{image && image.name}</Typography>
                         <EditOutlined />
                       </FlexBetween>
                     )}
                   </Box>
-                  {image && (
+                  {isImage && (
                     <IconButton
-                      onClick={() => setImage(null)}
+                      onClick={() => {
+                        setImage(null);
+                        setEditprev('');
+                        setIsImage(false);
+                      }}
                       sx={{ width: '15%' }}
                     >
                       <DeleteOutlined />
@@ -168,6 +178,35 @@ function CreatePost({ postImgPath, postId = null }) {
                 </FlexBetween>
               )}
             </Dropzone>
+            <Box>
+              {/* need to change after edit success */}
+
+              {image ? (
+                <img
+                  width="100%"
+                  height="auto"
+                  alt="post"
+                  style={{
+                    borderRadius: '0.75rem',
+                    marginTop: '0.75rem',
+                  }}
+                  src={URL.createObjectURL(image)}
+                />
+              ) : (
+                editPrev && (
+                  <img
+                    width="100%"
+                    height="auto"
+                    alt="post"
+                    style={{
+                      borderRadius: '0.75rem',
+                      marginTop: '0.75rem',
+                    }}
+                    src={editPrev && editPrev}
+                  />
+                )
+              )}
+            </Box>
           </Box>
         )}
 
@@ -248,7 +287,9 @@ function CreatePost({ postImgPath, postId = null }) {
                       <p>Add Image Here</p>
                     ) : (
                       <FlexBetween>
-                        <Typography>{image.name}</Typography>
+                        <Typography>
+                          {image ? image.name : editingPost}
+                        </Typography>
                         <EditOutlined />
                       </FlexBetween>
                     )}
