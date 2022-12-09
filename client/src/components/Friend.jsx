@@ -1,8 +1,6 @@
 import React from 'react';
 import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material';
-import {
-  Box, IconButton, Typography, useTheme,
-} from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFriends } from '../redux/userState';
@@ -65,7 +63,7 @@ function Friend({ profilePicture, friendId, username, isProfile = false }) {
         </Box>
       </FlexBetween>
 
-      { !isProfile && _id !== friendId && (
+      {!isProfile && _id !== friendId && (
         <IconButton
           onClick={() => patchFriend()}
           sx={{ backgroundColor: primaryLight, p: '0.6rem' }}

@@ -18,7 +18,7 @@ import loginRouts from './routes/user/loginRout.js';
 import homeRouts from './routes/user/homeRout.js';
 import postRouts from './routes/post/postRouts.js';
 
-import { createPost } from './controllers/postControllers.js';
+import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 
 // Config
@@ -49,6 +49,7 @@ const upload = multer({ storage });
 // routs with file upload
 // app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.post('/createPost', verifyToken, upload.single('picture'), createPost);
+app.put('/editPost', verifyToken, upload.single('picture'), editPost);
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);

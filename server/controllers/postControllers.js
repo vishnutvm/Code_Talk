@@ -26,6 +26,32 @@ export const createPost = async (req, res) => {
   }
 };
 
+export const editPost = async (req, res) => {
+  console.log('post editing trigger');
+  try {
+    const { postId, discription, picturePath } = req.body;
+    console.log(req.body);
+
+    const post = await Post.findById(postId);
+    console.log(post);
+    Post.findOneAndUpdate(
+      { _id: postId },
+      { discription, picturePath },
+      { new: true },
+    ).then(async (update) => {
+      console.log(update);
+      const updatedPosts = await Post.find().populate('createdBy');
+      res.status(201).json(updatedPosts);
+    });
+    // await newPost.save();
+    // const post = await Post.find().populate('createdBy');
+    // res.status(201).json(post)
+  } catch (err) {
+    console.log(err);
+    res.status(409).json({ error: err.message });
+  }
+};
+
 export const getFeedPosts = async (req, res) => {
   console.log('working');
   try {

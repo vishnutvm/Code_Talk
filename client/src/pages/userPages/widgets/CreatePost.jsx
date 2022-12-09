@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import {
   EditOutlined,
@@ -24,10 +25,11 @@ import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UserImage from '../../../components/UserProfilePicture';
 import FlexBetween from '../../../components/FlexBetween';
 import WidgetWrapper from '../../../components/WindgetWrapper';
-import { setPosts } from '../../../redux/userState';
+import { editPost, setPosts } from '../../../redux/userState';
 
 // eslint-disable-next-line react/prop-types
 function CreatePost({ postImgPath, postId = null }) {
@@ -46,12 +48,12 @@ function CreatePost({ postImgPath, postId = null }) {
   // const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const { mediumMain } = palette.neutral;
   const { medium } = palette.neutral;
-
+  const navigate = useNavigate();
   // getting the post for edit
   const editingPost = useSelector((state) =>
     state.posts.find((pos) => pos._id === postId)
   );
-
+  console.log(editingPost);
   const [post, setPost] = useState(editingPost ? editingPost.discription : '');
   const [isImage, setIsImage] = useState(
     !!(editingPost && editingPost.picturePath)
@@ -63,9 +65,45 @@ function CreatePost({ postImgPath, postId = null }) {
   );
   // handle post edit
   const handleEditPost = () => {
-    console.log(editingPost);
-    setEditing(null);
-    setclose(true);
+    // need to clearn the edit componenet
+    // need to update the post state
+    // need to update the post state even the edit post closed
+
+    const formData = new FormData();
+    formData.append('userId', _id);
+    formData.append('postId', editingPost._id);
+    formData.append('discription', post);
+    // if (editPrev) {
+    //   console.log(editPrev);
+    //   formData.append('picturePath', editingPost.picturePath);
+    // }
+    if (image) {
+      console.log(image);
+      formData.append('picture', image);
+      formData.append('picturePath', image.name);
+    }
+
+    // found bug need to remove
+
+    const res = fetch('http://localhost:3001/editPost', {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const posts = data;
+        dispatch(editPost({ posts }));
+        // reset the state
+        setImage(null);
+        setPost('');
+        setEditing(null);
+        setclose(true);
+        navigate(0);
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
   };
 
   // handle create post
@@ -78,9 +116,9 @@ function CreatePost({ postImgPath, postId = null }) {
       formData.append('picture', image);
       formData.append('picturePath', image.name);
     }
+
     console.log(formData, '');
 
-    // eslint-disable-next-line no-unused-vars
     const res = fetch('http://localhost:3001/createPost', {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -231,6 +269,7 @@ function CreatePost({ postImgPath, postId = null }) {
           <Button
             // if there is not post value desable the button
             disabled={!post}
+            // eslint-disable-next-line no-return-assign
             onClick={handleEditPost}
             sx={{
               color: palette.background.alt,

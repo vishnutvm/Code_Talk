@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+// import { useNavigate } from 'react-router-dom';
 import FlexBetween from '../../../components/FlexBetween';
 import Friend from '../../../components/Friend';
 import WidgetWrapper from '../../../components/WindgetWrapper';

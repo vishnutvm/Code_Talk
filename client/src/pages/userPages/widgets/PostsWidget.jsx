@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, memo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../../../redux/userState';
 
@@ -49,21 +49,6 @@ function PostsWidget({ userId, isProfile = false }) {
     }
   }, []);
 
-  // useMemo(() => {
-  //   if (isProfile) {
-  //     getUserPost();
-  //   } else {
-  //     getPost();
-  //   }
-  // }, []);
-
-  // useCallback(() => getPost(), [posts]);
-
-  // useMemo(() => first, [second]);
-  // // useEffect(()=>{
-
-  // // },[post])
-
   return (
     <>
       {posts.map(
@@ -94,4 +79,4 @@ function PostsWidget({ userId, isProfile = false }) {
   );
 }
 
-export default memo(PostsWidget);
+export default PostsWidget;

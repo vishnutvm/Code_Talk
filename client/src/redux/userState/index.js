@@ -62,6 +62,14 @@ export const userAuthSlice = createSlice({
       posts = updatedPost;
       return { ...state, posts };
     },
+    editPost: (state, action) => {
+      let { posts } = state;
+      console.log(posts);
+      const updatedPost = action.payload.posts.reverse();
+      posts = updatedPost;
+      console.log('redux here');
+      return { ...state, posts };
+    },
   },
 });
 
@@ -73,5 +81,6 @@ export const {
   setLogin,
   setLogout,
   deletePost,
+  editPost,
 } = userAuthSlice.actions;
 export default userAuthSlice.reducer;
