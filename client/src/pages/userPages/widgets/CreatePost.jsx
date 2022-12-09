@@ -50,18 +50,16 @@ function CreatePost({ postImgPath, postId = null }) {
   const { medium } = palette.neutral;
   const navigate = useNavigate();
   // getting the post for edit
-  const editingPost = useSelector((state) =>
-    state.posts.find((pos) => pos._id === postId)
-  );
+  const editingPost = useSelector((state) => state.posts.find((pos) => pos._id === postId));
   console.log(editingPost);
   const [post, setPost] = useState(editingPost ? editingPost.discription : '');
   const [isImage, setIsImage] = useState(
-    !!(editingPost && editingPost.picturePath)
+    !!(editingPost && editingPost.picturePath),
   );
   const [editPrev, setEditprev] = useState(
     editingPost && editingPost.picturePath
       ? `http://localhost:3001/assets/${editingPost.picturePath}`
-      : ''
+      : '',
   );
   // handle post edit
   const handleEditPost = () => {
