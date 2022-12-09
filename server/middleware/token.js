@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 import jwt from 'jsonwebtoken';
-// require("dotenv").config();
 import dotenv from 'dotenv';
 
 dotenv.config();

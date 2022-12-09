@@ -3,7 +3,10 @@
 /* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import User from '../models/User.js';
+import { sendEmail } from '../utils/sendEmail.js';
+import Token from '../models/Token.js';
 
 // Register user
 export const register = async (req, res) => {
@@ -21,6 +24,16 @@ export const register = async (req, res) => {
       password: passwordHash,
     });
     const insertedUser = await user.save();
+
+    const token = await new Token({
+      userId: insertedUser._id,
+      token: crypto.randomBytes(32).toString('hex'),
+    }).save();
+
+    const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
+
+    await sendEmail(user.email, 'Verify Email', url);
+
     // sending data to frontend when all ok
     res.status(201).json(insertedUser);
   } catch (err) {
@@ -85,9 +98,11 @@ export const getUserFriends = async (req, res) => {
 
     // destructring the results and filtering unwanted data
 
-    const friendsList = friends.map(
-      ({ _id, username, profilePicture }) => ({ _id, username, profilePicture }),
-    );
+    const friendsList = friends.map(({ _id, username, profilePicture }) => ({
+      _id,
+      username,
+      profilePicture,
+    }));
     res.status(200).json(friendsList);
   } catch (err) {
     console.log(err);
@@ -118,8 +133,7 @@ export const addRemoveFriends = async (req, res) => {
       friend.friends.push(id);
     }
 
-    await user
-      .save();
+    await user.save();
     await friend.save();
 
     // get all the frinds details from db
@@ -129,12 +143,13 @@ export const addRemoveFriends = async (req, res) => {
 
     // destructring the results and filtering unwanted data
 
-    const friendsList = friends.map(
-      ({ _id, username, profilePicture }) => ({ _id, username, profilePicture }),
-    );
+    const friendsList = friends.map(({ _id, username, profilePicture }) => ({
+      _id,
+      username,
+      profilePicture,
+    }));
 
-    res
-      .status(200).json(friendsList);
+    res.status(200).json(friendsList);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err.message });
