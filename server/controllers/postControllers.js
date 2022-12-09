@@ -1,10 +1,20 @@
 /* eslint-disable import/extensions */
 // import User from '../models/User.js';
+
 import Post from '../models/Post.js';
+// import { uploadFile } from '../s3.js';
 
 export const createPost = async (req, res) => {
+  console.log('file', req.file);
+  // const buffer = Buffer.from(req.file);
+  // console.log(buffer);
+  // console.log('buffer', req.file.buffer);
   console.log('post creation trigger');
   try {
+    // // uploading imagge
+    // const result = await uploadFile(req.file);
+    // console.log(result);
+
     const { userId, discription, picturePath } = req.body;
     console.log(req.body);
 
