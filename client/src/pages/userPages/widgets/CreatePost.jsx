@@ -43,14 +43,14 @@ function CreatePost({ postImgPath, postId = null }) {
   const [image, setImage] = useState(null);
 
   const { palette } = useTheme();
-  const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
+  const { _id } = useSelector((state) => state.user.user);
+  const token = useSelector((state) => state.user.token);
   // const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const { mediumMain } = palette.neutral;
   const { medium } = palette.neutral;
   const navigate = useNavigate();
   // getting the post for edit
-  const editingPost = useSelector((state) => state.posts.find((pos) => pos._id === postId));
+  const editingPost = useSelector((state) => state.user.posts.find((pos) => pos._id === postId));
   console.log(editingPost);
   const [post, setPost] = useState(editingPost ? editingPost.discription : '');
   const [isImage, setIsImage] = useState(

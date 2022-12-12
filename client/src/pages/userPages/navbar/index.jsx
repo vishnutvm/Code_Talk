@@ -30,7 +30,7 @@ function Navbar() {
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state);
+  const user = useSelector((state) => state.user.user);
 
   // console.log(user);
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
@@ -42,9 +42,8 @@ function Navbar() {
   const { alt } = theme.palette.background;
 
   // managing error
-  const { username } = user.user;
+  const { username } = user;
   //  let username = "vishnu"
-
   // console.log(username);
   // console.log(user);
   return (

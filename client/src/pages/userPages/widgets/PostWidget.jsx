@@ -30,17 +30,17 @@ function PostWidget({
 }) {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
-  const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserId = useSelector((state) => state.user.user._id);
   // const isLiked = Boolean(likes[loggedInUserId]);
   // const likeCount = Object.keys(likes).length;
 
-  const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.user.token);
   const { palette } = useTheme();
   const primary = palette.primary.medium;
   const { main } = palette.neutral;
   const [isLiked, setIsLiked] = useState(Boolean(likes[loggedInUserId]));
   const [likeCount, setlikeCount] = useState(Object.keys(likes).length);
-  const curUserId = useSelector((state) => state.user._id);
+  const curUserId = useSelector((state) => state.user.user._id);
   const [edit, setedit] = useState(null);
 
   const patchLike = async () => {

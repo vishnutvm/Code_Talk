@@ -7,34 +7,35 @@ import HomePage from './pages/userPages/homePage/HomePage';
 import Loginpage from './pages/userPages/loginPage/Loginpage';
 import ProfilePage from './pages/userPages/profilePage/ProfilePage';
 import { themeSettings } from './theme';
-import ProfileEditPage from './pages/userPages/profileEditPage/ProfileEditPage';
 
 function App() {
-  // const [count, setCount] = useState(0)
-  const mode = useSelector((state) => state
-    .mode);
+  const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isUserAuth = Boolean(useSelector((state) => state.token));
+  const isUserAuth = Boolean(useSelector((state) => state.user.token));
+
   console.log(isUserAuth);
+
   return (
     <div className="app">
-
       <BrowserRouter>
-
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-
-            <Route path="/" element={isUserAuth ? <HomePage /> : <Loginpage />} />
-            <Route path="/home" element={isUserAuth ? <HomePage /> : <Navigate to="/" />} />
-            <Route path="/profile/:userId" element={isUserAuth ? <ProfilePage /> : <Navigate to="/" />} />
-            <Route path="/editProfile" element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />} />
-
+            <Route
+              path="/"
+              element={isUserAuth ? <HomePage /> : <Loginpage />}
+            />
+            <Route
+              path="/home"
+              element={isUserAuth ? <HomePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/profile/:userId"
+              element={isUserAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
           </Routes>
         </ThemeProvider>
-
       </BrowserRouter>
-
     </div>
   );
 }

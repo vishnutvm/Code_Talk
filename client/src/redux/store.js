@@ -9,15 +9,16 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import userAthReducer from './userState';
+import reducers from './Reducers';
+
+// import reducers from './Reducers';
 
 const persistConfig = { key: 'root', storage, version: 1 };
-
-
 // combine the reducesers
-// const reducers = combineReducers({c})
+// const reducers = combineReducers({ user: userReducer });
 
-const persistedReducer = persistReducer(persistConfig, userAthReducer);
+// persisit local storage
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export default configureStore({
   reducer: persistedReducer,

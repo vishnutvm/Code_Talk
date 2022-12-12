@@ -14,11 +14,11 @@ import { Formik } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editUserSchema } from '../formSchemas/index';
 import FlexBetween from './FlexBetween';
-import { updateUser } from '../redux/userState';
+// import { updateUser } from '../redux/userState';
 
 // const initialValuesEdit = {
 //   username: '',
@@ -30,9 +30,8 @@ import { updateUser } from '../redux/userState';
 // };
 
 function EditFrom() {
-  const user = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
-  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+  const token = useSelector((state) => state.user.token);
   const { palette } = useTheme();
   const navigate = useNavigate();
   // const navigate = useNavigate();
@@ -47,7 +46,7 @@ function EditFrom() {
       .then((response) => response.json())
       .then((data) => {
         const posts = data;
-        console.log(posts)
+        console.log(posts);
         // dispatch(updateUser({ posts }));
         // reset the state
         // setImage(null);

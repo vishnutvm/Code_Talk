@@ -9,12 +9,7 @@ import FriendsListWidgest from '../widgets/FriendsListWidgest';
 
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
-  const { _id, picturePath } = useSelector((state) => state.user);
-  // const { _id } = useSelector((state) => state.user);
-
-  // presetting the user image
-  // const picturePath = 'https://res.cloudinary.com/demo/image/twitter_name/BillClinton.jpg';
-
+  const { _id, picturePath } = useSelector((state) => state.user.user);
   return (
     <Box>
       <Navbar />

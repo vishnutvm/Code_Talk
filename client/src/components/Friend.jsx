@@ -11,9 +11,9 @@ import UserImage from './UserProfilePicture';
 function Friend({ profilePicture, friendId, username, isProfile = false }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const { _id } = useSelector((state) => state.user.user);
+  const token = useSelector((state) => state.user.token);
+  const friends = useSelector((state) => state.user.user.friends);
   // checking if friedns comming
   // console.log(friends, 'frendte');
   const { palette } = useTheme();
@@ -30,7 +30,7 @@ function Friend({ profilePicture, friendId, username, isProfile = false }) {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      },
+      }
     );
 
     const data = await response.json();

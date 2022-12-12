@@ -20,13 +20,13 @@ function UserWidget({ userId, profilePicture }) {
   let [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.user.token);
   const { dark } = palette.neutral;
   const { medium } = palette.neutral;
   const { main } = palette.neutral;
-  const { _id } = useSelector((state) => state.user);
-  const currentUser = useSelector((state) => state.user);
-  const currentUserFriendList = useSelector((state) => state.user.friends);
+  const { _id } = useSelector((state) => state.user.user);
+  const currentUser = useSelector((state) => state.user.user);
+  const currentUserFriendList = useSelector((state) => state.user.user.friends);
   const dispatch = useDispatch();
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;

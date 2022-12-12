@@ -10,7 +10,7 @@ const initialState = {
   edit: false,
 };
 
-export const userAuthSlice = createSlice({
+export const userSlice = createSlice({
   name: 'userauth',
   initialState,
   reducers: {
@@ -88,5 +88,5 @@ export const {
   deletePost,
   editPost,
   updateUser,
-} = userAuthSlice.actions;
-export default userAuthSlice.reducer;
+} = userSlice.actions;
+export default userSlice.reducer;

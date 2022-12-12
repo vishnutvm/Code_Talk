@@ -8,8 +8,8 @@ import PostWidget from './PostWidget';
 function PostsWidget({ userId, isProfile = false }) {
   console.log(isProfile);
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
-  const token = useSelector((state) => state.token);
+  const posts = useSelector((state) => state.user.posts);
+  const token = useSelector((state) => state.user.token);
 
   // get all the post
 
@@ -32,7 +32,7 @@ function PostsWidget({ userId, isProfile = false }) {
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      },
+      }
     );
 
     const data = await response.json();
@@ -73,7 +73,7 @@ function PostsWidget({ userId, isProfile = false }) {
             comments={Comments}
             isProfile={isProfile}
           />
-        ),
+        )
       )}
     </>
   );
