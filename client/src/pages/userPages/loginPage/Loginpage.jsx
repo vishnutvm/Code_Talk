@@ -26,9 +26,6 @@ function Loginpage() {
   const [useLoginErr, setUserLoginErr] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const isLogin = pageType === "login"
-  // const isRegister = pageType === "register"
-
   // style
   const signin = () => {
     console.log('sign in pressed');

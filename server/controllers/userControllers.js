@@ -155,3 +155,39 @@ export const addRemoveFriends = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// edit user
+export const edituser = async (req, res) => {
+  console.log('here');
+  try {
+    const {
+      username, phone, email, linkdin, github, location,
+    } = req.body;
+    console.log(req.body);
+    const { id } = req.params;
+    // const user = await User.findById(id);
+
+    User.findOneAndUpdate(
+      { _id: id },
+      {
+        username,
+        phone,
+        email,
+        linkdin,
+        github,
+        location,
+      },
+      { new: true },
+    ).then(async (update) => {
+      console.log(update);
+      const updatedUser = await User.findById(id);
+      res.status(201).json(updatedUser);
+    });
+    // await newPost.save();
+    // const post = await Post.find().populate('createdBy');
+    // res.status(201).json(post)
+  } catch (err) {
+    console.log(err);
+    res.status(409).json({ error: err.message });
+  }
+};

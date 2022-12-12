@@ -92,11 +92,7 @@ function UserWidget({ userId, profilePicture }) {
   return (
     <WidgetWrapper>
       {/* first row */}
-      <FlexBetween
-        gap="0.5rem"
-        pb="1.1rem"
-        onClick={() => navigate(`/profile/${userId}`)}
-      >
+      <FlexBetween gap="0.5rem" pb="1.1rem">
         <FlexBetween gap="1rem">
           <UserImage image={profilePicture} />
           <Box>
@@ -106,10 +102,11 @@ function UserWidget({ userId, profilePicture }) {
               fontWeight="500"
               sx={{
                 '&:hover': {
-                  color: palette.primary.light,
+                  color: palette.primary.dark,
                   cursor: 'pointer',
                 },
               }}
+              onClick={() => navigate(`/profile/${userId}`)}
             >
               {username}
             </Typography>
@@ -120,7 +117,11 @@ function UserWidget({ userId, profilePicture }) {
             </Typography>
           </Box>
         </FlexBetween>
-        {_id === userId && <ManageAccountsOutlined />}
+        {_id === userId && (
+          <IconButton onClick={() => navigate('/editProfile')}>
+            <ManageAccountsOutlined />
+          </IconButton>
+        )}
 
         {_id !== userId && (
           <IconButton

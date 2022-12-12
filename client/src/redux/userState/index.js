@@ -70,6 +70,11 @@ export const userAuthSlice = createSlice({
       console.log('redux here');
       return { ...state, posts };
     },
+    updateUser: (state, action) => {
+      let { user } = state;
+      user = action.payload.user;
+      return { ...state, user };
+    },
   },
 });
 
@@ -82,5 +87,6 @@ export const {
   setLogout,
   deletePost,
   editPost,
+  updateUser,
 } = userAuthSlice.actions;
 export default userAuthSlice.reducer;

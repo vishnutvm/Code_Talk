@@ -20,6 +20,7 @@ import postRouts from './routes/post/postRouts.js';
 
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
+import { edituser } from './controllers/userControllers.js';
 
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -52,6 +53,12 @@ const upload = multer({ storage });
 // app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.put('/editPost', verifyToken, upload.single('picture'), editPost);
+
+// edit user
+// app.post('user/:id/editPost', verifyToken, upload.single('picture'), edituser);
+app.post('/edituser/:id', verifyToken, edituser);
+// http://localhost:3001/edituser/${user._id}
+
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);

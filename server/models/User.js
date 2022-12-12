@@ -30,9 +30,11 @@ const UserSchema = new mongoose.Schema({
     default:
       'https://res.cloudinary.com/demo/image/twitter_name/BillClinton.jpg',
   },
-  socialProfile: {
-    type: Array,
-    default: [],
+  linkdin: {
+    type: String,
+  },
+  github: {
+    type: String,
   },
   location: String,
   verified: {
