@@ -27,6 +27,7 @@ function PostWidget({
   likes,
   comments,
   isProfile,
+  userPicturePath,
 }) {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ function PostWidget({
       <Friend
         friendId={postUserId}
         username={name}
-        profilePicture={picturePath}
+        userPicturePath={userPicturePath}
         isProfile={isProfile}
       />
       <Typography color={main} sx={{ mt: '1rem' }}>

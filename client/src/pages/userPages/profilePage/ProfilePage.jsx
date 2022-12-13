@@ -13,7 +13,7 @@ function ProfilePage() {
   const { userId } = useParams();
   const token = useSelector((state) => state.user.token);
 
-  const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
+  const isNotMobileScreen = useMediaQuery('(min-width:100px)');
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/user/${userId}`, {
@@ -44,7 +44,7 @@ function ProfilePage() {
         justifyContent="center"
       >
         <Box flexBasis={isNotMobileScreen ? '26%' : undefined}>
-          <UserWidget userId={userId} picturePath={user.picturePath} />
+          <UserWidget userId={userId} profilePicture={user.profilePicture} />
           <Box m="2rem 0" />
           <FriendsListWidgest userId={userId} isProfile />
         </Box>
@@ -52,7 +52,7 @@ function ProfilePage() {
           flexBasis={isNotMobileScreen ? '42%' : undefined}
           mt={isNotMobileScreen ? undefined : '2rem'}
         >
-          <CreatePost picturePath={user.picturePath} />
+          <CreatePost profilePicture={user.profilePicture} />
           <Box m="2rem 0" />
           <PostsWidget userId={userId} isProfile />
         </Box>

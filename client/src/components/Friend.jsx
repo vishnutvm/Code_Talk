@@ -8,7 +8,7 @@ import FlexBetween from './FlexBetween';
 import UserImage from './UserProfilePicture';
 
 // eslint-disable-next-line react/prop-types
-function Friend({ profilePicture, friendId, username, isProfile = false }) {
+function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user.user);
@@ -40,7 +40,7 @@ function Friend({ profilePicture, friendId, username, isProfile = false }) {
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <UserImage image={profilePicture} size="55px" />
+        <UserImage imagePath={userPicturePath} size="55px" />
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);

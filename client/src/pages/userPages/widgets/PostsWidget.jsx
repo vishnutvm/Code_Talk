@@ -10,7 +10,6 @@ function PostsWidget({ userId, isProfile = false }) {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.user.posts);
   const token = useSelector((state) => state.user.token);
-
   // get all the post
 
   const getPost = async () => {
@@ -32,7 +31,7 @@ function PostsWidget({ userId, isProfile = false }) {
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
 
     const data = await response.json();
@@ -52,15 +51,7 @@ function PostsWidget({ userId, isProfile = false }) {
   return (
     <>
       {posts.map(
-        ({
-          _id,
-          createdBy,
-          discription,
-          picturePath,
-          userPicturePath,
-          like,
-          Comments,
-        }) => (
+        ({ _id, createdBy, discription, picturePath, like, Comments }) => (
           <PostWidget
             key={_id}
             postId={_id}
@@ -68,12 +59,12 @@ function PostsWidget({ userId, isProfile = false }) {
             name={createdBy.username}
             discription={discription}
             picturePath={picturePath}
-            userPicturePath={userPicturePath}
+            userPicturePath={createdBy.profilePicture}
             likes={like}
             comments={Comments}
             isProfile={isProfile}
           />
-        )
+        ),
       )}
     </>
   );

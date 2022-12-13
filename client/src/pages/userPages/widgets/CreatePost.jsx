@@ -32,8 +32,8 @@ import WidgetWrapper from '../../../components/WindgetWrapper';
 import { editPost, setPosts } from '../../../redux/userState';
 
 // eslint-disable-next-line react/prop-types
-function CreatePost({ postImgPath, postId = null }) {
-  console.log(postId);
+function CreatePost({ profilePicture, postId = null }) {
+  console.log('working', profilePicture);
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(postId);
   const [close, setclose] = useState(null);
@@ -155,7 +155,7 @@ function CreatePost({ postImgPath, postId = null }) {
         </Tooltip>
 
         <FlexBetween gap="1.5rem">
-          <UserImage image={postImgPath} />
+          <UserImage imagePath={profilePicture} />
           <InputBase
             placeholder="What's on your mind..."
             onChange={(e) => setPost(e.target.value)}
@@ -285,7 +285,7 @@ function CreatePost({ postImgPath, postId = null }) {
     return (
       <WidgetWrapper mb="1.2rem">
         <FlexBetween gap="1.5rem">
-          <UserImage image={postImgPath} />
+          <UserImage imagePath={profilePicture} />
           <InputBase
             placeholder="What's on your mind..."
             onChange={(e) => setPost(e.target.value)}

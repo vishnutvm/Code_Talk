@@ -16,6 +16,7 @@ import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setFriends } from '../../../redux/userState';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
+  console.log(profilePicture);
   // eslint-disable-next-line prefer-const
   let [user, setUser] = useState(null);
   const { palette } = useTheme();
@@ -94,7 +95,7 @@ function UserWidget({ userId, profilePicture }) {
       {/* first row */}
       <FlexBetween gap="0.5rem" pb="1.1rem">
         <FlexBetween gap="1rem">
-          <UserImage image={profilePicture} />
+          <UserImage imagePath={profilePicture} />
           <Box>
             <Typography
               variant="h4"

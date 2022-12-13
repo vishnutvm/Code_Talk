@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-function UserImage({ image, size = '60px' }) {
+function UserImage({ imagePath, size = '60px' }) {
   return (
     <Box width={size} height={size}>
       <img
@@ -11,7 +11,7 @@ function UserImage({ image, size = '60px' }) {
         alt="user"
         // presetting the user image
         // src={`http://localhost:3001/assets/${image}`}
-        src="https://res.cloudinary.com/demo/image/twitter_name/BillClinton.jpg"
+        src={imagePath}
       />
     </Box>
   );

@@ -9,7 +9,9 @@ import FriendsListWidgest from '../widgets/FriendsListWidgest';
 
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
-  const { _id, picturePath } = useSelector((state) => state.user.user);
+  // const { username, profilePicture, _id } = user;
+  const { _id, profilePicture } = useSelector((state) => state.user.user);
+  console.log(profilePicture);
   return (
     <Box>
       <Navbar />
@@ -21,14 +23,14 @@ function HomePage() {
         justifyContent="space-between"
       >
         <Box flexBasis={isNotMobileScreen ? '26px' : undefined}>
-          <UserWidget userId={_id} picturePath={picturePath} />
+          <UserWidget userId={_id} profilePicture={profilePicture} />
         </Box>
 
         <Box
           flexBasis={isNotMobileScreen ? '42%' : undefined}
           mt={isNotMobileScreen ? undefined : '2rem'}
         >
-          <CreatePost picturePath={picturePath} />
+          <CreatePost profilePicture={profilePicture} />
           <PostsWidget userId={_id} />
         </Box>
         {isNotMobileScreen && (
