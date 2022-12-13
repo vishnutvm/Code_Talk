@@ -9,7 +9,7 @@ import ProfilePage from './pages/userPages/profilePage/ProfilePage';
 import { themeSettings } from './theme';
 
 function App() {
-  const mode = useSelector((state) => state.mode);
+  const mode = useSelector((state) => state.mode.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state) => state.user.token));
 

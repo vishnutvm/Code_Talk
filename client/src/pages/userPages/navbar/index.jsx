@@ -5,11 +5,12 @@ import {
   IconButton,
   InputBase,
   Typography,
-  Select,
   MenuItem,
-  FormControl,
   useTheme,
   useMediaQuery,
+  Badge,
+  Avatar,
+  Menu,
 } from '@mui/material';
 import {
   Search,
@@ -17,13 +18,16 @@ import {
   DarkMode,
   LightMode,
   Notifications,
-  Menu,
   Close,
+  VideocamRounded,
+  TextsmsRounded,
+  Menu as MenuIcon,
 } from '@mui/icons-material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { setLogout, setMode } from '../../../redux/userState/index';
+import { setMode } from '../../../redux/modeState';
+import { setLogout } from '../../../redux/userState';
 import FlexBetween from '../../../components/FlexBetween';
 
 function Navbar() {
@@ -31,6 +35,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
+  const [open, setopen] = useState(false);
 
   // console.log(user);
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
@@ -42,7 +47,7 @@ function Navbar() {
   const { alt } = theme.palette.background;
 
   // managing error
-  const { username } = user;
+  const { username, profilePicture, _id } = user;
   //  let username = "vishnu"
   // console.log(username);
   // console.log(user);
@@ -82,9 +87,16 @@ function Navbar() {
 
       {isNotMobileScreen ? (
         <FlexBetween gap="2rem">
-          <VideoChatOutlinedIcon sx={{ fontSize: '25px' }} />
-          <Message sx={{ fontSize: '25px' }} />
-          <Notifications sx={{ fontSize: '25px' }} />
+          <VideocamRounded sx={{ fontSize: '25px' }} />
+          <Badge badgeContent={4} color="warning">
+            <TextsmsRounded sx={{ fontsize: '25px' }} />
+          </Badge>
+          {/* <Message sx={{ fontSize: '25px' }} /> */}
+          {/* <Notifications sx={{ fontSize: '25px' }} /> */}
+
+          <Badge badgeContent={1} color="warning">
+            <Notifications sx={{ fontSize: '25px' }} />
+          </Badge>
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === 'dark' ? (
               <DarkMode sx={{ fontsize: '25px' }} />
@@ -93,8 +105,8 @@ function Navbar() {
             )}
           </IconButton>
 
-          <FormControl variant="standard" value={username} />
-
+          {/* <FormControl variant="standard" value={username} /> */}
+          {/*
           <Select
             value={username}
             sx={{
@@ -116,11 +128,68 @@ function Navbar() {
               <Typography>{username}</Typography>
             </MenuItem>
             <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
-          </Select>
+          </Select> */}
+
+          {/* <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            open={open}
+            onClose={(e) => setopen(false)}
+            // onClose={setopen(false)}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+          >
+            <MenuItem>Profile</MenuItem>
+            <MenuItem>My account</MenuItem>
+            <MenuItem>Logout</MenuItem>
+          </Menu> */}
+
+          <Avatar
+            sx={{ width: 45, height: 45 }}
+            alt="Remy Sharp"
+            src={profilePicture}
+            onClick={() => setopen(true)}
+          />
+
+          {
+            <Menu
+              sx={{ marginTop: '50px', marginRight: '30px' }}
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              open={open}
+              onClose={() => setopen(false)}
+              // onClose={setopen(false)}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem
+                onClick={() => navigate(`/profile/${_id}`)}
+                sx={{ fontWeight: '600', textAlign: 'center' }}
+              >
+                {username}
+              </MenuItem>
+              <MenuItem onClick={() => navigate('/editProfile')}>
+                Edit Profile
+              </MenuItem>
+              <MenuItem onClick={() => dispatch(setLogout())}>Logout</MenuItem>
+            </Menu>
+          }
         </FlexBetween>
       ) : (
         <IconButton onClick={() => setIsmobile(!isMobile)}>
-          <Menu />
+          <MenuIcon />
         </IconButton>
       )}
       {/* mobile view */}
@@ -152,9 +221,14 @@ function Navbar() {
             alignItems="center"
             gap="3rem"
           >
-            <VideoChatOutlinedIcon sx={{ fontSize: '25px' }} />
-            <Message sx={{ fontSize: '25px' }} />
-            <Notifications sx={{ fontSize: '25px' }} />
+            <VideocamRounded sx={{ fontSize: '25px' }} />
+            <Badge badgeContent={4} color="warning">
+              <TextsmsRounded sx={{ fontsize: '25px' }} />
+            </Badge>
+            <Badge badgeContent={1} color="warning">
+              <Notifications sx={{ fontSize: '25px' }} />
+            </Badge>
+
             <IconButton onClick={() => dispatch(setMode())}>
               {theme.palette.mode === 'dark' ? (
                 <DarkMode sx={{ fontsize: '25px' }} />
@@ -162,30 +236,48 @@ function Navbar() {
                 <LightMode sx={{ color: dark, fontsize: '25px' }} />
               )}
             </IconButton>
-            <FormControl variant="standard" value={username} />
 
-            <Select
-              value={username}
-              sx={{
-                backgroundColor: neutralLight,
-                width: '150px',
-                borderRadius: '0.25rem',
-                p: '0.25rem 1rem',
-                '& .MuiSvgIcon-root': {
-                  pr: '0.25rem',
-                  width: '3rem',
-                },
-                '& .MuiSelect-select:focus': {
-                  backgroundColor: neutralLight,
-                },
-              }}
-              input={<InputBase />}
-            >
-              <MenuItem value={username}>
-                <Typography>{username}</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
-            </Select>
+            <div>
+              <Avatar
+                sx={{ width: 45, height: 45 }}
+                alt="Remy Sharp"
+                src={profilePicture}
+                onClick={() => setopen(true)}
+              />
+
+              {
+                <Box>
+                  <Menu
+                    sx={{ top: '40%' }}
+                    id="demo-positioned-menu"
+                    aria-labelledby="demo-positioned-button"
+                    open={open}
+                    onClose={() => setopen(false)}
+                    // onClose={setopen(false)}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      horizontal: 'left',
+                    }}
+                  >
+                    <MenuItem
+                      onClick={() => navigate(`/profile/${_id}`)}
+                      sx={{ fontWeight: '600', textAlign: 'center' }}
+                    >
+                      {username}
+                    </MenuItem>
+                    <MenuItem onClick={() => navigate('/editProfile')}>
+                      Edit Profile
+                    </MenuItem>
+                    <MenuItem onClick={() => dispatch(setLogout())}>
+                      Logout
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              }
+            </div>
           </FlexBetween>
         </Box>
       )}

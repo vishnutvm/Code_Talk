@@ -30,7 +30,7 @@ function Friend({ profilePicture, friendId, username, isProfile = false }) {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     const data = await response.json();
