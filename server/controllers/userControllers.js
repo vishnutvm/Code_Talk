@@ -159,10 +159,12 @@ export const addRemoveFriends = async (req, res) => {
 // edit user
 export const edituser = async (req, res) => {
   console.log('here');
+  console.log(req.file);
   try {
     const {
-      username, phone, email, linkdin, github, location,
+      username, phone, email, linkdin, github, location, picture,
     } = req.body;
+    const profilePicture = picture.path;
     console.log(req.body);
     const { id } = req.params;
     // const user = await User.findById(id);
@@ -176,6 +178,7 @@ export const edituser = async (req, res) => {
         linkdin,
         github,
         location,
+        profilePicture,
       },
       { new: true },
     ).then(async (update) => {

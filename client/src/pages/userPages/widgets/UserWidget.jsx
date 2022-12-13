@@ -75,16 +75,6 @@ function UserWidget({ userId, profilePicture }) {
   } = user;
 
   const patchFriend = async () => {
-    // const response = await fetch(
-    //   `http://localhost:3001/user/${_id}/${userId}`,
-    //   {
-    //     method: 'PATCH',
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //       'Content-Type': 'application/json',
-    //     },
-    //   },
-    // );
     try {
       const response = await axios.patch(`/user/${_id}/${userId}`, headers);
 

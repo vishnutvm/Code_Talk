@@ -151,8 +151,8 @@ function Navbar() {
 
           <Avatar
             sx={{ width: 45, height: 45 }}
-            alt="Remy Sharp"
-            src={profilePicture}
+            alt={username}
+            src={`http://localhost:3001/assets/${profilePicture}`}
             onClick={() => setopen(true)}
           />
 
@@ -239,7 +239,7 @@ function Navbar() {
             <div>
               <Avatar
                 sx={{ width: 45, height: 45 }}
-                alt="Remy Sharp"
+                alt={username}
                 src={profilePicture}
                 onClick={() => setopen(true)}
               />

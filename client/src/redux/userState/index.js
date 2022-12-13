@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 const initialState = {
   mode: 'light',
@@ -57,7 +57,7 @@ export const userSlice = createSlice({
       console.log('on this step');
 
       const updatedPost = posts.filter(
-        (post) => post._id !== action.payload.id,
+        (post) => post._id !== action.payload.id
       );
       posts = updatedPost;
       return { ...state, posts };
@@ -71,9 +71,8 @@ export const userSlice = createSlice({
       return { ...state, posts };
     },
     updateUser: (state, action) => {
-      let { user } = state;
-      user = action.payload.user;
-      return { ...state, user };
+      console.log(action.payload);
+      state.user = action.payload;
     },
   },
 });

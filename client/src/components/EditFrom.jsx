@@ -7,6 +7,8 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
+  styled,
+  Avatar,
 } from '@mui/material';
 
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -14,49 +16,45 @@ import { Formik } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editUserSchema } from '../formSchemas/index';
 import FlexBetween from './FlexBetween';
-// import { updateUser } from '../redux/userState';
-
-// const initialValuesEdit = {
-//   username: '',
-//   email: '',
-//   password: '',
-//   phone: '',
-//   location: '',
-//   picture: '',
-// };
+import axios from '../utils/axios';
+import { updateUser } from '../redux/userState/index';
+import UserImage from './UserProfilePicture';
 
 function EditFrom() {
   const user = useSelector((state) => state.user.user);
   const token = useSelector((state) => state.user.token);
   const { palette } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+
   // const navigate = useNavigate();
   const isNonMobile = useMediaQuery('(min-width:600px)');
   const id = user._id;
-  const handleFormSubmit = async (values) => {
-    const res = fetch(`http://localhost:3001/edituser/${id}`, {
+  const handleFormSubmit = (values) => {
+    axios({
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: values,
+      url: `/edituser/${id}`,
+      headers,
+      data: values,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        const posts = data;
-        console.log(posts);
-        // dispatch(updateUser({ posts }));
-        // reset the state
-        // setImage(null);
-        // setPost('');
-        // setEditing(null);
-        // setclose(true);
+      .then((response) => {
+        // updateing the user state
+        dispatch(updateUser(response.data));
+        console.log(response);
+        // console.log(updatedUser);
         navigate('/');
       })
-      .catch((err) => {
-        console.log('err', err);
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -65,10 +63,11 @@ function EditFrom() {
     email: user.email ? user.email : '',
     phone: user.phone ? user.phone : '',
     location: user.location ? user.location : '',
-    picture: user.picture ? user.picture : '',
-    linkdin: user.lindin ? user.linkdin : '',
+    picture: '',
+    linkdin: user.linkdin ? user.linkdin : '',
     github: user.github ? user.github : '',
   };
+
   return (
     <Formik
       onSubmit={handleFormSubmit}
@@ -86,6 +85,24 @@ function EditFrom() {
       }) => (
         <form onSubmit={handleSubmit}>
           <Box
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+              margin: '6px 0',
+            }}
+          >
+            <Avatar
+              sx={{ width: '100px', height: '100px' }}
+              alt=""
+              src={
+                values.picture
+                  ? URL.createObjectURL(values.picture)
+                  : `http://localhost:3001/assets/${user.profilePicture}`
+              }
+            />
+          </Box>
+          <Box
             display="grid"
             gap="30px"
             gridTemplateColumns="repeat(4, minmax(0, 1fr))"
@@ -102,7 +119,9 @@ function EditFrom() {
               <Dropzone
                 acceptedFiles=".jpg,.jpeg,.png"
                 multiple={false}
-                onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}
+                onDrop={(acceptedFiles) =>
+                  setFieldValue('picture', acceptedFiles[0])
+                }
               >
                 {({ getRootProps, getInputProps }) => (
                   <Box

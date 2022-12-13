@@ -78,11 +78,6 @@ function PostWidget({
   const editThePost = () => {
     setedit(true);
   };
-
-  // if (changged === true) {
-  //   console.log('enterd in the ');
-  //   return <CreatePost picturePath={picturePath} postId={postId} />;
-  // }
   if (edit) {
     return <CreatePost picturePath={picturePath} postId={postId} />;
   }
