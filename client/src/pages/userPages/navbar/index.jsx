@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import VideoChatOutlinedIcon from '@mui/icons-material/VideoChatOutlined';
+// import VideoChatOutlinedIcon from '@mui/icons-material/VideoChatOutlined';
 import {
   Box,
   IconButton,
@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import {
   Search,
-  Message,
   DarkMode,
   LightMode,
   Notifications,

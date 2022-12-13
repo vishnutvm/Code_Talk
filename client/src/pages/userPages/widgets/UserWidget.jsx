@@ -10,10 +10,13 @@ import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import { headers } from '../../../constants/constants';
 import UserImage from '../../../components/UserProfilePicture';
 import FlexBetween from '../../../components/FlexBetween';
 import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setFriends } from '../../../redux/userState';
+// axios
+import axios from '../../../utils/axios';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
   console.log(profilePicture);
@@ -34,22 +37,19 @@ function UserWidget({ userId, profilePicture }) {
   const isFriend = currentUserFriendList.find(
     (friend) => friend._id === userId,
   );
-
-  //    fetching the user data
-
-  const getUserDetails = async () => {
-    const response = await fetch(`http://localhost:3001/user/${userId}`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const data = await response.json();
-    setUser(data);
+  // hearder with token
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
   };
 
-  // useEffect(() => {
-  //   getUserDetails();
-  // }, []);
+  const getUserDetails = async () => {
+    try {
+      const response = await axios.get(`/user/${userId}`, headers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (_id !== userId) {
@@ -75,19 +75,24 @@ function UserWidget({ userId, profilePicture }) {
   } = user;
 
   const patchFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/user/${_id}/${userId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    );
+    // const response = await fetch(
+    //   `http://localhost:3001/user/${_id}/${userId}`,
+    //   {
+    //     method: 'PATCH',
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //   },
+    // );
+    try {
+      const response = await axios.patch(`/user/${_id}/${userId}`, headers);
 
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+      const data = await response.json();
+      dispatch(setFriends({ friends: data }));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
