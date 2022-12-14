@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router';
+import { setLogin } from '../../../redux/adminState/index';
 // import userState from '../../../redux/userState';
 import { loginSchema } from '../../../formSchemas';
 import axios from '../../../utils/axios';
@@ -15,7 +16,7 @@ function AdminLogin() {
   // const dispatch = useDispatch();
   const [adminLoginErr, setadminLoginErr] = useState(false);
   // const token = useSelector((state) => state.user.token);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const headers = {
@@ -23,48 +24,45 @@ function AdminLogin() {
     Accept: 'application/json',
   };
 
-  const { values, errors, handleBlur, handleChange, handleSubmit, touched } =
-    useFormik({
-      initialValues: initialValuesLogin,
-      validationSchema: loginSchema,
+  const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
+    initialValues: initialValuesLogin,
+    validationSchema: loginSchema,
 
-      // eslint-disable-next-line no-shadow
-      onSubmit: async (values) => {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const loginUserResponse = await axios({
-          method: 'POST',
-          url: '/admin/adminLogin',
-          headers,
-          data: formDataJson,
+    // eslint-disable-next-line no-shadow
+    onSubmit: async (values) => {
+      const formDataJson = JSON.stringify(values);
+      console.log(formDataJson);
+      const loginUserResponse = await axios({
+        method: 'POST',
+        url: '/admin/adminLogin',
+        headers,
+        data: formDataJson,
+      })
+        .then((response) => {
+          console.log('success', response.data);
+          console.log(response.data.admin);
+          console.log(response.data.token);
+          // setting token and naviate to home page
+          console.log(response);
+          dispatch(
+            setLogin({
+              admin: response.data.admin,
+              token: response.data.token,
+            }),
+          );
+          navigate('/admin');
         })
-          .then((response) => {
-            console.log('success', response.data);
-            console.log(response.data.admin);
-            console.log(response.data.token);
-            // setting token and naviate to home page
+        .catch((error) => {
+          console.log('error');
+          setadminLoginErr(true);
+          console.log('Err', error);
+        });
 
-            if (!response.data.msg) {
-              // dispatch(
-              //   setLogin({
-              //     user: data.user,
-              //     token: data.token,
-              //   })
-              // );
-              navigate('/admin');
-            } else {
-              setadminLoginErr(true);
-            }
-          })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+      console.log(loginUserResponse.error);
 
-        console.log(loginUserResponse.error);
-
-        console.log(values);
-      },
-    });
+      console.log(values);
+    },
+  });
 
   return (
     <>

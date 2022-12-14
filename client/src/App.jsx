@@ -8,15 +8,16 @@ import Loginpage from './pages/userPages/loginPage/Loginpage';
 import ProfilePage from './pages/userPages/profilePage/ProfilePage';
 import ProfileEditPage from './pages/userPages/profileEditPage/ProfileEditPage';
 import { themeSettings } from './theme';
-import AdminHome from './pages/adminPages/adminHome/AdminHome';
+import AdminHome from './pages/adminPages/HomePage/AdminHome';
 import AdminLogin from './pages/adminPages/loginPage/AdminLogin';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state) => state.user.token));
-
+  const isAdminAuth = Boolean(useSelector((state) => state.admin.token));
   console.log(isUserAuth);
+  console.log(isAdminAuth);
 
   return (
     <div className="app">
@@ -40,8 +41,8 @@ function App() {
               path="/editProfile"
               element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />}
             />
-            <Route path="/admin" element={<AdminHome />} />
-            <Route path="/adminLogin" element={<AdminLogin />} />
+            <Route path="/admin" element={isAdminAuth ? <AdminHome /> : <AdminLogin />} />
+            {/* <Route path="/adminLogin" element={<AdminLogin />} /> */}
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

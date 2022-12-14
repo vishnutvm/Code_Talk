@@ -17,7 +17,7 @@ import signUpRouts from './routes/user/signUpRout.js';
 import loginRouts from './routes/user/loginRout.js';
 import homeRouts from './routes/user/homeRout.js';
 import postRouts from './routes/post/postRouts.js';
-
+import adminRouts from './routes/admin/adminRouts.js';
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
@@ -64,6 +64,7 @@ app.use('/user', signUpRouts);
 app.use('/user', loginRouts);
 app.use('/user', homeRouts);
 app.use('/posts', postRouts);
+app.use('/admin', adminRouts);
 
 // Mongoos and port
 const PORT = process.env.PORT || 4001;
@@ -73,6 +74,8 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server successfully connected to ${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Server successfully connected to ${PORT}`)
+    );
   })
   .catch((error) => console.log(`${error} did not connect`));
