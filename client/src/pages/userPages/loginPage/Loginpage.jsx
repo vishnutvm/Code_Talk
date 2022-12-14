@@ -43,89 +43,90 @@ function Loginpage() {
     console.log(pageType);
   });
 
-  const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
-    initialValues:
+  const { values, errors, handleBlur, handleChange, handleSubmit, touched } =
+    useFormik({
+      initialValues:
         pageType === 'register' ? initialValuesRegister : initialValuesLogin,
-    validationSchema: pageType === 'register' ? registerSchema : loginSchema,
+      validationSchema: pageType === 'register' ? registerSchema : loginSchema,
 
-    // eslint-disable-next-line no-shadow
-    onSubmit: async (values) => {
-      if (pageType === 'register') {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const savedUserResponse = await fetch(
-          'http://localhost:3001/user/register',
-          {
-            method: 'POST',
-            // eslint-disable-next-line max-len
-            // Set the headers that specify you're sending a JSON body request and accepting JSON response
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: formDataJson,
-          },
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (!data.error) {
-              signin();
-            } else {
-              setUserexist(true);
+      // eslint-disable-next-line no-shadow
+      onSubmit: async (values) => {
+        if (pageType === 'register') {
+          const formDataJson = JSON.stringify(values);
+          console.log(formDataJson);
+          const savedUserResponse = await fetch(
+            'http://localhost:3001/user/register',
+            {
+              method: 'POST',
+              // eslint-disable-next-line max-len
+              // Set the headers that specify you're sending a JSON body request and accepting JSON response
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: formDataJson,
             }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              if (!data.error) {
+                signin();
+              } else {
+                setUserexist(true);
+              }
 
-            console.log('success', data);
-          })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+              console.log('success', data);
+            })
+            .catch((error) => {
+              console.log('Err', error);
+            });
 
-        console.log(savedUserResponse.error);
-      } else {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const loginUserResponse = await fetch(
-          'http://localhost:3001/user/login',
-          {
-            method: 'POST',
-            // eslint-disable-next-line max-len
-            // Set the headers that specify you're sending a JSON body request and accepting JSON response
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: formDataJson,
-          },
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('success', data);
-            console.log(data.user);
-            console.log(data.token);
-            // setting token and naviate to home page
-
-            if (!data.msg) {
-              dispatch(
-                setLogin({
-                  user: data.user,
-                  token: data.token,
-                }),
-              );
-              navigate('/home');
-            } else {
-              setUserLoginErr(true);
+          console.log(savedUserResponse.error);
+        } else {
+          const formDataJson = JSON.stringify(values);
+          console.log(formDataJson);
+          const loginUserResponse = await fetch(
+            'http://localhost:3001/user/login',
+            {
+              method: 'POST',
+              // eslint-disable-next-line max-len
+              // Set the headers that specify you're sending a JSON body request and accepting JSON response
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: formDataJson,
             }
-          })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('success', data);
+              console.log(data.user);
+              console.log(data.token);
+              // setting token and naviate to home page
 
-        console.log(loginUserResponse.error);
-      }
+              if (!data.msg) {
+                dispatch(
+                  setLogin({
+                    user: data.user,
+                    token: data.token,
+                  })
+                );
+                navigate('/home');
+              } else {
+                setUserLoginErr(true);
+              }
+            })
+            .catch((error) => {
+              console.log('Err', error);
+            });
 
-      console.log(values);
-    },
-  });
+          console.log(loginUserResponse.error);
+        }
+
+        console.log(values);
+      },
+    });
 
   return (
     <>
