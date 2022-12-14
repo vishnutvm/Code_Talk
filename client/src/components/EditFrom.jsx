@@ -7,7 +7,6 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
-  styled,
   Avatar,
 } from '@mui/material';
 
