@@ -7,7 +7,7 @@ import Post from '../models/Post.js';
 export const createPost = async (req, res) => {
   console.log('file', req.file);
   // const buffer = Buffer.from(req.file);
-  // console.log(buffer);
+  // console.log(buffer); 
   // console.log('buffer', req.file.buffer);
   console.log('post creation trigger');
   try {
