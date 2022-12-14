@@ -8,8 +8,8 @@ import Loginpage from './pages/userPages/loginPage/Loginpage';
 import ProfilePage from './pages/userPages/profilePage/ProfilePage';
 import ProfileEditPage from './pages/userPages/profileEditPage/ProfileEditPage';
 import { themeSettings } from './theme';
-import AdminHome from './pages/adminPages/HomePage/AdminHome';
-import AdminLogin from './pages/adminPages/AdminLogin/AdminLogin';
+import AdminHome from './pages/adminPages/adminHome/AdminHome';
+import AdminLogin from './pages/adminPages/loginPage/AdminLogin';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -40,10 +40,6 @@ function App() {
               path="/editProfile"
               element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />}
             />
-            {/* <Route
-              path="/admin"
-              element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />}
-            /> */}
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
           </Routes>
