@@ -24,12 +24,12 @@ const Container = styled.div`
 
 const SubContainer = styled.div`
   margin: 0.5rem 0;
-  height: 80%;
+  /* height: 80%; */
   width: 100%;
   display: flex;
   margin: auto;
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     height: 100%;
   }

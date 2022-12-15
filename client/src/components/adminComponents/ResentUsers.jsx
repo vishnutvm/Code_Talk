@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
-import ProjectImageone from '../../assets/Images/project1.jpeg';
+// import ProjectImageone from '../../assets/Images/project1.jpeg';
 import {
   cardShadow,
   hoverEffect,
-  darkThemeColor,
-  themeColor,
 } from '../../adminTheme';
 
 const ResentUsersWrap = styled.div`
