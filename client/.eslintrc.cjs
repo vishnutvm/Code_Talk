@@ -18,5 +18,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
     'no-console': 'off',
+    'arrow-body-style': 'off',
   },
 };
