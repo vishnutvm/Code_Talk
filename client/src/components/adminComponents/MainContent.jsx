@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import WishHeader from './wishHeader';
-import Groth from './Groth';
+// Groth section mayuse in future
+// import Groth from './Groth';
 import Info from './Info';
 import QuizSection from './QuizSection';
 import ResentUsers from './ResentUsers';
@@ -9,8 +10,6 @@ import ResentUsers from './ResentUsers';
 const Container = styled.div`
   width: 75%;
   background: linear-gradient(to bottom right, white 0%, #e6e4ff 70%);
-  /* border-bottom-right-radius: 2rem;
-  border-top-right-radius: 2rem; */
   border-radius: 2rem;
   margin: 1rem 1rem 1rem 2rem;
   padding: 1rem;
