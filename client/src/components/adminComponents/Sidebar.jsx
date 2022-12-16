@@ -5,9 +5,11 @@ import { RiHomeLine } from 'react-icons/ri';
 import { HiOutlineUsers } from 'react-icons/hi';
 import { BiTask } from 'react-icons/bi';
 import { AiOutlinePieChart } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
 import Logout from './Logout';
 import AdminProfilePhoto from '../../assets/adminIcon.jpg';
 import { darkThemeColor } from '../../adminTheme';
+import { changePage } from '../../redux/adminState';
 // import { Link } from 'react-router-dom';
 // styles
 const Container = styled.div`
@@ -68,7 +70,7 @@ const Link = styled.li`
   cursor: pointer;
   align-items: center;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
-   margin-left:40%;
+    margin-left: 40%;
   }
   h3 {
     font-weight: 300;
@@ -80,6 +82,7 @@ const Link = styled.li`
 `;
 
 function Sidebar() {
+  const dispatch = useDispatch();
   return (
     <Container>
       <ProfileContainer>
@@ -89,19 +92,19 @@ function Sidebar() {
       </ProfileContainer>
       <LinksContainer>
         <Links>
-          <Link>
+          <Link onClick={() => dispatch(changePage('dashbord'))}>
             <RiHomeLine />
             <h3>Dashboard</h3>
           </Link>
-          <Link>
+          <Link onClick={() => dispatch(changePage('users'))}>
             <HiOutlineUsers />
             <h3>Users</h3>
           </Link>
-          <Link>
+          <Link onClick={() => dispatch(changePage('quiz'))}>
             <BiTask />
             <h3>Quiz</h3>
           </Link>
-          <Link>
+          <Link onClick={() => dispatch(changePage('report'))}>
             <AiOutlinePieChart />
             <h3>Reports</h3>
           </Link>

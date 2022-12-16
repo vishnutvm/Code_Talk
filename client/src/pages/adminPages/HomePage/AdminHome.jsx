@@ -2,8 +2,10 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import MainContent from '../../../components/adminComponents/MainContent';
 import Sidebar from '../../../components/adminComponents/Sidebar';
+import UserManagement from '../UserManagement/UserManagement';
 
 const Container = styled.div`
   display: flex;
@@ -16,10 +18,14 @@ const Container = styled.div`
 `;
 
 const AdminHome = () => {
+  // set the page to show
+  const page = useSelector((state) => state.admin.currentPage);
+
   return (
     <Container>
       <Sidebar />
-      <MainContent />
+      {page === 'dashbord' && <MainContent />}
+      {page === 'users' && <UserManagement />}
     </Container>
   );
 };

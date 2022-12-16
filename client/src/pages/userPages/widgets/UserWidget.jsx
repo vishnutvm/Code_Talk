@@ -5,6 +5,8 @@ import {
   EmailOutlined,
   PersonRemoveOutlined,
   PersonAddOutlined,
+  EditOutlined,
+  CallOutlined,
 } from '@mui/icons-material';
 import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +19,7 @@ import WidgetWrapper from '../../../components/WindgetWrapper';
 import { setFriends } from '../../../redux/userState';
 // axios
 import axios from '../../../utils/axios';
+import { AiFillLinkedin, AiOutlineGithub } from 'react-icons/ai';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
   console.log(profilePicture);
@@ -35,7 +38,7 @@ function UserWidget({ userId, profilePicture }) {
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const isFriend = currentUserFriendList.find(
-    (friend) => friend._id === userId,
+    (friend) => friend._id === userId
   );
   // hearder with token
   const headers = {
@@ -72,8 +75,11 @@ function UserWidget({ userId, profilePicture }) {
     location,
     posts,
     phone,
+    linkdin,
+    github,
   } = user;
 
+  console.log(user);
   const patchFriend = async () => {
     try {
       const response = await axios.patch(`/user/${_id}/${userId}`, headers);
@@ -106,11 +112,7 @@ function UserWidget({ userId, profilePicture }) {
             >
               {username}
             </Typography>
-            <Typography color={medium}>
-              {friends.length}
-              {' '}
-              friends
-            </Typography>
+            <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
         {_id === userId && (
@@ -132,13 +134,14 @@ function UserWidget({ userId, profilePicture }) {
           </IconButton>
         )}
       </FlexBetween>
+
       <Divider />
 
       {/* need to add a anoter row with badges */}
 
       {/* second */}
 
-      <Box p="1rem 0">
+      <Box p="1rem 0" display="flex" flexDirection="column" gap="1rem">
         {location && (
           <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
             <LocationOnOutlined fontSize="large" sx={{ color: main }} />
@@ -146,10 +149,19 @@ function UserWidget({ userId, profilePicture }) {
           </Box>
         )}
 
-        <Box display="flex" alignItems="center" gap="1rem">
-          <EmailOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{email}</Typography>
-        </Box>
+        {email && (
+          <Box display="flex" alignItems="center" gap="1rem">
+            <EmailOutlined fontSize="large" sx={{ color: main }} />
+            <Typography color={medium}>{email}</Typography>
+          </Box>
+        )}
+
+        {phone && (
+          <Box display="flex" alignItems="center" gap="1rem">
+            <CallOutlined fontSize="large" sx={{ color: main }} />
+            <Typography color={medium}>{phone}</Typography>
+          </Box>
+        )}
       </Box>
 
       <Divider />
@@ -168,38 +180,51 @@ function UserWidget({ userId, profilePicture }) {
 
       {/* fourth */}
 
-      {/* <Box p="1rem 0">
-      <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
-        Social Profiles
-      </Typography>
+      <Box p="1rem 0">
+        <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
+          Social Profiles
+        </Typography>
 
-      <FlexBetween gap="1rem" mb="0.5rem">
-        <FlexBetween gap="1rem">
-          <img src="../assets/twitter.png" alt="twitter" />
-          <Box>
-            <Typography color={main} fontWeight="500">
-              Twitter
-            </Typography>
-            <Typography color={medium}>Social Network</Typography>
-          </Box>
-        </FlexBetween>
-        <EditOutlined sx={{ color: main }} />
-      </FlexBetween>
+        {github && (
+          <FlexBetween gap="1rem" mb="0.5rem">
+            <FlexBetween gap="1rem">
+              <AiOutlineGithub size="30px" />
 
-      <FlexBetween gap="1rem">
-        <FlexBetween gap="1rem">
-          <img src="../assets/linkedin.png" alt="linkedin" />
-          <Box>
-            <Typography color={main} fontWeight="500">
-              Linkedin
-            </Typography>
-            <Typography color={medium}>Network Platform</Typography>
-          </Box>
-        </FlexBetween>
-        <EditOutlined sx={{ color: main }} />
-      </FlexBetween>
-    </Box>
- */}
+              {/* <img src={githubImg} alt="twitter" /> */}
+              <Box>
+                <a href={github} target="_black">
+                  <Typography color={main} fontWeight="500">
+                    Github
+                  </Typography>
+                </a>
+
+                <Typography color={medium}>{username}</Typography>
+              </Box>
+            </FlexBetween>
+
+            {/* <EditOutlined sx={{ color: main }} /> */}
+          </FlexBetween>
+        )}
+
+        {linkdin && (
+          <FlexBetween gap="1rem">
+            <FlexBetween gap="1rem">
+              <AiFillLinkedin size="30px" />
+              {/* <img src={linkdinImg} alt="linkedin" /> */}
+              <Box>
+                <a href={linkdin} target="_black">
+                  <Typography color={main} fontWeight="500">
+                    Linkdin
+                  </Typography>
+                </a>
+
+                <Typography color={medium}>{username}</Typography>
+              </Box>
+            </FlexBetween>
+            {/* <EditOutlined sx={{ color: main }} /> */}
+          </FlexBetween>
+        )}
+      </Box>
     </WidgetWrapper>
   );
 }

@@ -6,6 +6,7 @@ import WishHeader from './wishHeader';
 import Info from './Info';
 import QuizSection from './QuizSection';
 import ResentUsers from './ResentUsers';
+import Groth from './Groth';
 // styles
 const Container = styled.div`
   width: 75%;
@@ -125,8 +126,8 @@ function MainContent() {
       <SubContainer>
         <FirstSection>
           <FirstSectionCol1>
-            {/* <Groth /> */}
-            <Info />
+            <Groth />
+            {/* <Info /> */}
           </FirstSectionCol1>
           <FirstSectionCol2>
             <QuizSection />

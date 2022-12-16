@@ -23,7 +23,7 @@ function Loginpage() {
   const container = useRef(null);
   const [pageType, setPageType] = useState('login');
   const [userexist, setUserexist] = useState(false);
-  const [useLoginErr, setUserLoginErr] = useState(false);
+  const [useLoginErr, setUserLoginErr] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // style
@@ -113,7 +113,7 @@ function Loginpage() {
               );
               navigate('/home');
             } else {
-              setUserLoginErr(true);
+              setUserLoginErr(data.msg);
             }
           })
           .catch((error) => {
@@ -179,7 +179,9 @@ function Loginpage() {
 
               {useLoginErr && (
                 <p style={{ color: 'red' }} className="form-error">
-                  Wrong password !
+                  {useLoginErr}
+                  {' '}
+                  !
                 </p>
               )}
 

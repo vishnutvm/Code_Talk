@@ -53,6 +53,10 @@ export const login = async (req, res) => {
     // checkin password
     const isAuth = await bcrypt.compare(password, user.password);
     if (!isAuth) return res.status(400).json({ msg: 'Wrong password' });
+    // checking is user is blocked or not
+    const isBlocked = await user.blocked;
+
+    if (isBlocked) return res.status(400).json({ msg: 'You are blocked' });
 
     // jwt token
 

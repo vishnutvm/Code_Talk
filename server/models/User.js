@@ -41,6 +41,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  blocked: {
+    type: Boolean,
+    default: false,
+  },
   joindDate: {
     type: String,
     default: () => new Date().toString(),

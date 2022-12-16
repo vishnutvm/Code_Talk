@@ -5,10 +5,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   admin: null,
   token: null,
+  currentPage: 'dashbord',
 };
 
 export const adminSlice = createSlice({
-  name: 'adminauth',
+  name: 'admin',
   initialState,
   reducers: {
     // user login setting sate for user details and token
@@ -22,11 +23,11 @@ export const adminSlice = createSlice({
       // eslint-disable-next-line no-sequences
       (state.admin = null), (state.token = null);
     },
+    changePage: (state, action) => {
+      state.currentPage = action.payload;
+    },
   },
 });
 
-export const {
-  setLogin,
-  setLogout,
-} = adminSlice.actions;
+export const { setLogin, setLogout, changePage } = adminSlice.actions;
 export default adminSlice.reducer;
