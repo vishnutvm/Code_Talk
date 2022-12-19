@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Friend from './Friend';
 import WidgetWrapper from './WindgetWrapper';
 import { setFriends } from '../../redux/userState';
-
+import { baseUrl } from '../../constants/constants';
 // eslint-disable-next-line react/prop-types
 function FriendsListWidgest({ userId, isProfile = false }) {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function FriendsListWidgest({ userId, isProfile = false }) {
   console.log(friends);
   const getFriends = async () => {
     const response = await fetch(
-      `http://localhost:3001/user/${userId}/friends`,
+      `${baseUrl}/user/${userId}/friends`,
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },

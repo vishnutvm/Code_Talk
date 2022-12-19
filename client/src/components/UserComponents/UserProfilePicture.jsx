@@ -1,4 +1,5 @@
 import { Avatar } from '@mui/material';
+import { baseUrl } from '../../constants/constants';
 // import { baseUrl } from '../constants/constants';
 // eslint-disable-next-line react/prop-types, no-unused-vars
 function UserImage({ imagePath, size = '60px' }) {
@@ -7,7 +8,7 @@ function UserImage({ imagePath, size = '60px' }) {
     <Avatar
       sx={{ width: `${size}`, height: `${size}` }}
       alt=""
-      src={`http://localhost:3001/assets/${imagePath}`}
+      src={`${baseUrl}/assets/${imagePath}`}
     />
   );
 }

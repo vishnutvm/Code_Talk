@@ -17,7 +17,7 @@ import Friend from './Friend';
 import WidgetWrapper from './WindgetWrapper';
 import { setPost, deletePost } from '../../redux/userState';
 import CreatePost from './CreatePost';
-
+import { baseUrl } from '../../constants/constants';
 function PostWidget({
   postId,
   postUserId,
@@ -45,7 +45,7 @@ function PostWidget({
   const [edit, setedit] = useState(null);
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+    const response = await fetch(`${baseUrl}/posts/${postId}/like`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ function PostWidget({
     console.log('called delete post');
     axios({
       method: 'DELETE',
-      url: `http://localhost:3001/posts/${postId}/delete`,
+      url: `${baseUrl}/posts/${postId}/delete`,
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ function PostWidget({
           height="auto"
           alt="post"
           style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`${baseUrl}/assets/${picturePath}`}
         />
       )}
 

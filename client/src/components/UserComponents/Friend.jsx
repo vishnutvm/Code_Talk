@@ -21,6 +21,8 @@ function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const primaryDark = palette.primary.dark;
   const isFriend = friends.find((friend) => friend._id === friendId);
   const { main } = palette.neutral;
+
+
   const patchFriend = async () => {
     const response = await fetch(`${baseUrl}/user/${_id}/${friendId}`, {
       method: 'PATCH',
@@ -33,6 +35,8 @@ function Friend({ userPicturePath, friendId, username, isProfile = false }) {
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
   };
+
+  
 
   return (
     <FlexBetween>
