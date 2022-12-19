@@ -17,11 +17,11 @@ import { Formik } from 'formik';
 import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { editUserSchema } from '../formSchemas/index';
+import { editUserSchema } from '../../formSchemas/index';
 import FlexBetween from './FlexBetween';
-import axios from '../utils/axios';
-import { updateUser } from '../redux/userState/index';
-import UserImage from './UserProfilePicture';
+import axios from '../../utils/axios';
+import { updateUser } from '../../redux/userState/index';
+// import UserImage from '../UserProfilePicture';
 
 function EditFrom() {
   const user = useSelector((state) => state.user.user);

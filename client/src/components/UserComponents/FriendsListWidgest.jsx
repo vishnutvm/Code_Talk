@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import Friend from '../../../components/Friend';
-import WidgetWrapper from '../../../components/WindgetWrapper';
-import { setFriends } from '../../../redux/userState';
+import Friend from './Friend';
+import WidgetWrapper from './WindgetWrapper';
+import { setFriends } from '../../redux/userState';
 
 // eslint-disable-next-line react/prop-types
 function FriendsListWidgest({ userId, isProfile = false }) {
@@ -18,7 +18,7 @@ function FriendsListWidgest({ userId, isProfile = false }) {
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      },
+      }
     );
 
     const data = await response.json();

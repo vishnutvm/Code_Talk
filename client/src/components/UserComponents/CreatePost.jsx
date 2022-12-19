@@ -20,16 +20,16 @@ import {
 } from '@mui/material';
 
 // drop down
-
 import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import UserImage from '../../../components/UserProfilePicture';
-import FlexBetween from '../../../components/FlexBetween';
-import WidgetWrapper from '../../../components/WindgetWrapper';
-import { editPost, setPosts } from '../../../redux/userState';
+import { baseUrl } from '../../constants/constants';
+import UserImage from './UserProfilePicture';
+import FlexBetween from './FlexBetween';
+import WidgetWrapper from './WindgetWrapper';
+import { editPost, setPosts } from '../../redux/userState';
 
 // eslint-disable-next-line react/prop-types
 function CreatePost({ profilePicture, postId = null }) {
@@ -49,6 +49,7 @@ function CreatePost({ profilePicture, postId = null }) {
   const { mediumMain } = palette.neutral;
   const { medium } = palette.neutral;
   const navigate = useNavigate();
+
   // getting the post for edit
   const editingPost = useSelector((state) => state.user.posts.find((pos) => pos._id === postId));
   console.log(editingPost);

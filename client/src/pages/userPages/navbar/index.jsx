@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { setMode } from '../../../redux/modeState';
 import { setLogout } from '../../../redux/userState';
-import FlexBetween from '../../../components/FlexBetween';
+import FlexBetween from '../../../components/UserComponents/FlexBetween';
 
 function Navbar() {
   const [isMobile, setIsmobile] = useState(false);

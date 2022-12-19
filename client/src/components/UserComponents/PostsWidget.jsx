@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPosts } from '../../../redux/userState';
+import { setPosts } from '../../redux/userState';
 
 import PostWidget from './PostWidget';
 

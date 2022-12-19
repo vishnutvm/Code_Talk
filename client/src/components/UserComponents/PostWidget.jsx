@@ -12,10 +12,10 @@ import axios from 'axios';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
-import FlexBetween from '../../../components/FlexBetween';
-import Friend from '../../../components/Friend';
-import WidgetWrapper from '../../../components/WindgetWrapper';
-import { setPost, deletePost } from '../../../redux/userState';
+import FlexBetween from './FlexBetween';
+import Friend from './Friend';
+import WidgetWrapper from './WindgetWrapper';
+import { setPost, deletePost } from '../../redux/userState';
 import CreatePost from './CreatePost';
 
 function PostWidget({

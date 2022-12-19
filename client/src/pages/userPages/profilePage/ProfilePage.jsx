@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery, Box } from '@mui/material';
 import Navbar from '../navbar';
-import FriendsListWidgest from '../widgets/FriendsListWidgest';
-import CreatePost from '../widgets/CreatePost';
-import PostsWidget from '../widgets/PostsWidget';
-import UserWidget from '../widgets/UserWidget';
+import FriendsListWidgest from '../../../components/UserComponents/FriendsListWidgest';
+import CreatePost from '../../../components/UserComponents/CreatePost';
+import PostsWidget from '../../../components/UserComponents/PostsWidget';
+import UserWidget from '../../../components/UserComponents/UserWidget';
 
 function ProfilePage() {
   const [user, setUser] = useState(null);

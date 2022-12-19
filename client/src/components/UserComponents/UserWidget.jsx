@@ -13,12 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { headers } from '../../../constants/constants';
-import UserImage from '../../../components/UserProfilePicture';
-import FlexBetween from '../../../components/FlexBetween';
-import WidgetWrapper from '../../../components/WindgetWrapper';
-import { setFriends } from '../../../redux/userState';
+import UserImage from './UserProfilePicture';
+import FlexBetween from './FlexBetween';
+import WidgetWrapper from './WindgetWrapper';
+import { setFriends } from '../../redux/userState';
 // axios
-import axios from '../../../utils/axios';
+import axios from '../../utils/axios';
 import { AiFillLinkedin, AiOutlineGithub } from 'react-icons/ai';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
