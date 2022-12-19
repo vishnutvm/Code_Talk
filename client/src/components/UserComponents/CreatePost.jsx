@@ -30,7 +30,7 @@ import UserImage from './UserProfilePicture';
 import FlexBetween from './FlexBetween';
 import WidgetWrapper from './WindgetWrapper';
 import { editPost, setPosts } from '../../redux/userState';
-
+import axios from '../../utils/axios';
 // eslint-disable-next-line react/prop-types
 function CreatePost({ profilePicture, postId = null }) {
   console.log('working', profilePicture);
@@ -51,17 +51,23 @@ function CreatePost({ profilePicture, postId = null }) {
   const navigate = useNavigate();
 
   // getting the post for edit
-  const editingPost = useSelector((state) => state.user.posts.find((pos) => pos._id === postId));
+  const editingPost = useSelector((state) =>
+    state.user.posts.find((pos) => pos._id === postId)
+  );
   console.log(editingPost);
   const [post, setPost] = useState(editingPost ? editingPost.discription : '');
   const [isImage, setIsImage] = useState(
-    !!(editingPost && editingPost.picturePath),
+    !!(editingPost && editingPost.picturePath)
   );
   const [editPrev, setEditprev] = useState(
     editingPost && editingPost.picturePath
-      ? `http://localhost:3001/assets/${editingPost.picturePath}`
-      : '',
+      ? `${baseUrl}/assets/${editingPost.picturePath}`
+      : ''
   );
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
   // handle post edit
   const handleEditPost = () => {
     // need to clearn the edit componenet
@@ -83,17 +89,17 @@ function CreatePost({ profilePicture, postId = null }) {
     }
 
     // found bug need to remove
-
-    const res = fetch('http://localhost:3001/editPost', {
+    axios({
       method: 'PUT',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
+      url: '/editPost',
+      headers,
+      data: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        const posts = data;
+      .then((response) => {
+        const posts = response.data;
+        console.log(posts);
         dispatch(editPost({ posts }));
-        // reset the state
+        //     // reset the state
         setImage(null);
         setPost('');
         setEditing(null);
@@ -101,7 +107,7 @@ function CreatePost({ profilePicture, postId = null }) {
         navigate(0);
       })
       .catch((err) => {
-        console.log('err', err);
+        console.log(err);
       });
   };
 
@@ -118,23 +124,22 @@ function CreatePost({ profilePicture, postId = null }) {
 
     console.log(formData, '');
 
-    const res = fetch('http://localhost:3001/createPost', {
+    axios({
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
+      url: '/createPost',
+      headers,
+      data: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        console.log(formData, 'formdata');
-        const posts = data;
-        dispatch(setPosts({ posts }));
-        // reset the state
+      .then((response) => {
+        const posts = response.data;
+        console.log(posts);
+        dispatch(editPost({ posts }));
+        //     // reset the state
         setImage(null);
         setPost('');
       })
       .catch((err) => {
-        console.log('err', err);
+        console.log(err);
       });
   };
 

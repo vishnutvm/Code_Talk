@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { setFriends } from '../../redux/userState';
 import FlexBetween from './FlexBetween';
 import UserImage from './UserProfilePicture';
-
+import { baseUrl } from '../../constants/constants';
 // eslint-disable-next-line react/prop-types
 function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const dispatch = useDispatch();
@@ -22,16 +22,13 @@ function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const isFriend = friends.find((friend) => friend._id === friendId);
   const { main } = palette.neutral;
   const patchFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/user/${_id}/${friendId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}/user/${_id}/${friendId}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
 
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
