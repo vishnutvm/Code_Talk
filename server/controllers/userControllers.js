@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import User from '../models/User.js';
-import { sendEmail } from '../utils/sendEmail.js';
+// import { sendEmail } from '../utils/sendEmail.js';
 import Token from '../models/Token.js';
 
 // Register user
@@ -25,14 +25,11 @@ export const register = async (req, res) => {
     });
     const insertedUser = await user.save();
 
-    const token = await new Token({
-      userId: insertedUser._id,
-      token: crypto.randomBytes(32).toString('hex'),
-    }).save();
+ 
 
-    const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
+    // const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
 
-    await sendEmail(user.email, 'Verify Email', url);
+    // await sendEmail(user.email, 'Verify Email', url);
 
     // sending data to frontend when all ok
     res.status(201).json(insertedUser);

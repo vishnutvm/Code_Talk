@@ -18,6 +18,9 @@ router.get('/', verifyToken, getFeedPosts);
 // router.get('/:userId/posts', getUserPosts);
 router.get('/:userId/posts', verifyToken, getUserPosts);
 
+
+
+
 // like post
 router.patch('/:id/like', verifyToken, likePost);
 // router.patch('/:id/like', likePost);

@@ -21,7 +21,7 @@ import adminRouts from './routes/admin/adminRouts.js';
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
-
+// express.json  url encoder
 // Config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,16 +66,19 @@ app.use('/user', homeRouts);
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 
+
 // Mongoos and port
 const PORT = process.env.PORT || 4001;
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(PORT, () =>
-      console.log(`Server successfully connected to ${PORT}`)
-    );
-  })
-  .catch((error) => console.log(`${error} did not connect`));
+try {
+  mongoose
+    .connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      app.listen(PORT, () => console.log(`Server successfully connected to ${PORT}`));
+    })
+    .catch((error) => console.log(`${error} did not connect`));
+} catch (err) {
+  console.log(err);
+}
