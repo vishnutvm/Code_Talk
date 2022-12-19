@@ -158,6 +158,8 @@ function CreatePost({ profilePicture, postId = null }) {
           >
             <CloseOutlined />
           </IconButton>
+
+          
         </Tooltip>
 
         <FlexBetween gap="1.5rem">

@@ -13,13 +13,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { headers } from '../../../constants/constants';
+import { AiFillLinkedin, AiOutlineGithub } from 'react-icons/ai';
 import UserImage from './UserProfilePicture';
 import FlexBetween from './FlexBetween';
 import WidgetWrapper from './WindgetWrapper';
 import { setFriends } from '../../redux/userState';
 // axios
 import axios from '../../utils/axios';
-import { AiFillLinkedin, AiOutlineGithub } from 'react-icons/ai';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
   console.log(profilePicture);
@@ -38,7 +38,7 @@ function UserWidget({ userId, profilePicture }) {
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const isFriend = currentUserFriendList.find(
-    (friend) => friend._id === userId
+    (friend) => friend._id === userId,
   );
   // hearder with token
   const headers = {
@@ -112,7 +112,11 @@ function UserWidget({ userId, profilePicture }) {
             >
               {username}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            <Typography color={medium}>
+              {friends.length}
+              {' '}
+              friends
+            </Typography>
           </Box>
         </FlexBetween>
         {_id === userId && (
