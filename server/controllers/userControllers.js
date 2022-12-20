@@ -3,20 +3,28 @@
 /* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+// import crypto from 'crypto';
 import User from '../models/User.js';
+import UserOTPVerification from '../models/UserOTPVerification.js';
+import { generateOTP } from '../utils/generateOTP.js';
 // import { sendEmail } from '../utils/sendEmail.js';
 import { sendEmail } from '../utils/sendEmail.js';
-import Token from '../models/Token.js';
+// import Token from '../models/Token.js';
 // Register user
+
 export const register = async (req, res) => {
   // appendin form data to database
 
   try {
     // destructuring data
     const { username, email, password } = req.body;
+    const userExist = await User.findOne({ username });
+    const emailExist = await User.findOne({ email });
+    if (userExist) return res.status(500).json({ msg: 'Username alredy taken' });
+    if (emailExist) return res.status(500).json({ msg: 'Email alredy registerd' });
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
+
 
     const user = new User({
       username,
@@ -24,13 +32,40 @@ export const register = async (req, res) => {
       password: passwordHash,
     });
     const insertedUser = await user.save();
+    // res.status(201).json(insertedUser);
+    // email otp verification here
+
+    const otp = generateOTP();
+    console.log(otp);
+    const html = `<p>Enter <b>${otp}<b> in the CodeTalk website to verify your email address and complete the register process</p> <p>This code will <b>expire in 1 hr</b>  -- <b>CodeTalk</b></p>`;
+
+    const OtpHash = await bcrypt.hash(otp, salt);
+
+    // saving otp hashed in db
+    const NewUserOTPVerification = new UserOTPVerification({
+      userId: insertedUser._id,
+      otp: OtpHash,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 3600000,
+    });
+    await NewUserOTPVerification.save();
+
+    await sendEmail(user.email, 'Verify Email', html);
 
     // const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
 
     // await sendEmail(user.email, 'Verify Email', url);
 
     // sending data to frontend when all ok
-    res.status(201).json(insertedUser);
+
+    // sending otp verification
+    res.json({
+      message: 'OTP sended to Email',
+      data: {
+        userId: insertedUser._id,
+        email: insertedUser.email,
+      },
+    });
   } catch (err) {
     // catchin register the error if any and send to frontend
     console.log(err);
@@ -49,6 +84,14 @@ export const login = async (req, res) => {
     const isAuth = await bcrypt.compare(password, user.password);
     if (!isAuth) return res.status(400).json({ msg: 'Wrong password' });
     // checking is user is blocked or not
+
+    const isVerified = await user.verified;
+    if (!isVerified) {
+      return await res
+        .status(400)
+        .json({ msg: 'Your account is not verified' });
+    }
+
     const isBlocked = await user.blocked;
 
     if (isBlocked) return res.status(400).json({ msg: 'You are blocked' });
@@ -82,16 +125,56 @@ export const getUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-export const sendtestmail = async (req, res) => {
-  console.log('here');
+
+export const verifyEmail = async (req, res) => {
+  console.log('verifyEmail');
   try {
-    await sendEmail();
+    const { userId, otp } = req.body;
+    if (!userId || !otp) {
+      res.status(500).json({ message: 'Empty otp' });
+    } else {
+      const UserOTPVerificationRecord = await UserOTPVerification.find({
+        userId,
+      });
+      console.log(UserOTPVerificationRecord);
+      if (UserOTPVerificationRecord.length <= 0) {
+        res.status(500).json({ message: 'Alredy Verified. Please login' });
+      } else {
+        const { expiresAt } = UserOTPVerificationRecord[0];
+        const hashedOTP = UserOTPVerificationRecord[0].otp;
+        if (expiresAt < Date.now()) {
+          await UserOTPVerification.deleteMany({ userId });
+          res.status(500).json({ message: 'Code has expires' });
+        } else {
+          const validOTP = await bcrypt.compare(otp, hashedOTP);
+          if (!validOTP) {
+            res.status(500).json({ message: 'Wrong OTP' });
+          } else {
+            const updatedUser = await User.findByIdAndUpdate(
+              { _id: userId },
+              { verified: true },
+              { new: true },
+            );
+
+            // User.updateOne({ _id: userId }, { verified: true });
+
+            // const updatedUser = await User.findByIdAndUpdate(
+            //   { _id: userId },
+            //   { blocked },
+            //   { new: true },
+
+            await UserOTPVerification.deleteMany({ userId });
+            res
+              .status(201)
+              .json({ message: 'Email verification success', updatedUser });
+          }
+        }
+      }
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 
 // get Users friends list
 export const getUserFriends = async (req, res) => {
@@ -102,7 +185,7 @@ export const getUserFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+      user.friends.map((id) => User.findById(id)),
     );
 
     // destructring the results and filtering unwanted data
@@ -147,7 +230,7 @@ export const addRemoveFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+      user.friends.map((id) => User.findById(id)),
     );
 
     // destructring the results and filtering unwanted data
@@ -170,8 +253,9 @@ export const edituser = async (req, res) => {
   console.log('here');
   console.log(req.file);
   try {
-    const { username, phone, email, linkdin, github, location, picture } =
-      req.body;
+    const {
+      username, phone, email, linkdin, github, location, picture,
+    } = req.body;
     const profilePicture = picture.path;
     console.log(req.body);
     const { id } = req.params;
@@ -188,7 +272,7 @@ export const edituser = async (req, res) => {
         location,
         profilePicture,
       },
-      { new: true }
+      { new: true },
     ).then(async (update) => {
       console.log(update);
       const updatedUser = await User.findById(id);

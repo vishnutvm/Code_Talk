@@ -10,6 +10,7 @@ import ProfileEditPage from './pages/userPages/profileEditPage/ProfileEditPage';
 import { themeSettings } from './theme';
 import AdminHome from './pages/adminPages/HomePage/AdminHome';
 import AdminLogin from './pages/adminPages/loginPage/AdminLogin';
+import OTPpage from './pages/userPages/otpVerification/OTPpage';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -41,7 +42,13 @@ function App() {
               path="/editProfile"
               element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />}
             />
-            <Route path="/admin" element={isAdminAuth ? <AdminHome /> : <AdminLogin />} />
+            <Route
+              path="/admin"
+              element={isAdminAuth ? <AdminHome /> : <AdminLogin />}
+            />
+
+            <Route path="/verifyEmail" element={<OTPpage />} />
+
             {/* <Route path="/adminLogin" element={<AdminLogin />} /> */}
           </Routes>
         </ThemeProvider>

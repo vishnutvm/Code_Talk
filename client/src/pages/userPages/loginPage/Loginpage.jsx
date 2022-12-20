@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import loginPageImage from './img/log.svg';
 import registerPageImage from './img/register.svg';
-import { setLogin } from '../../../redux/userState/index';
+import { setLogin, addVerifyUser } from '../../../redux/userState/index';
 import { registerSchema, loginSchema } from '../../../formSchemas';
 
 const initialValuesRegister = {
@@ -22,7 +22,7 @@ const initialValuesLogin = {
 function Loginpage() {
   const container = useRef(null);
   const [pageType, setPageType] = useState('login');
-  const [userexist, setUserexist] = useState(false);
+  const [registerErr, setRegisterErr] = useState('');
   const [useLoginErr, setUserLoginErr] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,89 +43,108 @@ function Loginpage() {
     console.log(pageType);
   });
 
-  const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
-    initialValues:
+  const { values, errors, handleBlur, handleChange, handleSubmit, touched } =
+    useFormik({
+      initialValues:
         pageType === 'register' ? initialValuesRegister : initialValuesLogin,
-    validationSchema: pageType === 'register' ? registerSchema : loginSchema,
+      validationSchema: pageType === 'register' ? registerSchema : loginSchema,
 
-    // eslint-disable-next-line no-shadow
-    onSubmit: async (values) => {
-      if (pageType === 'register') {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const savedUserResponse = await fetch(
-          'http://localhost:3001/user/register',
-          {
-            method: 'POST',
-            // eslint-disable-next-line max-len
-            // Set the headers that specify you're sending a JSON body request and accepting JSON response
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: formDataJson,
-          },
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (!data.error) {
-              signin();
-            } else {
-              setUserexist(true);
+      // eslint-disable-next-line no-shadow
+      onSubmit: async (values) => {
+        if (pageType === 'register') {
+          const formDataJson = JSON.stringify(values);
+          console.log(formDataJson);
+          const savedUserResponse = await fetch(
+            'http://localhost:3001/user/register',
+            {
+              method: 'POST',
+              // eslint-disable-next-line max-len
+              // Set the headers that specify you're sending a JSON body request and accepting JSON response
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: formDataJson,
             }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              if (!data.msg) {
+                // signin();
+                console.log(data);
+                console.log(data.data.email);
+                // redirecting to otp page rather than login page
+                dispatch(
+                  addVerifyUser({
+                    email: data.data.email,
+                    userId: data.data.userId,
+                  })
+                );
 
-            console.log('success', data);
-          })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+                navigate('/verifyEmail');
 
-        console.log(savedUserResponse.error);
-      } else {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const loginUserResponse = await fetch(
-          'http://localhost:3001/user/login',
-          {
-            method: 'POST',
-            // eslint-disable-next-line max-len
-            // Set the headers that specify you're sending a JSON body request and accepting JSON response
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: formDataJson,
-          },
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('success', data);
-            console.log(data.user);
-            console.log(data.token);
-            // setting token and naviate to home page
+                // navigate('/verifyEmail', {
+                //   email: data.data.email,
+                //   id: data.data.userId,
+                // });
+              } else {
+                console.log('success');
+                setRegisterErr(data.msg);
+                // setUserexist(true);
+              }
 
-            if (!data.msg) {
-              dispatch(
-                setLogin({
-                  user: data.user,
-                  token: data.token,
-                }),
-              );
-              navigate('/home');
-            } else {
-              setUserLoginErr(data.msg);
+              console.log('success', data);
+            })
+            .catch((error) => {
+              console.log('Err', error);
+            });
+
+          console.log(savedUserResponse.error);
+        } else {
+          const formDataJson = JSON.stringify(values);
+          console.log(formDataJson);
+          const loginUserResponse = await fetch(
+            'http://localhost:3001/user/login',
+            {
+              method: 'POST',
+              // eslint-disable-next-line max-len
+              // Set the headers that specify you're sending a JSON body request and accepting JSON response
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: formDataJson,
             }
-          })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('success', data);
+              console.log(data.user);
+              console.log(data.token);
+              // setting token and naviate to home page
 
-        console.log(loginUserResponse.error);
-      }
+              if (!data.msg) {
+                dispatch(
+                  setLogin({
+                    user: data.user,
+                    token: data.token,
+                  })
+                );
+                navigate('/home');
+              } else {
+                setUserLoginErr(data.msg);
+              }
+            })
+            .catch((error) => {
+              console.log('Err', error);
+            });
 
-      console.log(values);
-    },
-  });
+          console.log(loginUserResponse.error);
+        }
+
+        console.log(values);
+      },
+    });
 
   return (
     <>
@@ -138,7 +157,7 @@ function Loginpage() {
               onSubmit={handleSubmit}
               action="#"
               method="post"
-              className="sign-in-form"
+              className="sign-in-form form"
             >
               <h2 className="title">Sign in</h2>
               <div className="input-field">
@@ -179,9 +198,7 @@ function Loginpage() {
 
               {useLoginErr && (
                 <p style={{ color: 'red' }} className="form-error">
-                  {useLoginErr}
-                  {' '}
-                  !
+                  {useLoginErr} !
                 </p>
               )}
 
@@ -205,7 +222,11 @@ function Loginpage() {
             </form>
 
             {/* register form */}
-            <form onSubmit={handleSubmit} action="#" className="sign-up-form">
+            <form
+              onSubmit={handleSubmit}
+              action="#"
+              className="sign-up-form form"
+            >
               <h2 className="title">Sign up</h2>
               <div className="input-field">
                 <i className="fas fa-user" />
@@ -278,9 +299,9 @@ function Loginpage() {
 
               {/* conform pass */}
 
-              {userexist && (
+              {registerErr && (
                 <p style={{ color: 'red' }} className="register-error">
-                  User alredy exists !
+                  {registerErr}
                 </p>
               )}
 

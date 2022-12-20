@@ -40,3 +40,4 @@ export const loginSchema = yup.object().shape({
   username: yup.string().min(3).max(25).required('Please enter your name'),
   password: yup.string().required('Please enter your password'),
 });
+

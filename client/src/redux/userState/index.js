@@ -8,6 +8,7 @@ const initialState = {
   token: null,
   posts: [],
   edit: false,
+  verifyUser: null,
 };
 
 export const userSlice = createSlice({
@@ -74,6 +75,13 @@ export const userSlice = createSlice({
       console.log(action.payload);
       state.user = action.payload;
     },
+    addVerifyUser: (state, action) => {
+      console.log(action.payload);
+      state.verifyUser = action.payload;
+    },
+    removeVerifyUser: (state) => {
+      state.verifyUser = null;
+    },
   },
 });
 
@@ -87,5 +95,7 @@ export const {
   deletePost,
   editPost,
   updateUser,
+  addVerifyUser,
+  removeVerifyUser
 } = userSlice.actions;
 export default userSlice.reducer;

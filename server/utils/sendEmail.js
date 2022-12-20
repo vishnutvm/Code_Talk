@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable import/prefer-default-export */
 // /* eslint-disable import/no-import-module-exports */
 
@@ -8,7 +9,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // // eslint-disable-next-line consistent-return, import/prefer-default-export
-export const sendEmail = async (email, subject, text) => {
+export const sendEmail = async (email, subject, html) => {
   console.log('trigger');
   try {
     const transporter = nodemailer.createTransport({
@@ -23,9 +24,9 @@ export const sendEmail = async (email, subject, text) => {
 
     const details = {
       from: process.env.USER,
-      to: 'vishnu1212a@gmail.com',
-      subject: 'new message',
-      text: 'working',
+      to: email,
+      subject,
+      html
     };
 
     transporter.sendMail(details, (err) => {
