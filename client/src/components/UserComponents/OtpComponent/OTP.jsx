@@ -32,6 +32,21 @@ function OTP() {
         console.log(err);
       });
   };
+
+  const resentOTP = async () => {
+    await axios({
+      method: 'POST',
+      url: '/user/resentOTP',
+      data: { userId },
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        setotpErr(err.response.data.message);
+        console.log(err);
+      });
+  };
   return (
     <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-12">
       <div className="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
@@ -43,6 +58,7 @@ function OTP() {
             <div className="flex flex-row text-sm font-medium text-gray-400">
               <p>
                 We have sent a code to your email
+                <br />
                 {email && email}
               </p>
             </div>
@@ -90,7 +106,10 @@ function OTP() {
                 </div>
                 <div className="flex flex-col space-y-5">
                   {otpErr && (
-                    <p style={{ color: 'red', textAlign: 'center' }} className="form-error">
+                    <p
+                      style={{ color: 'red', textAlign: 'center' }}
+                      className="form-error"
+                    >
                       {otpErr}
                       {' '}
                       !
@@ -109,7 +128,7 @@ function OTP() {
                     <a
                       href="#"
                       className="flex flex-row items-center text-blue-600"
-                      onClick={() => navigate('/')}
+                      onClick={() => resentOTP()}
                     >
                       Resend
                     </a>

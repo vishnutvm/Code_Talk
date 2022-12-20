@@ -60,6 +60,7 @@ app.put('/editPost', verifyToken, upload.single('picture'), editPost);
 app.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
 // http://localhost:3001/edituser/${user._id}
 
+
 // RoutssignUpRouts
 app.use('/user', signUpRouts);
 app.use('/user', loginRouts);

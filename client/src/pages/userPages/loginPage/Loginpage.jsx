@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useRef, useState } from 'react';
 import './loginPage.css';
 import { useNavigate } from 'react-router';
@@ -24,6 +25,7 @@ function Loginpage() {
   const [pageType, setPageType] = useState('login');
   const [registerErr, setRegisterErr] = useState('');
   const [useLoginErr, setUserLoginErr] = useState('');
+  const [reVerifyUser, setreVerifyUser] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // style
@@ -39,112 +41,124 @@ function Loginpage() {
     container.current.classList.add('sign-up-mode');
   };
 
+  const reVerify = () => {
+    dispatch(
+      addVerifyUser({
+        email: reVerifyUser.email,
+        userId: reVerifyUser.userId,
+      }),
+    );
+    navigate('/verifyEmail');
+  };
+
   useEffect(() => {
     console.log(pageType);
   });
 
-  const { values, errors, handleBlur, handleChange, handleSubmit, touched } =
-    useFormik({
-      initialValues:
+  const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
+    initialValues:
         pageType === 'register' ? initialValuesRegister : initialValuesLogin,
-      validationSchema: pageType === 'register' ? registerSchema : loginSchema,
+    validationSchema: pageType === 'register' ? registerSchema : loginSchema,
 
-      // eslint-disable-next-line no-shadow
-      onSubmit: async (values) => {
-        if (pageType === 'register') {
-          const formDataJson = JSON.stringify(values);
-          console.log(formDataJson);
-          const savedUserResponse = await fetch(
-            'http://localhost:3001/user/register',
-            {
-              method: 'POST',
-              // eslint-disable-next-line max-len
-              // Set the headers that specify you're sending a JSON body request and accepting JSON response
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: formDataJson,
+    // eslint-disable-next-line no-shadow
+    onSubmit: async (values) => {
+      if (pageType === 'register') {
+        const formDataJson = JSON.stringify(values);
+        console.log(formDataJson);
+        const savedUserResponse = await fetch(
+          'http://localhost:3001/user/register',
+          {
+            method: 'POST',
+            // eslint-disable-next-line max-len
+            // Set the headers that specify you're sending a JSON body request and accepting JSON response
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: formDataJson,
+          },
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.msg) {
+              // signin();
+              console.log(data);
+              console.log(data.data.email);
+              // redirecting to otp page rather than login page
+              dispatch(
+                addVerifyUser({
+                  email: data.data.email,
+                  userId: data.data.userId,
+                }),
+              );
+
+              navigate('/verifyEmail');
+
+              // navigate('/verifyEmail', {
+              //   email: data.data.email,
+              //   id: data.data.userId,
+              // });
+            } else {
+              console.log('success');
+              setRegisterErr(data.msg);
+              // setUserexist(true);
             }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              if (!data.msg) {
-                // signin();
-                console.log(data);
-                console.log(data.data.email);
-                // redirecting to otp page rather than login page
-                dispatch(
-                  addVerifyUser({
-                    email: data.data.email,
-                    userId: data.data.userId,
-                  })
-                );
 
-                navigate('/verifyEmail');
+            console.log('success', data);
+          })
+          .catch((error) => {
+            console.log('Err', error);
+          });
 
-                // navigate('/verifyEmail', {
-                //   email: data.data.email,
-                //   id: data.data.userId,
-                // });
-              } else {
-                console.log('success');
-                setRegisterErr(data.msg);
-                // setUserexist(true);
+        console.log(savedUserResponse.error);
+      } else {
+        const formDataJson = JSON.stringify(values);
+        console.log(formDataJson);
+        const loginUserResponse = await fetch(
+          'http://localhost:3001/user/login',
+          {
+            method: 'POST',
+            // eslint-disable-next-line max-len
+            // Set the headers that specify you're sending a JSON body request and accepting JSON response
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: formDataJson,
+          },
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('success', data);
+            console.log(data.user);
+            console.log(data.token);
+            // setting token and naviate to home page
+
+            if (!data.msg) {
+              dispatch(
+                setLogin({
+                  user: data.user,
+                  token: data.token,
+                }),
+              );
+              navigate('/home');
+            } else {
+              if (data.email && data.userId) {
+                setreVerifyUser({ email: data.email, userId: data.userId });
               }
-
-              console.log('success', data);
-            })
-            .catch((error) => {
-              console.log('Err', error);
-            });
-
-          console.log(savedUserResponse.error);
-        } else {
-          const formDataJson = JSON.stringify(values);
-          console.log(formDataJson);
-          const loginUserResponse = await fetch(
-            'http://localhost:3001/user/login',
-            {
-              method: 'POST',
-              // eslint-disable-next-line max-len
-              // Set the headers that specify you're sending a JSON body request and accepting JSON response
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: formDataJson,
+              setUserLoginErr(data.msg);
             }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('success', data);
-              console.log(data.user);
-              console.log(data.token);
-              // setting token and naviate to home page
+          })
+          .catch((error) => {
+            console.log('Err', error);
+          });
 
-              if (!data.msg) {
-                dispatch(
-                  setLogin({
-                    user: data.user,
-                    token: data.token,
-                  })
-                );
-                navigate('/home');
-              } else {
-                setUserLoginErr(data.msg);
-              }
-            })
-            .catch((error) => {
-              console.log('Err', error);
-            });
+        console.log(loginUserResponse.error);
+      }
 
-          console.log(loginUserResponse.error);
-        }
-
-        console.log(values);
-      },
-    });
+      console.log(values);
+    },
+  });
 
   return (
     <>
@@ -198,8 +212,21 @@ function Loginpage() {
 
               {useLoginErr && (
                 <p style={{ color: 'red' }} className="form-error">
-                  {useLoginErr} !
+                  {useLoginErr}
+                  {' '}
+                  !
                 </p>
+              )}
+              {useLoginErr === 'Your account is not verified' ? (
+                <a
+                  href="#"
+                  className="font-semibold flex flex-row items-center text-blue-600"
+                  onClick={() => reVerify()}
+                >
+                  Verify
+                </a>
+              ) : (
+                ''
               )}
 
               <input type="submit" defaultValue="Login" className="btn solid" />

@@ -20,11 +20,14 @@ export const register = async (req, res) => {
     const { username, email, password } = req.body;
     const userExist = await User.findOne({ username });
     const emailExist = await User.findOne({ email });
-    if (userExist) return res.status(500).json({ msg: 'Username alredy taken' });
-    if (emailExist) return res.status(500).json({ msg: 'Email alredy registerd' });
+    if (userExist) {
+      return res.status(500).json({ msg: 'Username alredy taken' });
+    }
+    if (emailExist) {
+      return res.status(500).json({ msg: 'Email alredy registerd' });
+    }
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
-
 
     const user = new User({
       username,
@@ -84,12 +87,16 @@ export const login = async (req, res) => {
     const isAuth = await bcrypt.compare(password, user.password);
     if (!isAuth) return res.status(400).json({ msg: 'Wrong password' });
     // checking is user is blocked or not
-
+    const userId = user._id;
+    const { email } = user;
     const isVerified = await user.verified;
+
+    // hard set accound verified for coding 
     if (!isVerified) {
       return await res
         .status(400)
-        .json({ msg: 'Your account is not verified' });
+        .json({ msg: 'Your account is not verified', userId, email });
+        // .json({ msg: 'Your account is not verified'});
     }
 
     const isBlocked = await user.blocked;
@@ -153,7 +160,7 @@ export const verifyEmail = async (req, res) => {
             const updatedUser = await User.findByIdAndUpdate(
               { _id: userId },
               { verified: true },
-              { new: true },
+              { new: true }
             );
 
             // User.updateOne({ _id: userId }, { verified: true });
@@ -176,6 +183,53 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
+export const resentOTP = async (req, res) => {
+  const { userId } = req.body;
+  const otp = generateOTP();
+  console.log(otp);
+  const html = `<p>Enter <b>${otp}<b> in the CodeTalk website to verify your email address and complete the register process</p> <p>This code will <b>expire in 1 hr</b>  -- <b>CodeTalk</b></p>`;
+  const salt = await bcrypt.genSalt();
+  const OtpHash = await bcrypt.hash(otp, salt);
+
+  const user = await User.findById(userId);
+  // const UserOTPVerificationRecord = await UserOTPVerification.find({
+  //   userId,
+  // });
+  // await UserOTPVerification.deleteMany({ userId });
+  const userOtpRecord = await UserOTPVerification.find({
+    userId,
+  });
+  // removing existing record
+  if (userOtpRecord) {
+    await UserOTPVerification.deleteMany({ userId });
+  }
+  // saving otp hashed in db
+  const NewUserOTPVerification = new UserOTPVerification({
+    userId: user._id,
+    otp: OtpHash,
+    createdAt: Date.now(),
+    expiresAt: Date.now() + 3600000,
+  });
+  await NewUserOTPVerification.save();
+
+  await sendEmail(user.email, 'Verify Email', html);
+
+  // const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
+
+  // await sendEmail(user.email, 'Verify Email', url);
+
+  // sending data to frontend when all ok
+
+  // sending otp verification
+  res.json({
+    message: 'OTP sended to Email',
+    data: {
+      userId: user._id,
+      email: user.email,
+    },
+  });
+};
+
 // get Users friends list
 export const getUserFriends = async (req, res) => {
   console.log('Getuser ');
@@ -185,7 +239,7 @@ export const getUserFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id)),
+      user.friends.map((id) => User.findById(id))
     );
 
     // destructring the results and filtering unwanted data
@@ -230,7 +284,7 @@ export const addRemoveFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id)),
+      user.friends.map((id) => User.findById(id))
     );
 
     // destructring the results and filtering unwanted data
@@ -253,9 +307,8 @@ export const edituser = async (req, res) => {
   console.log('here');
   console.log(req.file);
   try {
-    const {
-      username, phone, email, linkdin, github, location, picture,
-    } = req.body;
+    const { username, phone, email, linkdin, github, location, picture } =
+      req.body;
     const profilePicture = picture.path;
     console.log(req.body);
     const { id } = req.params;
@@ -272,7 +325,7 @@ export const edituser = async (req, res) => {
         location,
         profilePicture,
       },
-      { new: true },
+      { new: true }
     ).then(async (update) => {
       console.log(update);
       const updatedUser = await User.findById(id);
