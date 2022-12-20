@@ -2,10 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 // import ProjectImageone from '../../assets/Images/project1.jpeg';
-import {
-  cardShadow,
-  hoverEffect,
-} from '../../adminTheme';
+import { cardShadow, hoverEffect } from '../../../adminTheme';
 
 const ResentUsersWrap = styled.div`
   width: 30rem;
@@ -52,7 +49,7 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   width: 50%;
-  gap:1rem;
+  gap: 1rem;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     flex-direction: column;
     width: 100%;

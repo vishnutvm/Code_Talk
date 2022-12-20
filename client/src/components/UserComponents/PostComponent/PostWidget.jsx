@@ -14,12 +14,12 @@ import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import FlexBetween from './FlexBetween';
-import Friend from './Friend';
-import WidgetWrapper from './WindgetWrapper';
-import { setPost, deletePost } from '../../redux/userState';
-import CreatePost from './CreatePost';
-import { baseUrl } from '../../constants/constants';
+import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
+import Friend from '../FriendComponent/Friend';
+import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
+import { setPost, deletePost } from '../../../redux/userState';
+import CreatePost from '../CreatePostComponent/CreatePost';
+import { baseUrl } from '../../../constants/constants';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -132,7 +132,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
+                          'block px-4 py-2 text-sm text-gray-700'
                         )}
                         onClick={editThePost}
                       >
@@ -159,7 +159,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
+                          'block px-4 py-2 text-sm text-gray-700'
                         )}
                         onClick={deleteThePost}
                       >

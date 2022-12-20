@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import Friend from './Friend';
-import WidgetWrapper from './WindgetWrapper';
-import { setFriends } from '../../redux/userState';
-import { baseUrl } from '../../constants/constants';
+import Friend from '../FriendComponent/Friend';
+import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
+import { setFriends } from '../../../redux/userState';
+import { baseUrl } from '../../../constants/constants';
 // eslint-disable-next-line react/prop-types
 function FriendsListWidgest({ userId, isProfile = false }) {
   const dispatch = useDispatch();
@@ -13,13 +13,10 @@ function FriendsListWidgest({ userId, isProfile = false }) {
   const friends = useSelector((state) => state.user.user.friends);
   console.log(friends);
   const getFriends = async () => {
-    const response = await fetch(
-      `${baseUrl}/user/${userId}/friends`,
-      {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${baseUrl}/user/${userId}/friends`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     const data = await response.json();
     dispatch(setFriends({ friends: data }));

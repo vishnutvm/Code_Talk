@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPosts } from '../../redux/userState';
-import { baseUrl } from '../../constants/constants';
-import PostWidget from './PostWidget';
+import { setPosts } from '../../../redux/userState';
+import { baseUrl } from '../../../constants/constants';
+import PostWidget from '../PostComponent/PostWidget';
 
 function PostsWidget({ userId, isProfile = false }) {
   console.log(isProfile);
@@ -26,13 +26,10 @@ function PostsWidget({ userId, isProfile = false }) {
   // get user post
 
   const getUserPost = async () => {
-    const response = await fetch(
-      `${baseUrl}/posts/${userId}/posts`,
-      {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${baseUrl}/posts/${userId}/posts`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     const data = await response.json();
     dispatch(setPosts({ posts: data }));

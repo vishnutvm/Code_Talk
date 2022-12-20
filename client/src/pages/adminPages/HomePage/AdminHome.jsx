@@ -3,8 +3,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import MainContent from '../../../components/adminComponents/MainContent';
-import Sidebar from '../../../components/adminComponents/Sidebar';
+import MainContent from '../../../components/adminComponents/MainContentComponent/MainContent';
+import Sidebar from '../../../components/adminComponents/AdmnSideBarComponent/Sidebar';
 import UserManagement from '../UserManagement/UserManagement';
 
 const Container = styled.div`

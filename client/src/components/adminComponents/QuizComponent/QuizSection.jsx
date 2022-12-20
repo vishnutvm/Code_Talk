@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProjectImageone from '../../assets/Images/project1.jpeg';
+import ProjectImageone from '../../../assets/Images/project1.jpeg';
 import {
   cardShadow,
   hoverEffect,
   darkThemeColor,
   themeColor,
-} from '../../adminTheme';
+} from '../../../adminTheme';
 
 const QuesList = styled.div`
 width:80%;

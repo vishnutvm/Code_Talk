@@ -20,7 +20,7 @@ import postRouts from './routes/post/postRouts.js';
 import adminRouts from './routes/admin/adminRouts.js';
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
-import { edituser } from './controllers/userControllers.js';
+import { edituser, sendtestmail } from './controllers/userControllers.js';
 // express.json  url encoder
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -66,7 +66,7 @@ app.use('/user', homeRouts);
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 
-
+app.post('/sendemail', sendtestmail);
 // Mongoos and port
 const PORT = process.env.PORT || 4001;
 try {

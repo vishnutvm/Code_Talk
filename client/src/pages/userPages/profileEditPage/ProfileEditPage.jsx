@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 
 import { useSelector } from 'react-redux';
-import EditFrom from '../../../components/UserComponents/EditFrom';
+import EditFrom from '../../../components/UserComponents/EditPostComponent/EditFrom';
 import Navbar from '../navbar';
 
 function ProfileEditPage() {

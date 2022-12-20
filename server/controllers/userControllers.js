@@ -6,8 +6,8 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import User from '../models/User.js';
 // import { sendEmail } from '../utils/sendEmail.js';
+import { sendEmail } from '../utils/sendEmail.js';
 import Token from '../models/Token.js';
-
 // Register user
 export const register = async (req, res) => {
   // appendin form data to database
@@ -24,8 +24,6 @@ export const register = async (req, res) => {
       password: passwordHash,
     });
     const insertedUser = await user.save();
-
- 
 
     // const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
 
@@ -84,6 +82,16 @@ export const getUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const sendtestmail = async (req, res) => {
+  console.log('here');
+  try {
+    await sendEmail();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 // get Users friends list
 export const getUserFriends = async (req, res) => {
@@ -94,7 +102,7 @@ export const getUserFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id)),
+      user.friends.map((id) => User.findById(id))
     );
 
     // destructring the results and filtering unwanted data
@@ -139,7 +147,7 @@ export const addRemoveFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id)),
+      user.friends.map((id) => User.findById(id))
     );
 
     // destructring the results and filtering unwanted data
@@ -162,9 +170,8 @@ export const edituser = async (req, res) => {
   console.log('here');
   console.log(req.file);
   try {
-    const {
-      username, phone, email, linkdin, github, location, picture,
-    } = req.body;
+    const { username, phone, email, linkdin, github, location, picture } =
+      req.body;
     const profilePicture = picture.path;
     console.log(req.body);
     const { id } = req.params;
@@ -181,7 +188,7 @@ export const edituser = async (req, res) => {
         location,
         profilePicture,
       },
-      { new: true },
+      { new: true }
     ).then(async (update) => {
       console.log(update);
       const updatedUser = await User.findById(id);

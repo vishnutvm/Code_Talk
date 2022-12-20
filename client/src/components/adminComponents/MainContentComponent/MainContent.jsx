@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import WishHeader from './wishHeader';
+import WishHeader from '../WelcomeComponent/wishHeader';
 // Groth section mayuse in future
 // import Groth from './Groth';
-import Info from './Info';
-import QuizSection from './QuizSection';
-import ResentUsers from './ResentUsers';
-import Groth from './Groth';
+// import Info from '../InfoComponent/Info';
+import QuizSection from '../QuizComponent/QuizSection';
+import ResentUsers from '../ResentUsersComponent/ResentUsers';
+import Groth from '../GrothComponent/Groth';
 // styles
 const Container = styled.div`
   width: 75%;
@@ -14,7 +14,7 @@ const Container = styled.div`
   border-radius: 2rem;
   margin: 1rem 1rem 1rem 2rem;
   padding: 1rem;
-  
+
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     display: flex;
     flex-direction: column;

@@ -3,10 +3,10 @@ import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setFriends } from '../../redux/userState';
-import FlexBetween from './FlexBetween';
-import UserImage from './UserProfilePicture';
-import { baseUrl } from '../../constants/constants';
+import { setFriends } from '../../../redux/userState';
+import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
+import UserImage from '../UserProfileComponent/UserProfilePicture';
+import { baseUrl } from '../../../constants/constants';
 // eslint-disable-next-line react/prop-types
 function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const dispatch = useDispatch();
@@ -22,7 +22,6 @@ function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const isFriend = friends.find((friend) => friend._id === friendId);
   const { main } = palette.neutral;
 
-
   const patchFriend = async () => {
     const response = await fetch(`${baseUrl}/user/${_id}/${friendId}`, {
       method: 'PATCH',
@@ -35,8 +34,6 @@ function Friend({ userPicturePath, friendId, username, isProfile = false }) {
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
   };
-
-  
 
   return (
     <FlexBetween>

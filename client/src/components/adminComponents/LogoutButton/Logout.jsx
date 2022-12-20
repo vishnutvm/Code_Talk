@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { themeColor } from '../../adminTheme';
-import { setLogout } from '../../redux/adminState';
+import { themeColor } from '../../../adminTheme';
+import { setLogout } from '../../../redux/adminState';
 
 const Div = styled.span`
   padding: 0.5rem 2rem;

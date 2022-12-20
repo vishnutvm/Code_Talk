@@ -25,12 +25,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../../constants/constants';
-import UserImage from './UserProfilePicture';
-import FlexBetween from './FlexBetween';
-import WidgetWrapper from './WindgetWrapper';
-import { editPost, setPosts } from '../../redux/userState';
-import axios from '../../utils/axios';
+import { baseUrl } from '../../../constants/constants';
+import UserImage from '../UserProfileComponent/UserProfilePicture';
+import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
+import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
+import { editPost, setPosts } from '../../../redux/userState';
+import axios from '../../../utils/axios';
 // eslint-disable-next-line react/prop-types
 function CreatePost({ profilePicture, postId = null }) {
   console.log('working', profilePicture);
@@ -158,8 +158,6 @@ function CreatePost({ profilePicture, postId = null }) {
           >
             <CloseOutlined />
           </IconButton>
-
-          
         </Tooltip>
 
         <FlexBetween gap="1.5rem">

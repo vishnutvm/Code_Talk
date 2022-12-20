@@ -6,10 +6,10 @@ import { HiOutlineUsers } from 'react-icons/hi';
 import { BiTask } from 'react-icons/bi';
 import { AiOutlinePieChart } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
-import Logout from './Logout';
-import AdminProfilePhoto from '../../assets/adminIcon.jpg';
-import { darkThemeColor } from '../../adminTheme';
-import { changePage } from '../../redux/adminState';
+import Logout from '../LogoutButton/Logout';
+import AdminProfilePhoto from '../../../assets/adminIcon.jpg';
+import { darkThemeColor } from '../../../adminTheme';
+import { changePage } from '../../../redux/adminState';
 // import { Link } from 'react-router-dom';
 // styles
 const Container = styled.div`

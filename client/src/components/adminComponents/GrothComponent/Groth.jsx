@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoStatsChart } from 'react-icons/io5';
 import { Box } from '@mui/system';
-import { hoverEffect, themeColor } from '../../adminTheme';
+import { hoverEffect, themeColor } from '../../../adminTheme';
 
 const GrothCard = styled.div`
   height: 100%;

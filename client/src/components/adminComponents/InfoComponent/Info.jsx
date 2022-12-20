@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { cardShadow, hoverEffect, themeColor } from '../../adminTheme';
+import { cardShadow, hoverEffect, themeColor } from '../../../adminTheme';
 
 const InfoCard = styled.div`
   height: 100%;
@@ -33,8 +33,9 @@ const Row = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.4rem;
-  ${({ justify }) => justify
-    && `
+  ${({ justify }) =>
+    justify &&
+    `
       justify-content:space-around;
       width:90%
   `}

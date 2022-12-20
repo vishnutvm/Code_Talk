@@ -17,12 +17,12 @@ import { Formik } from 'formik';
 import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { editUserSchema } from '../../formSchemas/index';
-import FlexBetween from './FlexBetween';
-import axios from '../../utils/axios';
-import { updateUser } from '../../redux/userState/index';
+import { editUserSchema } from '../../../formSchemas/index';
+import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
+import axios from '../../../utils/axios';
+import { updateUser } from '../../../redux/userState/index';
 // import UserImage from '../UserProfilePicture';
-import { baseUrl } from '../../constants/constants';
+import { baseUrl } from '../../../constants/constants';
 
 function EditFrom() {
   const user = useSelector((state) => state.user.user);
@@ -119,7 +119,9 @@ function EditFrom() {
               <Dropzone
                 acceptedFiles=".jpg,.jpeg,.png"
                 multiple={false}
-                onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}
+                onDrop={(acceptedFiles) =>
+                  setFieldValue('picture', acceptedFiles[0])
+                }
               >
                 {({ getRootProps, getInputProps }) => (
                   <Box
