@@ -1,8 +1,9 @@
-public
 # dependencies
-node_modules
+/public
+/node_modules
 /.pnp
 .pnp.js
+/.env
 
 # testing
 /coverage
