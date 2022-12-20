@@ -5,6 +5,11 @@ node_modules
 .pnp.js
 /.env
 
+
+.env/
+.vscode
+node_modules/
+
 # testing
 /coverage
 
