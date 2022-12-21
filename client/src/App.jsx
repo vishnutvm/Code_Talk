@@ -11,6 +11,7 @@ import { themeSettings } from './theme';
 import AdminHome from './pages/adminPages/HomePage/AdminHome';
 import AdminLogin from './pages/adminPages/loginPage/AdminLogin';
 import OTPpage from './pages/userPages/otpVerification/OTPpage';
+import ChatPage from './pages/userPages/chatPage/ChatPage';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -48,6 +49,7 @@ function App() {
             />
 
             <Route path="/verifyEmail" element={<OTPpage />} />
+            <Route path="/chat" element={<ChatPage />} />
 
             {/* <Route path="/adminLogin" element={<AdminLogin />} /> */}
           </Routes>

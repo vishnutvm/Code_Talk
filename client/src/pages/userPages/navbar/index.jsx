@@ -87,9 +87,13 @@ function Navbar() {
       {isNotMobileScreen ? (
         <FlexBetween gap="2rem">
           <VideocamRounded sx={{ fontSize: '25px' }} />
-          <Badge badgeContent={4} color="warning">
-            <TextsmsRounded sx={{ fontsize: '25px' }} />
-          </Badge>
+          <IconButton onClick={() => navigate('/chat')}>
+            <Badge badgeContent={4} color="warning">
+              {theme.palette.mode === 'dark' ? <TextsmsRounded sx={{ fontsize: '25px', color: 'primary' }} /> : <TextsmsRounded sx={{ fontsize: '25px', color: 'black' }} /> }
+
+            </Badge>
+          </IconButton>
+
           {/* <Message sx={{ fontSize: '25px' }} /> */}
           {/* <Notifications sx={{ fontSize: '25px' }} /> */}
 
