@@ -23,6 +23,8 @@ import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
 // express.json  url encoder
+
+
 // Config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
