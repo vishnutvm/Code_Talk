@@ -51,18 +51,16 @@ function CreatePost({ profilePicture, postId = null }) {
   const navigate = useNavigate();
 
   // getting the post for edit
-  const editingPost = useSelector((state) =>
-    state.user.posts.find((pos) => pos._id === postId)
-  );
+  const editingPost = useSelector((state) => state.user.posts.find((pos) => pos._id === postId));
   console.log(editingPost);
   const [post, setPost] = useState(editingPost ? editingPost.discription : '');
   const [isImage, setIsImage] = useState(
-    !!(editingPost && editingPost.picturePath)
+    !!(editingPost && editingPost.picturePath),
   );
   const [editPrev, setEditprev] = useState(
     editingPost && editingPost.picturePath
       ? `${baseUrl}/assets/${editingPost.picturePath}`
-      : ''
+      : '',
   );
   const headers = {
     'Content-Type': 'application/json',

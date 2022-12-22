@@ -91,12 +91,12 @@ export const login = async (req, res) => {
     const { email } = user;
     const isVerified = await user.verified;
 
-    // hard set accound verified for coding 
+    // hard set accound verified for coding
     if (!isVerified) {
       return await res
         .status(400)
         .json({ msg: 'Your account is not verified', userId, email });
-        // .json({ msg: 'Your account is not verified'});
+      // .json({ msg: 'Your account is not verified'});
     }
 
     const isBlocked = await user.blocked;

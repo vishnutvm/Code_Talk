@@ -19,11 +19,12 @@ import homeRouts from './routes/user/homeRout.js';
 import postRouts from './routes/post/postRouts.js';
 import adminRouts from './routes/admin/adminRouts.js';
 import verifyEmailRouts from './routes/user/verifyEmailRout.js';
+import messsageRouts from './routes/chat/messageRouts.js';
+
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
 // express.json  url encoder
-
 
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -62,7 +63,6 @@ app.put('/editPost', verifyToken, upload.single('picture'), editPost);
 app.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
 // http://localhost:3001/edituser/${user._id}
 
-
 // RoutssignUpRouts
 app.use('/user', signUpRouts);
 app.use('/user', loginRouts);
@@ -70,6 +70,7 @@ app.use('/user', homeRouts);
 app.use('/user', verifyEmailRouts);
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
+app.use('/chat', messsageRouts);
 
 // app.post('/sendemail', sendtestmail);
 
@@ -82,9 +83,7 @@ try {
       useUnifiedTopology: true,
     })
     .then(() => {
-      app.listen(PORT, () =>
-        console.log(`Server successfully connected to ${PORT}`)
-      );
+      app.listen(PORT, () => console.log(`Server successfully connected to ${PORT}`));
     })
     .catch((error) => console.log(`${error} did not connect`));
 } catch (err) {

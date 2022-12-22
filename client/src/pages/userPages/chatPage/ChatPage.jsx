@@ -6,6 +6,7 @@ import MainChatComponent from '../../../components/UserComponents/MainChatCompon
 import EmptyChatComponent from '../../../components/UserComponents/EmptyChatComponent/EmptyChatComponent';
 import { setCurrentChat } from '../../../redux/chatState';
 
+
 function ChatPage() {
   const dispatch = useDispatch();
   useEffect(() => {
