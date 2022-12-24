@@ -8,10 +8,10 @@
 import Chat from '../models/Chat.js';
 
 export const addMessage = async (req, res) => {
-  console.log('getting chats');
+  // console.log('getting chats');
   try {
     const { from, to, message } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const newChat = new Chat({
       message: { text: message },
       users: [from, to],
@@ -25,7 +25,7 @@ export const addMessage = async (req, res) => {
 };
 
 export const getAllMessage = async (req, res) => {
-  console.log('Gettingg all the chat');
+  // console.log('Gettingg all the chat');
   try {
     const { from, to } = req.body;
     const messages = await Chat.find({
@@ -33,7 +33,7 @@ export const getAllMessage = async (req, res) => {
         $all: [from, to],
       },
     }).sort({ updatedAt: 1 });
-    console.log(messages);
+    // console.log(messages);
     const processedMessage = messages.map((msg) => ({
       // if the sender and from message is true it will place the formself as true else fasle
       //  for identify in front end

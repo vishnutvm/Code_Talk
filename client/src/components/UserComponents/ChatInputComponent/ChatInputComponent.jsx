@@ -6,20 +6,20 @@ import { BsEmojiSmile } from 'react-icons/bs';
 import { AiOutlineSend } from 'react-icons/ai';
 
 function ChatInputComponent({ handleSendMsg }) {
-  const [showEmojiList, setshowEmojiList] = useState(false);
+  // const [showEmojiList, setshowEmojiList] = useState(false);
   const [msg, setmsg] = useState('');
   
-  const handleImogy = () => {
-    setshowEmojiList(!showEmojiList);
-  };
+  // const handleImogy = () => {
+  //   setshowEmojiList(!showEmojiList);
+  // };
 
   //   if emoji selected set that as the message
-  const handleEmogyClick = (event, emoji) => {
-    let message = msg;
-    message += emoji.emoji;
-    setmsg(message);
-    console.log(message);
-  };
+  // const handleEmogyClick = (event, emoji) => {
+  //   let message = msg;
+  //   message += emoji.emoji;
+  //   setmsg(message);
+  //   console.log(message);
+  // };
 
   const sendChat = (event) => {
     event.preventDefault();

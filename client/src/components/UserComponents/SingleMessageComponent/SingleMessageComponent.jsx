@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 function SingleMessageComponent({ message }) {
   return (
     <div
+      key={uuidv4()}
       className={
         message.fromSelf
           ? 'col-start-6 col-end-13 p-3 rounded-lg'

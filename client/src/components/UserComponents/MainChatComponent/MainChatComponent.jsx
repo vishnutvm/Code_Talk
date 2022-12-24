@@ -1,19 +1,25 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+// import { io } from 'socket.io-client';
+
 import ChatInputComponent from '../ChatInputComponent/ChatInputComponent';
 import axios from '../../../utils/axios';
 import SingleMessageComponent from '../SingleMessageComponent/SingleMessageComponent';
+import { baseUrl } from '../../../constants/constants';
 
-function MainChatComponent() {
+function MainChatComponent({ socket }) {
+  const [message, setMessages] = useState([]);
   const token = useSelector((state) => state.user.token);
-  const dispatch = useDispatch();
+
+  // const dispatch = useDispatch();
   //   const token = useSelector((state) => state.user.token);
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
-  const [messsage, setMessage] = useState([]);
-
+  const [arrivalMessage, setarrivalMessage] = useState(null);
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
@@ -22,18 +28,20 @@ function MainChatComponent() {
   // handleing the currnet chat messate
 
   useEffect(() => {
-    axios({
-      method: 'POST',
-      url: '/chat/getallmessage',
-      headers,
-      data: {
-        from: currentUserId,
-        to: currentChatUserId,
-      },
-    }).then((response) => {
-      console.log(response);
-      setMessage(response.data);
-    });
+    if (currentChatUserId) {
+      axios({
+        method: 'POST',
+        url: '/chat/getallmessage',
+        headers,
+        data: {
+          from: currentUserId,
+          to: currentChatUserId,
+        },
+      }).then((response) => {
+        console.log(response);
+        setMessages(response.data);
+      });
+    }
   }, [currentChatUserId]);
 
   // handle messagesending
@@ -49,7 +57,31 @@ function MainChatComponent() {
         message: msg,
       },
     });
+    socket.current.emit('send-msg', {
+      to: currentChatUserId,
+      form: currentUserId,
+      message: msg,
+    });
+    const msgs = [...message];
+    console.log(msg);
+    msgs.push({ fromSelf: true, message: msg });
+    setMessages(msgs);
   };
+
+  useEffect(() => {
+    console.log('get arraival message');
+    if (socket.current) {
+      socket.current.on('msg-recieve', (msg) => {
+        console.log(msg);
+        setarrivalMessage({ fromSelf: false, message: msg });
+      });
+    }
+  }, [socket.current]);
+
+  useEffect(() => {
+    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+  }, [setarrivalMessage]);
+
   return (
     <div className="flex flex-col flex-auto h-full p-6">
       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
@@ -59,13 +91,8 @@ function MainChatComponent() {
               {/* chat by sender and resever styled 2 side using col-start= {1/6} */}
               {/* sender chat wrapper */}
 
-              {messsage.map((message) => {
-                return (
-                  <SingleMessageComponent
-                    message={message}
-                 
-                  />
-                );
+              {message.map((msg) => {
+                return <SingleMessageComponent message={msg} />;
               })}
 
               {/* sender chat wrapper ends */}

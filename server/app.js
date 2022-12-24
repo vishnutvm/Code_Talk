@@ -1,17 +1,17 @@
+/* eslint-disable no-undef */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-extraneous-dependencies */
-// the type as changed to modules so use imort rather than require
+
 import express from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import multer from 'multer';
-import helmet from 'helmet';
-import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import { Server } from 'socket.io';
+import http from 'http';
+import color from 'colors';
+import mongoDB from './config/db.js';
 // Routs
 import signUpRouts from './routes/user/signUpRout.js';
 import loginRouts from './routes/user/loginRout.js';
@@ -24,7 +24,6 @@ import messsageRouts from './routes/chat/messageRouts.js';
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
-// express.json  url encoder
 
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -32,13 +31,13 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
-app.use(morgan('common'));
-app.use(bodyParser.json({ limit: '30mb', extended: true }));
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
+
+const server = http.createServer(app);
 
 // s3 bucket
 
@@ -53,15 +52,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// routs with file upload
-// app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.put('/editPost', verifyToken, upload.single('picture'), editPost);
 
-// edit user
-// app.post('user/:id/editPost', verifyToken, upload.single('picture'), edituser);
 app.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
-// http://localhost:3001/edituser/${user._id}
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);
@@ -72,20 +66,50 @@ app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
 
-// app.post('/sendemail', sendtestmail);
-
-// Mongoos and port
 const PORT = process.env.PORT || 4001;
 try {
-  mongoose
-    .connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+  mongoDB()
     .then(() => {
-      app.listen(PORT, () => console.log(`Server successfully connected to ${PORT}`));
+      server.listen(PORT, () => {
+        console.log(`Server successfully connected to ${PORT}`.green.bold);
+      });
+      const io = new Server(server, {
+        cors: {
+          origin: '*',
+          credentials: true,
+          methods: ['GET', 'POST'],
+          // origin: '*',
+        },
+      });
+      // const io = new Server(server, { cors: { origin: '*' } });
+
+      global.onlineUsers = new Map(); // holds all active sockets
+      io.on('connection', (socket) => {
+        console.log(`User Connected: ${socket.id}`);
+        // trying
+
+        global.chatSocket = socket;
+        // global.chatSocket = socket;
+        socket.on('add-user', (userId) => {
+          console.log('add-user-working');
+          onlineUsers.set(userId, socket.id);
+        });
+
+        socket.on('send-msg', (data) => {
+          console.log('send message working');
+          // console.log(global);
+          const sendUserSocket = onlineUsers.get(data.to);
+          console.log('sockettest', sendUserSocket);
+          if (sendUserSocket) {
+            console.log(data.message, 'value'.bgGreen);
+            socket.to(sendUserSocket).emit('msg-recieve', data.message);
+          }
+        });
+      });
     })
-    .catch((error) => console.log(`${error} did not connect`));
+    .catch((error) => console.log(`${error} did not connect`.red.underline));
 } catch (err) {
   console.log(err);
 }
+
+// const io = new Server(server);
