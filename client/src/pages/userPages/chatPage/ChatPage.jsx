@@ -9,7 +9,7 @@ import { setCurrentChat } from '../../../redux/chatState';
 import { baseUrl } from '../../../constants/constants';
 
 function ChatPage() {
-  // const socket = useRef();
+  const socket = useRef();
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   // const socket = useRef();
   const dispatch = useDispatch();
@@ -20,8 +20,7 @@ function ChatPage() {
   useEffect(() => {
     if (currentChatUserId) {
       console.log('use effec run');
-      // socket.current = io(baseUrl);
-      const socket = io.connect(baseUrl);
+      socket.current = io(baseUrl);
 
       // socket.current.emit('add-user', currentChatUserId);
       socket.current.emit('add-user', currentChatUserId);

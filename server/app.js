@@ -68,48 +68,57 @@ app.use('/chat', messsageRouts);
 
 const PORT = process.env.PORT || 4001;
 try {
-  mongoDB()
-    .then(() => {
-      server.listen(PORT, () => {
-        console.log(`Server successfully connected to ${PORT}`.green.bold);
-      });
-      const io = new Server(server, {
-        cors: {
-          origin: '*',
-          credentials: true,
-          methods: ['GET', 'POST'],
-          // origin: '*',
-        },
-      });
-      // const io = new Server(server, { cors: { origin: '*' } });
-
-      global.onlineUsers = new Map(); // holds all active sockets
-      io.on('connection', (socket) => {
-        console.log(`User Connected: ${socket.id}`);
-        // trying
-
-        global.chatSocket = socket;
-        // global.chatSocket = socket;
-        socket.on('add-user', (userId) => {
-          console.log('add-user-working');
-          onlineUsers.set(userId, socket.id);
-        });
-
-        socket.on('send-msg', (data) => {
-          console.log('send message working');
-          // console.log(global);
-          const sendUserSocket = onlineUsers.get(data.to);
-          console.log('sockettest', sendUserSocket);
-          if (sendUserSocket) {
-            console.log(data.message, 'value'.bgGreen);
-            socket.to(sendUserSocket).emit('msg-recieve', data.message);
-          }
-        });
-      });
-    })
-    .catch((error) => console.log(`${error} did not connect`.red.underline));
+  mongoDB().then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server successfully connected to ${PORT}`.green.bold);
+    });
+  });
 } catch (err) {
   console.log(err);
 }
 
 // const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST'],
+    // origin: '*',
+  },
+});
+// const io = new Server(server, { cors: { origin: '*' } });
+
+global.onlineUsers = new Map(); // holds all active sockets
+io.on('connection', (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+  // trying
+
+  global.chatSocket = socket;
+  // global.chatSocket = socket;
+  socket.on('add-user', (userId) => {
+    console.log('add-user-working');
+    onlineUsers.set(userId, socket.id);
+    console.log(global.onlineUsers);
+  });
+
+  socket.on('send-msg', (data) => {
+    console.log('send message working');
+    // console.log(global);
+
+    const sendUserSocket = onlineUsers.get(data.to);
+    console.log(sendUserSocket, 'senduser'.green);
+    console.log('sockettest', sendUserSocket);
+    if (sendUserSocket) {
+      console.log(data.message, 'value'.bgGreen);
+
+      io.to(sendUserSocket).emit('msg-recieve', data.message);
+      // socket.broadcast.emit('msg-recieve', data.message);
+    } else {
+      console.log('user is not live');
+    }
+  });
+});
+
+io.on('disconnect', () => {
+  console.log('A user disconnected', socket.id);
+});

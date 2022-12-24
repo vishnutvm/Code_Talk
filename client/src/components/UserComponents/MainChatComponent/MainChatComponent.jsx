@@ -58,8 +58,8 @@ function MainChatComponent({ socket }) {
       },
     });
     socket.current.emit('send-msg', {
-      to: currentChatUserId,
-      form: currentUserId,
+      from: currentChatUserId,
+      to: currentUserId,
       message: msg,
     });
     const msgs = [...message];
@@ -69,18 +69,25 @@ function MainChatComponent({ socket }) {
   };
 
   useEffect(() => {
-    console.log('get arraival message');
+    console.log('useeffect working');
     if (socket.current) {
+      console.log('get arraival message');
       socket.current.on('msg-recieve', (msg) => {
+        console.log('msg err');
         console.log(msg);
         setarrivalMessage({ fromSelf: false, message: msg });
       });
     }
-  }, [socket.current]);
+  }, []);
 
   useEffect(() => {
+    console.log('arrival message woringh');
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
-  }, [setarrivalMessage]);
+  }, [arrivalMessage]);
+
+  // useEffect(() => {
+  //   console.log('socket working');
+  // }, [socket]);
 
   return (
     <div className="flex flex-col flex-auto h-full p-6">
