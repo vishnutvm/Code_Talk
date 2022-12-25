@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
 import { Avatar } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { baseUrl } from '../../../constants/constants';
 import { setCurrentChat } from '../../../redux/chatState';
 
-function ChatContactComponent() {
+function ChatContactComponent({ socket }) {
   const dispatch = useDispatch();
   const friends = useSelector((state) => state.user.user.friends);
   const currentUser = useSelector((state) => state.user.user);
@@ -16,6 +17,14 @@ function ChatContactComponent() {
   const ClickedForChat = (userId) => {
     dispatch(setCurrentChat(userId));
   };
+
+  // useEffect(() => {
+  //   socket.current.on('msg-recieve', (msg) => {
+  //     console.log('msg err');
+  //     console.log(msg);
+  //   });
+  // }, []);
+
   return (
     <div className="flex flex-col py-8 pl-6 pr-2 w-64  bg-white flex-shrink-0">
       <div className="flex flex-row items-center justify-center h-12 w-full">
@@ -38,7 +47,7 @@ function ChatContactComponent() {
         <div className="ml-2 font-bold text-2xl">CodeTalk</div>
       </div>
       <div className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
-        <div className="h-20 w-20 rounded-full border overflow-hidden">
+        <div className=" h-20 w-20 rounded-full border overflow-hidden">
           <Avatar
             sx={{ width: '100%', height: '100%' }}
             alt=""
@@ -61,7 +70,7 @@ function ChatContactComponent() {
 
         {/* chat users list */}
 
-        <div className="flex flex-col space-y-1 mt-4 -mx-2 max-h-96 overflow-y-auto ">
+        <div className=" flex flex-col space-y-1 mt-4 -mx-2 max-h-96 overflow-y-auto ">
           {friends.map((friend) => (
             <button
               key={friend._id}
@@ -70,9 +79,12 @@ function ChatContactComponent() {
                 ClickedForChat(friend._id);
               }}
               // ref={selectUser}
-              className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              className="  flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
             >
-              <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+              <div
+                // style={{ border: '2px solid red' }}
+                className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
+              >
                 <Avatar
                   sx={{ width: '100%', height: '100%' }}
                   alt=""

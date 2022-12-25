@@ -77,16 +77,13 @@ try {
   console.log(err);
 }
 
-// const io = new Server(server);
 const io = new Server(server, {
   cors: {
     origin: '*',
     credentials: true,
     methods: ['GET', 'POST'],
-    // origin: '*',
   },
 });
-// const io = new Server(server, { cors: { origin: '*' } });
 
 global.onlineUsers = new Map(); // holds all active sockets
 io.on('connection', (socket) => {
@@ -94,16 +91,15 @@ io.on('connection', (socket) => {
   // trying
 
   global.chatSocket = socket;
-  // global.chatSocket = socket;
   socket.on('add-user', (userId) => {
     console.log('add-user-working');
     onlineUsers.set(userId, socket.id);
     console.log(global.onlineUsers);
   });
+  socket.emit('active-users', global.onlineUsers);
 
   socket.on('send-msg', (data) => {
     console.log('send message working');
-    // console.log(global);
 
     const sendUserSocket = onlineUsers.get(data.to);
     console.log(sendUserSocket, 'senduser'.green);
@@ -112,13 +108,8 @@ io.on('connection', (socket) => {
       console.log(data.message, 'value'.bgGreen);
 
       io.to(sendUserSocket).emit('msg-recieve', data.message);
-      // socket.broadcast.emit('msg-recieve', data.message);
     } else {
       console.log('user is not live');
     }
   });
-});
-
-io.on('disconnect', () => {
-  console.log('A user disconnected', socket.id);
 });

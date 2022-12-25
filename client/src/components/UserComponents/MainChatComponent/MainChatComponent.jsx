@@ -1,15 +1,14 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/button-has-type */
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-// import { io } from 'socket.io-client';
+import { useSelector } from 'react-redux';
 
 import ChatInputComponent from '../ChatInputComponent/ChatInputComponent';
 import axios from '../../../utils/axios';
 import SingleMessageComponent from '../SingleMessageComponent/SingleMessageComponent';
-import { baseUrl } from '../../../constants/constants';
 
 function MainChatComponent({ socket }) {
   const [message, setMessages] = useState([]);
@@ -24,6 +23,7 @@ function MainChatComponent({ socket }) {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
+  const scrollRef = useRef();
 
   // handleing the currnet chat messate
 
@@ -58,8 +58,8 @@ function MainChatComponent({ socket }) {
       },
     });
     socket.current.emit('send-msg', {
-      from: currentChatUserId,
-      to: currentUserId,
+      from: currentUserId,
+      to: currentChatUserId,
       message: msg,
     });
     const msgs = [...message];
@@ -85,38 +85,24 @@ function MainChatComponent({ socket }) {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage]);
 
-  // useEffect(() => {
-  //   console.log('socket working');
-  // }, [socket]);
+  // scroll effect apge
+  useEffect(() => {
+    console.log('scroll is workingg');
+
+    scrollRef.current?.scrollIntoView(false);
+  }, [message]);
 
   return (
     <div className="flex flex-col flex-auto h-full p-6">
       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
         <div className="flex flex-col h-full overflow-x-auto mb-4">
           <div className="flex flex-col h-full">
-            <div className="grid grid-cols-12 gap-y-2">
-              {/* chat by sender and resever styled 2 side using col-start= {1/6} */}
+            <div ref={scrollRef} className="grid grid-cols-12 gap-y-2">
               {/* sender chat wrapper */}
 
               {message.map((msg) => {
                 return <SingleMessageComponent message={msg} />;
               })}
-
-              {/* sender chat wrapper ends */}
-
-              {/* resever chat wrap starts */}
-              {/*
-              <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                <div className="flex items-center justify-start flex-row-reverse">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                    <div>I'm ok what about you?</div>
-                  </div>
-                </div>
-              </div> */}
-              {/* resever chat wrap starts ends */}
             </div>
           </div>
         </div>
