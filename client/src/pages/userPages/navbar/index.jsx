@@ -29,7 +29,7 @@ import { setMode } from '../../../redux/modeState';
 import { setLogout } from '../../../redux/userState';
 import FlexBetween from '../../../components/UserComponents/FlexBetweenHelperComponent/FlexBetween';
 
-function Navbar() {
+function Navbar({ turnoffDark }) {
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -89,8 +89,11 @@ function Navbar() {
           <VideocamRounded sx={{ fontSize: '25px' }} />
           <IconButton onClick={() => navigate('/chat')}>
             <Badge badgeContent={4} color="warning">
-              {theme.palette.mode === 'dark' ? <TextsmsRounded sx={{ fontsize: '25px', color: 'primary' }} /> : <TextsmsRounded sx={{ fontsize: '25px', color: 'black' }} /> }
-
+              {theme.palette.mode === 'dark' ? (
+                <TextsmsRounded sx={{ fontsize: '25px', color: 'primary' }} />
+              ) : (
+                <TextsmsRounded sx={{ fontsize: '25px', color: 'black' }} />
+              )}
             </Badge>
           </IconButton>
 
@@ -100,58 +103,15 @@ function Navbar() {
           <Badge badgeContent={1} color="warning">
             <Notifications sx={{ fontSize: '25px' }} />
           </Badge>
-          <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === 'dark' ? (
-              <DarkMode sx={{ fontsize: '25px' }} />
-            ) : (
-              <LightMode sx={{ color: dark, fontsize: '25px' }} />
-            )}
-          </IconButton>
-
-          {/* <FormControl variant="standard" value={username} /> */}
-          {/*
-          <Select
-            value={username}
-            sx={{
-              backgroundColor: neutralLight,
-              width: '150px',
-              borderRadius: '0.25rem',
-              p: '0.25rem 1rem',
-              '& .MuiSvgIcon-root': {
-                pr: '0.25rem',
-                width: '3rem',
-              },
-              '& .MuiSelect-select:focus': {
-                backgroundColor: neutralLight,
-              },
-            }}
-            input={<InputBase />}
-          >
-            <MenuItem value={username}>
-              <Typography>{username}</Typography>
-            </MenuItem>
-            <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
-          </Select> */}
-
-          {/* <Menu
-            id="demo-positioned-menu"
-            aria-labelledby="demo-positioned-button"
-            open={open}
-            onClose={(e) => setopen(false)}
-            // onClose={setopen(false)}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-          >
-            <MenuItem>Profile</MenuItem>
-            <MenuItem>My account</MenuItem>
-            <MenuItem>Logout</MenuItem>
-          </Menu> */}
+          {!turnoffDark && (
+            <IconButton onClick={() => dispatch(setMode())}>
+              {theme.palette.mode === 'dark' ? (
+                <DarkMode sx={{ fontsize: '25px' }} />
+              ) : (
+                <LightMode sx={{ color: dark, fontsize: '25px' }} />
+              )}
+            </IconButton>
+          )}
 
           <Avatar
             sx={{ width: 45, height: 45 }}

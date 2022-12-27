@@ -12,6 +12,9 @@ import AdminHome from './pages/adminPages/HomePage/AdminHome';
 import AdminLogin from './pages/adminPages/loginPage/AdminLogin';
 import OTPpage from './pages/userPages/otpVerification/OTPpage';
 import ChatPage from './pages/userPages/chatPage/ChatPage';
+import QuizMainPage from './pages/userPages/quizPages/quizMainPage/QuizMainPage';
+import QuestionsPage from './pages/userPages/quizPages/questionsPage/QuestionsPage';
+import ResultPage from './pages/userPages/quizPages/resultPage/ResultPage';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -50,8 +53,9 @@ function App() {
 
             <Route path="/verifyEmail" element={<OTPpage />} />
             <Route path="/chat" element={<ChatPage />} />
-
-            {/* <Route path="/adminLogin" element={<AdminLogin />} /> */}
+            <Route path="/quiz" element={<QuizMainPage />} />
+            <Route path="/question" element={<QuestionsPage />} />
+            <Route path="/result" element={<ResultPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
