@@ -39,11 +39,14 @@ function EditFrom() {
   // const navigate = useNavigate();
   const isNonMobile = useMediaQuery('(min-width:600px)');
   const id = user._id;
+
   const handleFormSubmit = (values) => {
+    console.log(values.picture);
     axios({
       method: 'POST',
       url: `/edituser/${id}`,
       headers,
+      'Content-Type': 'multipart/form-data',
       data: values,
     })
       .then((response) => {
@@ -119,9 +122,7 @@ function EditFrom() {
               <Dropzone
                 acceptedFiles=".jpg,.jpeg,.png"
                 multiple={false}
-                onDrop={(acceptedFiles) =>
-                  setFieldValue('picture', acceptedFiles[0])
-                }
+                onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}
               >
                 {({ getRootProps, getInputProps }) => (
                   <Box

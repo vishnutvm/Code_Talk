@@ -55,7 +55,8 @@ const upload = multer({ storage });
 app.post('/createPost', verifyToken, upload.single('picture'), createPost);
 app.put('/editPost', verifyToken, upload.single('picture'), editPost);
 
-app.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
+// app.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
+app.post('/edituser/:id', edituser);
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);

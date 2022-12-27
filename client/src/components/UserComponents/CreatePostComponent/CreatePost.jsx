@@ -20,17 +20,17 @@ import {
 } from '@mui/material';
 
 // drop down
+
 import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../../../constants/constants';
 import UserImage from '../UserProfileComponent/UserProfilePicture';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
 import { editPost, setPosts } from '../../../redux/userState';
-import axios from '../../../utils/axios';
+
 // eslint-disable-next-line react/prop-types
 function CreatePost({ profilePicture, postId = null }) {
   console.log('working', profilePicture);
@@ -49,7 +49,6 @@ function CreatePost({ profilePicture, postId = null }) {
   const { mediumMain } = palette.neutral;
   const { medium } = palette.neutral;
   const navigate = useNavigate();
-
   // getting the post for edit
   const editingPost = useSelector((state) => state.user.posts.find((pos) => pos._id === postId));
   console.log(editingPost);
@@ -59,13 +58,9 @@ function CreatePost({ profilePicture, postId = null }) {
   );
   const [editPrev, setEditprev] = useState(
     editingPost && editingPost.picturePath
-      ? `${baseUrl}/assets/${editingPost.picturePath}`
+      ? `http://localhost:3001/assets/${editingPost.picturePath}`
       : '',
   );
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  };
   // handle post edit
   const handleEditPost = () => {
     // need to clearn the edit componenet
@@ -87,17 +82,17 @@ function CreatePost({ profilePicture, postId = null }) {
     }
 
     // found bug need to remove
-    axios({
+
+    const res = fetch('http://localhost:3001/editPost', {
       method: 'PUT',
-      url: '/editPost',
-      headers,
-      data: formData,
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
     })
-      .then((response) => {
-        const posts = response.data;
-        console.log(posts);
+      .then((response) => response.json())
+      .then((data) => {
+        const posts = data;
         dispatch(editPost({ posts }));
-        //     // reset the state
+        // reset the state
         setImage(null);
         setPost('');
         setEditing(null);
@@ -105,7 +100,7 @@ function CreatePost({ profilePicture, postId = null }) {
         navigate(0);
       })
       .catch((err) => {
-        console.log(err);
+        console.log('err', err);
       });
   };
 
@@ -122,22 +117,23 @@ function CreatePost({ profilePicture, postId = null }) {
 
     console.log(formData, '');
 
-    axios({
+    const res = fetch('http://localhost:3001/createPost', {
       method: 'POST',
-      url: '/createPost',
-      headers,
-      data: formData,
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
     })
-      .then((response) => {
-        const posts = response.data;
-        console.log(posts);
-        dispatch(editPost({ posts }));
-        //     // reset the state
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        console.log(formData, 'formdata');
+        const posts = data;
+        dispatch(setPosts({ posts }));
+        // reset the state
         setImage(null);
         setPost('');
       })
       .catch((err) => {
-        console.log(err);
+        console.log('err', err);
       });
   };
 
