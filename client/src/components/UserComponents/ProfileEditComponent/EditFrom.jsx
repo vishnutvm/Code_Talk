@@ -20,8 +20,9 @@ import { useNavigate } from 'react-router-dom';
 import { editUserSchema } from '../../../formSchemas/index';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import axios from '../../../utils/axios';
+
 import { updateUser } from '../../../redux/userState/index';
-// import UserImage from '../UserProfilePicture';
+// import UserImage from '../UserProfileComponent/UserProfilePicture';
 import { baseUrl } from '../../../constants/constants';
 
 function EditFrom() {
@@ -39,21 +40,42 @@ function EditFrom() {
   // const navigate = useNavigate();
   const isNonMobile = useMediaQuery('(min-width:600px)');
   const id = user._id;
-
   const handleFormSubmit = (values) => {
-    console.log(values.picture);
-    axios({
+    const { username, email, phone, location, picture, linkdin, github } =
+      values;
+
+    const profilePicture = picture ? picture.path : user.profilePicture;
+
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('location', location);
+    formData.append('linkdin', linkdin);
+    formData.append('github', github);
+    formData.append('profilePicture', profilePicture);
+
+    if (picture) {
+      console.log(picture);
+      formData.append('picture', picture);
+    }
+    // axios({
+    //   method: 'POST',
+    //   url: `/edituser/${id}`,
+    //   headers,
+    //   data: values,
+    // });
+
+    const res = fetch(`${baseUrl}/user/edituser/${id}`, {
       method: 'POST',
-      url: `/edituser/${id}`,
-      headers,
-      'Content-Type': 'multipart/form-data',
-      data: values,
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
     })
+      .then((response) => response.json())
+
       .then((response) => {
-        // updateing the user state
-        dispatch(updateUser(response.data));
+        dispatch(updateUser(response));
         console.log(response);
-        // console.log(updatedUser);
         navigate('/');
       })
       .catch((error) => {
@@ -101,7 +123,7 @@ function EditFrom() {
               src={
                 values.picture
                   ? URL.createObjectURL(values.picture)
-                  : `${baseUrl}/assets/${user.profilePicture}`
+                  : `http://localhost:3001/assets/${user.profilePicture}`
               }
             />
           </Box>
@@ -122,7 +144,9 @@ function EditFrom() {
               <Dropzone
                 acceptedFiles=".jpg,.jpeg,.png"
                 multiple={false}
-                onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}
+                onDrop={(acceptedFiles) =>
+                  setFieldValue('picture', acceptedFiles[0])
+                }
               >
                 {({ getRootProps, getInputProps }) => (
                   <Box

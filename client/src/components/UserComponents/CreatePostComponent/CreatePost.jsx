@@ -30,6 +30,7 @@ import UserImage from '../UserProfileComponent/UserProfilePicture';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
 import { editPost, setPosts } from '../../../redux/userState';
+import { baseUrl } from '../../../constants/constants';
 
 // eslint-disable-next-line react/prop-types
 function CreatePost({ profilePicture, postId = null }) {
@@ -83,7 +84,7 @@ function CreatePost({ profilePicture, postId = null }) {
 
     // found bug need to remove
 
-    const res = fetch('http://localhost:3001/editPost', {
+    const res = fetch(`${baseUrl}/posts/editPost`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -117,12 +118,12 @@ function CreatePost({ profilePicture, postId = null }) {
 
     console.log(formData, '');
 
-    const res = fetch('http://localhost:3001/createPost', {
+    const res = fetch(`${baseUrl}/posts/createPost`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     })
-      .then((response) => response.json())
+    .then((response) => response.json())
       .then((data) => {
         console.log(data);
         console.log(formData, 'formdata');

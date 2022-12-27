@@ -12,9 +12,6 @@ export const createPost = async (req, res) => {
   console.log('post creation trigger');
   try {
     // // uploading imagge
-    // const result = await uploadFile(req.file);
-    // console.log(result);
-
     const { userId, discription, picturePath } = req.body;
     console.log(req.body);
 

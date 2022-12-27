@@ -12,6 +12,7 @@ import { Server } from 'socket.io';
 import http from 'http';
 import color from 'colors';
 import mongoDB from './config/db.js';
+import { upload } from './middleware/fileUpload.js';
 // Routs
 import signUpRouts from './routes/user/signUpRout.js';
 import loginRouts from './routes/user/loginRout.js';
@@ -24,7 +25,7 @@ import messsageRouts from './routes/chat/messageRouts.js';
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
-
+// import { generateUploadURL } from './s3.js';
 // Config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,25 +39,6 @@ app.use(cors());
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 const server = http.createServer(app);
-
-// s3 bucket
-
-// file storage
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'public/assets');
-  },
-  filename(req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({ storage });
-
-app.post('/createPost', verifyToken, upload.single('picture'), createPost);
-app.put('/editPost', verifyToken, upload.single('picture'), editPost);
-
-// app.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
-app.post('/edituser/:id', edituser);
 
 // RoutssignUpRouts
 app.use('/user', signUpRouts);

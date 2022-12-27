@@ -307,12 +307,20 @@ export const edituser = async (req, res) => {
   console.log('here');
   console.log(req.file);
   try {
-    const { username, phone, email, linkdin, github, location, picture } =
-      req.body;
-    const profilePicture = picture.path;
+    const {
+      username,
+      phone,
+      email,
+      linkdin,
+      github,
+      location,
+      picture,
+      profilePicture,
+    } = req.body;
+    console.log(picture, 'bugging');
+
     console.log(req.body);
     const { id } = req.params;
-    // const user = await User.findById(id);
 
     User.findOneAndUpdate(
       { _id: id },
@@ -331,9 +339,6 @@ export const edituser = async (req, res) => {
       const updatedUser = await User.findById(id);
       res.status(201).json(updatedUser);
     });
-    // await newPost.save();
-    // const post = await Post.find().populate('createdBy');
-    // res.status(201).json(post)
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });
