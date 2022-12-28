@@ -64,6 +64,7 @@ function QuestionsComponent({ onChecked }) {
                     id={`q${i}-option`}
                     value={i}
                     onChange={() => onSelect(i)}
+                    // checked={false}
                   />
                 )}
 

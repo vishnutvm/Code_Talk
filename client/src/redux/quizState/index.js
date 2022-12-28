@@ -15,9 +15,11 @@ export const quizSlice = createSlice({
   initialState,
   reducers: {
     startExamAction: (state, action) => {
+      const { question, answers } = action.payload;
       return {
         ...state,
-        queue: action.payload,
+        queue: question,
+        answers,
       };
     },
     moveNext: (state) => {
@@ -38,14 +40,10 @@ export const quizSlice = createSlice({
         answers: [],
         trace: 0,
       };
-    }
+    },
   },
 });
 
-export const {
-  startExamAction,
-  moveNext,
-  movePrev,
-  resetQuiz,
-} = quizSlice.actions;
+export const { startExamAction, moveNext, movePrev, resetQuiz } =
+  quizSlice.actions;
 export default quizSlice.reducer;

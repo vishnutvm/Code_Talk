@@ -24,5 +24,8 @@ export default [
     question: 'The method for printing the data5',
     Option: ['docuemnt.write()', 'console.log()', 'window.alert()'],
   },
-  
 ];
+
+// answer of the questions
+
+export const answers = [0, 0, 0, 0, 0];

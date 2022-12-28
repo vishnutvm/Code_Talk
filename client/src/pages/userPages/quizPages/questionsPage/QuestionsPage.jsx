@@ -39,6 +39,9 @@ function QuestionsPage() {
         dispatch(PushAnswer(checked));
       }
     }
+
+    // reset the checked
+    setChecked(undefined);
   };
 
   const onChecked = (check) => {

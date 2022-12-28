@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import data from '../constants/database';
+import data, { answers } from '../constants/database';
 
 // import redux actions
 import * as Action from '../redux/quizState';
@@ -27,10 +27,10 @@ export const useFetchQuestion = () => {
         let question = await data;
         if (question.length > 0) {
           setGetData((prev) => ({ ...prev, isLoading: false }));
-          setGetData((prev) => ({ ...prev, apiData: question }));
+          setGetData((prev) => ({ ...prev, apiData: { question, answers } }));
 
           // dispatch action
-          dispatch(Action.startExamAction(question));
+          dispatch(Action.startExamAction({ question, answers }));
         } else {
           throw new Error('No Questions avilable in d  b');
         }
