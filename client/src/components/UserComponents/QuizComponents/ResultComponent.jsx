@@ -1,11 +1,17 @@
 import React from 'react';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetQuiz } from '../../../redux/quizState';
+import { restResult } from '../../../redux/resultState';
 
 function ResultComponent() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const clickedNext = () => {
     navigate('/quiz');
+    dispatch(restResult());
+    dispatch(resetQuiz());
     console.log('next clicked');
   };
   return (

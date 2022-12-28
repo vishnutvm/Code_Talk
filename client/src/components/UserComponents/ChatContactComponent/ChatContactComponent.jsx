@@ -1,13 +1,16 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
 import { Avatar } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../../constants/constants';
 import { setCurrentChat } from '../../../redux/chatState';
 
 function ChatContactComponent({ socket }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const friends = useSelector((state) => state.user.user.friends);
   const currentUser = useSelector((state) => state.user.user);
@@ -44,7 +47,16 @@ function ChatContactComponent({ socket }) {
             />
           </svg>
         </div>
-        <div className="ml-2 font-bold text-2xl">CodeTalk</div>
+        <div className="ml-2 font-bold text-2xl">
+          <span
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={() => navigate('/')}
+          >
+            CodeTalk
+          </span>
+        </div>
       </div>
       <div className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
         <div className=" h-20 w-20 rounded-full border overflow-hidden">

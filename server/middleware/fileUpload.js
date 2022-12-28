@@ -8,8 +8,8 @@ const storage = multer.diskStorage({
     cb(null, 'public/assets');
   },
   filename(req, file, cb) {
-    // cb(null, file.originalname);
-    cb(null, req.body.username + path.extname(file.originalname));
+    cb(null, file.originalname);
+    // cb(null, req.body.username + path.extname(file.originalname));
   },
 });
 export const upload = multer({ storage });

@@ -186,7 +186,10 @@ function Navbar({ turnoffDark }) {
           >
             <VideocamRounded sx={{ fontSize: '25px' }} />
             <Badge badgeContent={4} color="warning">
-              <TextsmsRounded sx={{ fontsize: '25px' }} />
+              <TextsmsRounded
+                onClick={() => navigate('/chat')}
+                sx={{ fontsize: '25px' }}
+              />
             </Badge>
             <Badge badgeContent={1} color="warning">
               <Notifications sx={{ fontSize: '25px' }} />
