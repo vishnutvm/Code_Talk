@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
@@ -18,8 +19,15 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import FlexBetween from '../../UserComponents/FlexBetweenHelperComponent/FlexBetween';
 // import QuesAddComponent from './QuesAddComponent';
-import { setquiz, addquestion, resetQuiz } from '../../../redux/adminquizState';
+import {
+  setquiz,
+  addquestion,
+  resetQuiz,
+  setBanner,
+} from '../../../redux/adminquizState';
 import { changePage } from '../../../redux/adminState';
+import axios from '../../../utils/axios';
+import { baseUrl } from '../../../constants/constants';
 
 const Container = styled.div`
   width: 75%;
@@ -52,22 +60,13 @@ function QuizAdding() {
   const [err, setErr] = useState('false');
   const [qestionspge, setqestionspge] = useState(false);
   const adminquiz = useSelector((state) => state.adminquiz);
-  // const addNextQuestion = () => {
-  //   console.log('button clicked');
-  //   console.log(next);
-  //   if (next < 5) {
-  //     setNext(next + 1);
-  //   }
 
-  // };
-  // const addquestions = () => {
-  //   console.log('addquestions clicked');
-  //   setqestionspge(true);
-  //   setNext(0);
+  // const headers = {
+  //   'Content-Type': 'application/json',
   // };
 
   useEffect(() => {
-    console.log(image);
+    image && dispatch(setBanner(image.name));
   }, [image]);
 
   const initialValuesquiz = {
@@ -83,41 +82,10 @@ function QuizAdding() {
     option3: '',
   };
 
-  // const handleFormSubmit = (values) => {
-  //   // if any values have null or not given the error need to be true
-  //   // setErr(true)
-  //   // else dispatch value
-  //   console.log(values);
-  //   console.log('form submited');
-  //   if (!qestionspge) {
-  //     const { title, mark, passmark } = values;
-  //     if (!(title, mark, passmark)) {
-  //       console.log('err');
-  //       setErr(true);
-  //     } else {
-  //       dispatch(setquiz(values));
-  //       setqestionspge(true);
-  //     }
-  //   } else {
-  //     const { question, answer, option1, option2, option3 } = values;
-  //     if (!(question, answer, option1, option2, option3)) {
-  //       console.log('err');
-  //       setErr(true);
-  //     } else {
-  //       // dispatch(addquestion(values));
-  //       if (next < 5) {
-  //         setNext(next + 1);
-  //       }
-  //       console.log(values);
-  //       console.log('worng');
-  //     }
-  //   }
-  // };
-
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: qestionspge ? initialValuesquestions : initialValuesquiz,
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       // if any values have null or not given the error need to be true
       // setErr(true)
       // else dispatch value
@@ -141,52 +109,56 @@ function QuizAdding() {
         } else {
           dispatch(addquestion(values));
 
-          // console.log('else working');
-          setNext(next + 1);
           // values.question = '';
+
+          if (next === 5) {
+            const data = { ...adminquiz };
+
+            // inserting the last values manually bcz it not getting
+            const { question, answer, option1, option2, option3 } = values;
+            const questions = [
+              ...adminquiz.questions,
+              { question, option1, option2, option3 },
+            ];
+
+            const answers = [...adminquiz.answers, answer];
+            const formdata = { questions, answers };
+            // first sending the image if any as first api call then after the form sending
+            const formData = new FormData();
+            formData.append('picture', image && image);
+            if (image) {
+              fetch(`${baseUrl}/admin/addquizImg`, {
+                method: 'POST',
+                body: formData,
+              });
+            }
+
+            // sending data to backend
+            axios
+              .post('/admin/addquiz', formdata, {
+                headers: {
+                  headers: { 'Content-Type': 'multipart/form-data' },
+                },
+              })
+              .then((response) => {
+                console.log(response);
+
+                dispatch(changePage('quiz'));
+                dispatch(resetQuiz());
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+
+          setNext(next + 1);
+
           // values.answer = '';
           // values.option1 = '';
           // values.option2 = '';
           // values.option3 = '';
 
-          console.log(values);
-
-          if (next === 5) {
-            dispatch(changePage('quiz'));
-            console.log(adminquiz);
-            // const { title, mark, passmark } = adminquiz.quiz;
-            const formData = new FormData();
-            formData.append('username', 'Chris');
-
-            formData.append('quiz', adminquiz.quiz);
-            formData.append('questions', adminquiz.questions);
-            formData.append('answers', adminquiz.answers);
-            formData.append('answers', 'fffff');
-
-            if (image) {
-              console.log(image);
-              formData.append('picture', image);
-              console.log(formData);
-            }
-
-            console.log(formData);
-            // api call and sending the data
-            // dispatch(resetQuiz());
-          }
-          // if (next < 5) {
-          //   dispatch(addquestion(values));
-
-          //   // console.log('else working');
-          //   setNext(next + 1);
-          //   // values.question = '';
-          //   // values.answer = '';
-          //   // values.option1 = '';
-          //   // values.option2 = '';
-          //   // values.option3 = '';
-
-          //   console.log(values);
-          //   // console.log('worng');
-          // }
+          console.log(next);
         }
       }
     },

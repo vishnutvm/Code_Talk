@@ -6,6 +6,7 @@ import crypto from 'crypto';
 // eslint-disable-next-line import/extensions
 import Admin from '../models/Admin.js';
 import User from '../models/User.js';
+import { upload } from '../middleware/fileUpload.js';
 // login
 export const login = async (req, res) => {
   try {
@@ -53,12 +54,34 @@ export const blockUsers = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: userId },
       { blocked },
-      { new: true },
+      { new: true }
     );
     console.log(updatedUser);
 
     const newUserList = await User.find();
     res.status(200).json(newUserList);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+
+export const addquizImg = async (req, res) => {
+  try {
+    console.log(req.body);
+    console.log(req.file);
+    res.status(200).json('working');
+  } catch (err) {
+    console.log(err);
+    res.status(409).json({ error: err.message });
+  }
+};
+
+export const addQuiz = async (req, res) => {
+  console.log('getting userposts');
+  try {
+    console.log(req.body);
+    // const users = await User.find();
+    res.status(200).json('worki');
   } catch (err) {
     res.status(404).json({ error: err.message });
   }

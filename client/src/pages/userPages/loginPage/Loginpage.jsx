@@ -8,6 +8,7 @@ import loginPageImage from './img/log.svg';
 import registerPageImage from './img/register.svg';
 import { setLogin, addVerifyUser } from '../../../redux/userState/index';
 import { registerSchema, loginSchema } from '../../../formSchemas';
+import { baseUrl } from '../../../constants/constants';
 
 const initialValuesRegister = {
   username: '',
@@ -66,7 +67,7 @@ function Loginpage() {
         const formDataJson = JSON.stringify(values);
         console.log(formDataJson);
         const savedUserResponse = await fetch(
-          'http://localhost:3001/user/register',
+          `${baseUrl}/user/register`,
           {
             method: 'POST',
             // eslint-disable-next-line max-len

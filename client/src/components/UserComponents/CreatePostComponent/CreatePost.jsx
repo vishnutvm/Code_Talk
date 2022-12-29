@@ -83,7 +83,7 @@ function CreatePost({ profilePicture, postId = null }) {
     }
 
     // found bug need to remove
-
+    console.log(formData);
     const res = fetch(`${baseUrl}/posts/editPost`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${token}` },

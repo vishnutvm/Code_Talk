@@ -28,5 +28,6 @@ router.patch('/:id/like', verifyToken, likePost);
 router.delete('/:postId/delete', deletePost);
 router.put('/editPost', verifyToken, upload.single('picture'), editPost);
 router.post('/createPost', verifyToken, upload.single('picture'), createPost);
+// router.post('/createPost', verifyToken, createPost);
 
 export default router;

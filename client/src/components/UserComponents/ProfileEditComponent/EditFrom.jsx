@@ -58,12 +58,6 @@ function EditFrom() {
       console.log(picture);
       formData.append('picture', picture);
     }
-    // axios({
-    //   method: 'POST',
-    //   url: `/edituser/${id}`,
-    //   headers,
-    //   data: values,
-    // });
 
     const res = fetch(`${baseUrl}/user/edituser/${id}`, {
       method: 'POST',

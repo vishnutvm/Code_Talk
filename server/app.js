@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';
 import http from 'http';
 import color from 'colors';
+import morgan from 'morgan';
 import mongoDB from './config/db.js';
 import { upload } from './middleware/fileUpload.js';
 // Routs
@@ -20,7 +21,6 @@ import postRouts from './routes/post/postRouts.js';
 import adminRouts from './routes/admin/adminRouts.js';
 import verifyEmailRouts from './routes/user/verifyEmailRout.js';
 import messsageRouts from './routes/chat/messageRouts.js';
-
 import { createPost, editPost } from './controllers/postControllers.js';
 import { verifyToken } from './middleware/token.js';
 import { edituser } from './controllers/userControllers.js';
@@ -31,7 +31,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(express.json());
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
@@ -39,14 +39,22 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 const server = http.createServer(app);
 
-// RoutssignUpRouts
+// RoutssignUpRoutsz
 app.use('/user', signUpRouts);
 app.use('/user', loginRouts);
 app.use('/user', homeRouts);
 app.use('/user', verifyEmailRouts);
+
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
+// app.post('/test', (req, res) => {
+//   console.log('the user callled');
+//   console.log(req);
+
+
+//   res.json(req.body);
+// });
 
 const PORT = process.env.PORT || 4001;
 try {
@@ -63,7 +71,6 @@ const io = new Server(server, {
   cors: {
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST'],
   },
 });
 

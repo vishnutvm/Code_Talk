@@ -9,6 +9,7 @@ const initialState = {
   quiz: {},
   questions: [],
   answers: [],
+  banner: null,
 };
 
 export const adminquizSlice = createSlice({
@@ -16,11 +17,15 @@ export const adminquizSlice = createSlice({
   initialState,
   reducers: {
     setquiz: (state, action) => {
-      action.payload;
       return {
         ...state,
         quiz: action.payload,
       };
+    },
+    setBanner: (state, action) => {
+      console.log(action.payload);
+      // state.banner = JSON.stringify(action.payload);
+      state.banner = `${action.payload}`;
     },
     addquestion: (state, action) => {
       console.log(action.payload);
@@ -45,10 +50,11 @@ export const adminquizSlice = createSlice({
         quiz: {},
         questions: [],
         answers: [],
+        banner: null,
       };
     },
   },
 });
 
-export const { setquiz, resetQuiz, addquestion } = adminquizSlice.actions;
+export const { setquiz, resetQuiz, addquestion, setBanner } = adminquizSlice.actions;
 export default adminquizSlice.reducer;
