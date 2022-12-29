@@ -6,6 +6,7 @@ import adminState from './adminState';
 import chatState from './chatState';
 import quizState from './quizState';
 import resultState from './resultState';
+import adminquizState from './adminquizState';
 
 export default combineReducers({
   user: userReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   chat: chatState,
   questions: quizState,
   result: resultState,
+  adminquiz: adminquizState,
 });

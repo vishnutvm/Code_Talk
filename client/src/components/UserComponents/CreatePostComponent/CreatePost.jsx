@@ -123,7 +123,7 @@ function CreatePost({ profilePicture, postId = null }) {
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     })
-    .then((response) => response.json())
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         console.log(formData, 'formdata');

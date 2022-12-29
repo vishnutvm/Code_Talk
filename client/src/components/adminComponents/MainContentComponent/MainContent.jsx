@@ -4,7 +4,7 @@ import WishHeader from '../WelcomeComponent/wishHeader';
 // Groth section mayuse in future
 // import Groth from './Groth';
 // import Info from '../InfoComponent/Info';
-import QuizSection from '../QuizComponent/QuizSection';
+import QuizSection from '../QuizSectionHome/QuizSectionHome';
 import ResentUsers from '../ResentUsersComponent/ResentUsers';
 import Groth from '../GrothComponent/Groth';
 // styles

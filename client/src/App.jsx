@@ -21,8 +21,7 @@ function App() {
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state) => state.user.token));
   const isAdminAuth = Boolean(useSelector((state) => state.admin.token));
-  // console.log(isUserAuth);
-  // console.log(isAdminAuth);
+
 
   return (
     <div className="app">

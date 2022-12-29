@@ -5,7 +5,6 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';

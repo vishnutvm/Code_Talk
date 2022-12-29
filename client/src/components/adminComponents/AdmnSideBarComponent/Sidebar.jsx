@@ -24,6 +24,7 @@ const Container = styled.div`
   gap: 3rem;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     width: 100%;
+    margin: 0px;
     height: max-content !important;
   }
 `;

@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import MainContent from '../../../components/adminComponents/MainContentComponent/MainContent';
 import Sidebar from '../../../components/adminComponents/AdmnSideBarComponent/Sidebar';
 import UserManagement from '../UserManagement/UserManagement';
+import QuizManagementPage from '../QuizManagement/QuizManagementPage';
+import QuizAddingPage from '../QuizAddingPage/QuizAddingPage';
 
 const Container = styled.div`
   display: flex;
@@ -14,6 +16,9 @@ const Container = styled.div`
   border-radius: 2rem;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+   
   }
 `;
 
@@ -26,6 +31,9 @@ const AdminHome = () => {
       <Sidebar />
       {page === 'dashbord' && <MainContent />}
       {page === 'users' && <UserManagement />}
+      {page === 'quiz' && <QuizManagementPage />}
+      {page === 'quizadding' && <QuizAddingPage />}
+      {/* {page === 'quiz' && <QuizManagementPage />} */}
     </Container>
   );
 };

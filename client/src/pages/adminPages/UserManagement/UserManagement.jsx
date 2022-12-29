@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from '../../../utils/axios';
-
+import { baseUrl } from '../../../constants/constants';
 const headers = {
   'Content-Type': 'application/json',
 };
@@ -19,6 +19,7 @@ const Container = styled.div`
   border-radius: 2rem;
   margin: 6% 2rem 2rem 2rem;
   padding: 1rem;
+  overflow: scroll;
 
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     width: 90%;
@@ -31,14 +32,13 @@ const Container = styled.div`
 function UserManagement() {
   const [usersList, setusersList] = useState([]);
   const getUsers = async () => {
-    const response = await fetch('http://localhost:3001/admin/getallusers', {
+    const response = await fetch(`${baseUrl}/admin/getallusers`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
 
     const data = await response.json();
-    // dispatch(setPosts({ posts: data }));
-    // console.log(data);
+
     if (!data.message) {
       setusersList(data);
     }
@@ -105,8 +105,8 @@ function UserManagement() {
                 </tr>
               </thead>
               <tbody>
-                {usersList
-                  && usersList.map((user) => (
+                {usersList &&
+                  usersList.map((user) => (
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="w-4 p-4">
                         <div className="flex items-center">
