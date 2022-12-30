@@ -2,11 +2,10 @@
 /* eslint-disable consistent-return */
 /* eslint-disable import/prefer-default-export */
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 // eslint-disable-next-line import/extensions
 import Admin from '../models/Admin.js';
 import User from '../models/User.js';
-import { upload } from '../middleware/fileUpload.js';
+// import Quiz from '../models/Quiz.js';
 // login
 export const login = async (req, res) => {
   try {
@@ -54,7 +53,7 @@ export const blockUsers = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: userId },
       { blocked },
-      { new: true }
+      { new: true },
     );
     console.log(updatedUser);
 

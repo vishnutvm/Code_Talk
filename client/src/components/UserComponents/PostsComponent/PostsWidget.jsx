@@ -45,23 +45,29 @@ function PostsWidget({ userId, isProfile = false }) {
     }
   }, []);
 
+  // useEffect(() => {
+  //   debugger
+  // }, [posts]);
+
+  console.log(posts);
   return (
     <>
       {posts.map(
         ({ _id, createdBy, discription, picturePath, like, Comments }) => (
-          <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={createdBy._id}
-            name={createdBy.username}
-            discription={discription}
-            picturePath={picturePath}
-            userPicturePath={createdBy.profilePicture}
-            likes={like}
-            comments={Comments}
-            isProfile={isProfile}
-          />
-        ),
+          <div className="div" key={_id}>
+            <PostWidget
+              postId={_id}
+              postUserId={createdBy._id}
+              name={createdBy.username}
+              discription={discription}
+              picturePath={picturePath}
+              userPicturePath={createdBy.profilePicture}
+              likes={like}
+              comments={Comments}
+              isProfile={isProfile}
+            />
+          </div>
+        )
       )}
     </>
   );

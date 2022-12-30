@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   //   que for storing quiz form db
+  currentQuiz: null,
   queue: [],
   answers: [],
   trace: 0,
@@ -15,10 +16,12 @@ export const quizSlice = createSlice({
   initialState,
   reducers: {
     startExamAction: (state, action) => {
-      const { question, answers } = action.payload;
+      const { questions, answers } = action.payload;
+      // * re structuring the questions data according to need
+
       return {
         ...state,
-        queue: question,
+        queue: questions,
         answers,
       };
     },
@@ -34,16 +37,29 @@ export const quizSlice = createSlice({
         trace: state.trace - 1,
       };
     },
+    setCurrentQuiz: (state, action) => {
+      const currentQuiz = action.payload;
+      return {
+        ...state,
+        currentQuiz,
+      };
+    },
     resetQuiz: () => {
       return {
         queue: [],
         answers: [],
         trace: 0,
+        currentQuiz: null,
       };
     },
   },
 });
 
-export const { startExamAction, moveNext, movePrev, resetQuiz } =
-  quizSlice.actions;
+export const {
+  startExamAction,
+  moveNext,
+  movePrev,
+  resetQuiz,
+  setCurrentQuiz,
+} = quizSlice.actions;
 export default quizSlice.reducer;

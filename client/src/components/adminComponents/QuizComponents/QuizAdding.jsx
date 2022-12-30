@@ -73,6 +73,7 @@ function QuizAdding() {
     title: '',
     mark: '',
     passmark: '',
+    discription: '',
   };
   const initialValuesquestions = {
     question: '',
@@ -92,8 +93,8 @@ function QuizAdding() {
       console.log(values);
       console.log('form submited');
       if (!qestionspge) {
-        const { title, mark, passmark } = values;
-        if (!(title, mark, passmark)) {
+        const { title, mark, passmark, discription } = values;
+        if (!(title, mark, passmark, discription)) {
           console.log('err');
           setErr(true);
         } else {
@@ -112,7 +113,7 @@ function QuizAdding() {
           // values.question = '';
 
           if (next === 5) {
-            const data = { ...adminquiz };
+            // const data = { ...adminquiz };
 
             // inserting the last values manually bcz it not getting
             const { question, answer, option1, option2, option3 } = values;
@@ -120,14 +121,15 @@ function QuizAdding() {
               ...adminquiz.questions,
               { question, option1, option2, option3 },
             ];
+            const { quiz, banner } = adminquiz;
 
             const answers = [...adminquiz.answers, answer];
-            const formdata = { questions, answers };
+            const formdata = { quiz, banner, questions, answers };
             // first sending the image if any as first api call then after the form sending
             const formData = new FormData();
             formData.append('picture', image && image);
             if (image) {
-              fetch(`${baseUrl}/admin/addquizImg`, {
+              fetch(`${baseUrl}/quiz/addquizImg`, {
                 method: 'POST',
                 body: formData,
               });
@@ -135,7 +137,7 @@ function QuizAdding() {
 
             // sending data to backend
             axios
-              .post('/admin/addquiz', formdata, {
+              .post('/quiz/addquiz', formdata, {
                 headers: {
                   headers: { 'Content-Type': 'multipart/form-data' },
                 },
@@ -151,7 +153,7 @@ function QuizAdding() {
               });
           }
 
-          setNext(next + 1);
+          next < 5 && setNext(next + 1);
 
           // values.answer = '';
           // values.option1 = '';
@@ -174,21 +176,32 @@ function QuizAdding() {
               CREATE NEW QUIZ
             </h1>
           </div>
-          <div className="uploadImage">
-            <div className="prevImage">
-              <div className="bg-indigo-300 ...">
+          <div className="uploadImage ">
+            <div className="prevImage  flex ju ">
+              <div className="bg-indigo-300 rounded-xl">
                 {image ? (
                   <img
                     alt="imae"
-                    className="object-cover h-48 w-96"
+                    className="object-cover h-48 w-96 rounded-xl"
                     src={URL.createObjectURL(image)}
                   />
                 ) : (
-                  <img
-                    alt="imae"
-                    className="object-cover h-48 w-96"
-                    src="https://dummyimage.com/640x360/fff/aaa"
-                  />
+                  <div
+                    role="status"
+                    className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center rounded-xl"
+                  >
+                    <div className="flex justify-center items-center w-full h-48 bg-gray-300  sm:w-96 dark:bg-gray-700 rounded-xl">
+                      <svg
+                        className="w-12 h-12 text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        viewBox="0 0 640 512"
+                      >
+                        <path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" />
+                      </svg>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -260,6 +273,24 @@ function QuizAdding() {
                     value={values.title}
                   />
                 </div>
+                <div className="mb-6">
+                  <label
+                    htmlFor="quiz"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Discription
+                  </label>
+
+                  <input
+                    type="text"
+                    id="discription"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Discription.."
+                    required=""
+                    onChange={handleChange}
+                    value={values.discription}
+                  />
+                </div>
 
                 <div className="grid gap-6 mb-6 md:grid-cols-2">
                   <div>
@@ -285,7 +316,7 @@ function QuizAdding() {
                       htmlFor="first_name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Pass mark
+                      Total Pass mark
                     </label>
                     <input
                       type="number"

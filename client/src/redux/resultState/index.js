@@ -29,6 +29,5 @@ export const resultSlice = createSlice({
   },
 });
 
-export const { pushResultAction, restResult, updateResultAction } =
-  resultSlice.actions;
+export const { pushResultAction, restResult, updateResultAction } = resultSlice.actions;
 export default resultSlice.reducer;

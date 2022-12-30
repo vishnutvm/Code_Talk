@@ -66,7 +66,7 @@ function PostWidget({
     setIsLiked(!isLiked);
   };
 
-  // edit the post
+  // delete the post
   const deleteThePost = async () => {
     console.log('called delete post');
     axios({

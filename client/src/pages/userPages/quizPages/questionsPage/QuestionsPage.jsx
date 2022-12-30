@@ -13,11 +13,15 @@ import { PushAnswer } from '../../../../hooks/setResult';
 function QuestionsPage() {
   const { trace, queue } = useSelector((state) => state.questions);
   const { result } = useSelector((state) => state.result);
+
   // const arr = useSelector((state) => state);
   // console.log(arr);
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(undefined);
   const navigate = useNavigate();
+
+
+
 
   useEffect(() => {
     console.log(result);

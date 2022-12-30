@@ -14,7 +14,7 @@ const postSchema = mongoose.Schema(
     },
     Comments: {
       type: Array,
-      default: [],
+      default: ['nice'],
     },
   },
   { timestamp: true },

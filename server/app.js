@@ -21,9 +21,7 @@ import postRouts from './routes/post/postRouts.js';
 import adminRouts from './routes/admin/adminRouts.js';
 import verifyEmailRouts from './routes/user/verifyEmailRout.js';
 import messsageRouts from './routes/chat/messageRouts.js';
-import { createPost, editPost } from './controllers/postControllers.js';
-import { verifyToken } from './middleware/token.js';
-import { edituser } from './controllers/userControllers.js';
+import quizRouts from './routes/quiz/quizRouts.js';
 // import { generateUploadURL } from './s3.js';
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -48,10 +46,10 @@ app.use('/user', verifyEmailRouts);
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
+app.use('/quiz', quizRouts);
 // app.post('/test', (req, res) => {
 //   console.log('the user callled');
 //   console.log(req);
-
 
 //   res.json(req.body);
 // });
@@ -75,6 +73,8 @@ const io = new Server(server, {
 });
 
 global.onlineUsers = new Map(); // holds all active sockets
+
+
 io.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);
   // trying

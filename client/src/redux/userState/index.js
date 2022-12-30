@@ -67,9 +67,10 @@ export const userSlice = createSlice({
       let { posts } = state;
       console.log(posts);
       const updatedPost = action.payload.posts.reverse();
-      posts = updatedPost;
+      // posts = updatedPost;
       console.log('redux here');
-      return { ...state, posts };
+      console.log('debug',updatedPost)
+      return { ...state, posts: updatedPost };
     },
     updateUser: (state, action) => {
       console.log(action.payload);

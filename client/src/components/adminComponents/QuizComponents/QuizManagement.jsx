@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from '../../../utils/axios';
 import { baseUrl } from '../../../constants/constants';
@@ -24,9 +25,31 @@ const Container = styled.div`
     gap: 1rem;
   }
 `;
-
 function QuizManagement() {
   const dispatch = useDispatch();
+  const headers = { 'Content-Type': 'application/json' };
+  const [quizList, setQuizList] = useState([]);
+
+  const getAllQuiz = async () => {
+    const data = await await (await axios.get('/quiz/getAllquiz'))?.data;
+    setQuizList(data);
+    console.log(data);
+  };
+
+  const deleteTheQuiz = async (quizId) => {
+    console.log('called delete post');
+    axios({
+      method: 'DELETE',
+      url: `${baseUrl}/quiz/${quizId}/delete`,
+    }).then((response) => {
+      setQuizList(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getAllQuiz();
+  }, []);
+
   return (
     <>
       {/* component */}
@@ -51,49 +74,71 @@ function QuizManagement() {
           <div className="quizSection">
             <div className="quiz flex flex-col gap-11">
               {/* single quiz */}
-              <div className="signlequiz">
-                <div className="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-6xl">
-                  <div className="md:flex">
-                    <div className="md:shrink-0">
-                      <img
-                        className="h-62 w-full object-cover md:h-full md:w-48"
-                        src="https://cdn-developer-wp.arc.dev/wp-content/uploads/2021/12/mongodb-interview-questions.jpg"
-                        alt="Modern building architecture"
-                      />
-                    </div>
-                    <div className="p-8">
-                      <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                        Company retreats
+              {quizList.length !== 0 ? (
+                quizList.map((quiz) => (
+                  <div className="signlequiz" key={quiz._Id}>
+                    <div className="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-6xl">
+                      <div className="md:flex">
+                        <div className="md:shrink-0">
+                          <img
+                            className="h-62 w-full object-cover md:h-full md:w-48"
+                            src={`${baseUrl}/assets/${quiz.banner}`}
+                            alt="Quiz"
+                          />
+                        </div>
+                        <div className="p-8">
+                          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                            {quiz.title}
+                          </div>
+                          {/* <a
+                            href="#"
+                            className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
+                          >
+                            Take the test
+                          </a> */}
+                          <p className="mt-2 text-slate-500">
+                            {quiz.discription}
+                          </p>
+                        </div>
+                        <div className="buttons flex items-center px-4 justify-center">
+                          {/* <button
+                            type="button"
+                            className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                          >
+                            Edit
+                          </button> */}
+                          <button
+                            type="button"
+                            className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            onClick={() => deleteTheQuiz(quiz._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
-                      <a
-                        href="#"
-                        className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
-                      >
-                        Incredible accomodation for your team
-                      </a>
-                      <p className="mt-2 text-slate-500">
-                        Looking to take your team away on a retreat to enjoy
-                        awesome food and take in some sunshine? We have a list
-                        of places to do just that.
-                      </p>
                     </div>
-                    <div className="buttons flex items-center px-4 justify-between">
-                      <button
-                        type="button"
-                        className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                      >
-                        Delete
-                      </button>
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white p-2 sm:p-4 sm:h-64 rounded-2xl shadow-lg flex flex-col sm:flex-row gap-5 select-none ">
+                  <div className="h-52 sm:h-full sm:w-72 rounded-xl bg-gray-200 animate-pulse" />
+                  <div className="flex flex-col flex-1 gap-5 sm:p-2">
+                    <div className="flex flex-1 flex-col gap-3">
+                      <div className="bg-gray-200 w-full animate-pulse h-14 rounded-2xl" />
+                      <div className="bg-gray-200 w-full animate-pulse h-3 rounded-2xl" />
+                      <div className="bg-gray-200 w-full animate-pulse h-3 rounded-2xl" />
+                      <div className="bg-gray-200 w-full animate-pulse h-3 rounded-2xl" />
+                      <div className="bg-gray-200 w-full animate-pulse h-3 rounded-2xl" />
+                    </div>
+                    <div className="mt-auto flex gap-3">
+                      <div className="bg-gray-200 w-20 h-8 animate-pulse rounded-full" />
+                      <div className="bg-gray-200 w-20 h-8 animate-pulse rounded-full" />
+                      {/* <div className="bg-gray-200 w-20 h-8 animate-pulse rounded-full ml-auto" /> */}
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
+
               {/* single quiz */}
             </div>
           </div>
