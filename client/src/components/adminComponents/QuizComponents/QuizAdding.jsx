@@ -91,6 +91,7 @@ function QuizAdding() {
       // setErr(true)
       // else dispatch value
       console.log(values);
+
       console.log('form submited');
       if (!qestionspge) {
         const { title, mark, passmark, discription } = values;
@@ -117,10 +118,8 @@ function QuizAdding() {
 
             // inserting the last values manually bcz it not getting
             const { question, answer, option1, option2, option3 } = values;
-            const questions = [
-              ...adminquiz.questions,
-              { question, option1, option2, option3 },
-            ];
+            const options = [option1, option2, option3];
+            const questions = [...adminquiz.questions, { question, options }];
             const { quiz, banner } = adminquiz;
 
             const answers = [...adminquiz.answers, answer];

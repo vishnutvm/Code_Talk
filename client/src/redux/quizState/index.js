@@ -18,7 +18,8 @@ export const quizSlice = createSlice({
     startExamAction: (state, action) => {
       const { questions, answers } = action.payload;
       // * re structuring the questions data according to need
-
+      // *here we have quiestions and opt1,opt2,..3 so we need to convet it to a options array
+      const options = questions
       return {
         ...state,
         queue: questions,

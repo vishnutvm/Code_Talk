@@ -30,9 +30,10 @@ export const adminquizSlice = createSlice({
     addquestion: (state, action) => {
       console.log(action.payload);
       const { question, answer, option1, option2, option3 } = action.payload;
-
+           // *convertinng the opt1,.2..3 to a array of options
+      const options = [option1, option2, option3];
       const questions = [...state.questions];
-      questions.push({ question, option1, option2, option3 });
+      questions.push({ question, options });
 
       const answers = [...state.answers];
       answers.push(answer);

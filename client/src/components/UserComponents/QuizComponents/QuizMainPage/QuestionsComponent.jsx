@@ -13,9 +13,8 @@ function QuestionsComponent({ onChecked }) {
   const [checked, setChecked] = useState(undefined);
   const dispatch = useDispatch();
 
-
   const question = useSelector(
-    (state) => state.questions.queue[state.questions.trace],
+    (state) => state.questions.queue[state.questions.trace]
   );
   const trace = useSelector((state) => state.questions.trace);
   const { result } = useSelector((state) => state.result);
@@ -42,9 +41,9 @@ function QuestionsComponent({ onChecked }) {
         <ul className="flex flex-col gap-5 " key={question?.id}>
           {/* each options */}
 
-          {question?.Option.map((opt, i) => {
+          {question?.options.map((opt, i) => {
             return (
-              <li className="flex  gap-2" key={opt}>
+              <li className="flex  gap-2" key={`${(opt, i)}`}>
                 {result[trace] === i}
                 {result[trace] === i ? (
                   <input
