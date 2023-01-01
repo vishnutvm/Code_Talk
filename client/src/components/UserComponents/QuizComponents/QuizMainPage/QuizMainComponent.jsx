@@ -15,11 +15,13 @@ import {
   startExamAction,
 } from '../../../../redux/quizState';
 import { restResult } from '../../../../redux/resultState';
+import { resetMode } from '../../../../redux/modeState';
 
 function QuizMainComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quizList, setQuizList] = useState([]);
+  const { _id } = useSelector((state) => state.user.user);
   // const currentQuiz = useSelector((state) => state.questions.currentQuiz);
   const getAllQuiz = async () => {
     const data = await await (await axios.get('/quiz/getAllquiz'))?.data;
@@ -40,8 +42,10 @@ function QuizMainComponent() {
     });
   };
   useEffect(() => {
+    console.log(quizList);
     getAllQuiz();
     dispatch(resetQuiz());
+    dispatch(resetMode());
     dispatch(restResult());
   }, []);
 
@@ -68,11 +72,11 @@ function QuizMainComponent() {
           {quizList.length !== 0 ? (
             quizList.map((quiz) => (
               <div
-                className="signlequiz hover:cursor-pointer"
+                className="signlequiz hover:cursor-pointer "
                 key={quiz._id}
                 onClick={() => attendQuiz(quiz._id)}
               >
-                <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-3xl">
+                <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-3xl relative">
                   <div className="md:flex">
                     <div className="md:shrink-0">
                       <img
@@ -94,6 +98,9 @@ function QuizMainComponent() {
                       <p className="mt-2 text-slate-500">{quiz.discription}</p>
                     </div>
                   </div>
+                  <span className=" absolute top-0 right-0 bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">
+                    {quiz.passed.includes(_id) ? 'Passed' : 'Attend'}
+                  </span>
                 </div>
               </div>
             ))
