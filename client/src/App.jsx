@@ -15,14 +15,13 @@ import ChatPage from './pages/userPages/chatPage/ChatPage';
 import QuizMainPage from './pages/userPages/quizPages/quizMainPage/QuizMainPage';
 import QuestionsPage from './pages/userPages/quizPages/questionsPage/QuestionsPage';
 import ResultPage from './pages/userPages/quizPages/resultPage/ResultPage';
+import ErrPage from './pages/404Page/ErrPage';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state) => state.user.token));
   const isAdminAuth = Boolean(useSelector((state) => state.admin.token));
-
-  
 
   return (
     <div className="app">
@@ -56,6 +55,7 @@ function App() {
             <Route path="/quiz" element={<QuizMainPage />} />
             <Route path="/question" element={<QuestionsPage />} />
             <Route path="/result" element={<ResultPage />} />
+            <Route path="*" element={<ErrPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

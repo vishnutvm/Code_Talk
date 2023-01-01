@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useMediaQuery, Box } from '@mui/material';
 import Navbar from '../navbar';
 import FriendsListWidgest from '../../../components/UserComponents/FriendsListComponent/FriendsListWidgest';
@@ -12,6 +12,7 @@ function ProfilePage() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.user.token);
+  const navigate = useNavigate();
 
   const isNotMobileScreen = useMediaQuery('(min-width:100px)');
 
@@ -23,6 +24,7 @@ function ProfilePage() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          navigate('*');
           console.log('error found');
         } else {
           setUser(data);
@@ -32,9 +34,7 @@ function ProfilePage() {
       .catch((err) => {
         console.log(err);
       });
-    // const data = await response.json();
-    // setUser(data);
-    // console.log('user posts', data);
+
   };
 
   useEffect(() => {
