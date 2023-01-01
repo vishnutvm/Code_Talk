@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  badges: {
+    type: Array,
+    default: [],
+  },
   joindDate: {
     type: String,
     default: () => new Date().toString(),

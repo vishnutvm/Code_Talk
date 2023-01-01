@@ -6,15 +6,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { Typography } from '@mui/material';
 import axios from '../../../../utils/axios';
 import { baseUrl } from '../../../../constants/constants';
-import { setCurrentQuiz, startExamAction } from '../../../../redux/quizState';
+import {
+  resetQuiz,
+  setCurrentQuiz,
+  startExamAction,
+} from '../../../../redux/quizState';
+import { restResult } from '../../../../redux/resultState';
 
 function QuizMainComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quizList, setQuizList] = useState([]);
-  const currentQuiz = useSelector((state) => state.questions.currentQuiz);
+  // const currentQuiz = useSelector((state) => state.questions.currentQuiz);
   const getAllQuiz = async () => {
     const data = await await (await axios.get('/quiz/getAllquiz'))?.data;
     setQuizList(data);
@@ -24,7 +30,7 @@ function QuizMainComponent() {
   const attendQuiz = (quizId) => {
     console.log(quizId);
     dispatch(setCurrentQuiz(quizId));
-    axios.get(`/quiz/getQuiz/${currentQuiz}`).then((response) => {
+    axios.get(`/quiz/getQuiz/${quizId}`).then((response) => {
       console.log(response.data);
       const { questions, answers } = response.data;
       // setting response data to redux
@@ -35,16 +41,29 @@ function QuizMainComponent() {
   };
   useEffect(() => {
     getAllQuiz();
+    dispatch(resetQuiz());
+    dispatch(restResult());
   }, []);
 
   return (
     <div className=" isolate  bg-white min-h-screen">
-      <main className=" py-10 flex flex-col gap-7">
-        <div className="div">
+      <main className=" py-10 flex flex-col gap-7 justify-center ">
+        {/* <div className="div">
           <h1 className="text-3xl font-semibold tracking-tight text-center md:text-6xl underline">
             Quiz
           </h1>
+        </div> */}
+        <div className="wrapper w-full flex justify-center">
+          <Typography
+            fontWeight="bold "
+            fontSize="clamp(1.5rem,2.5rem,3rem)"
+            color="primary"
+            className="text-center border-double border-4 border-sky-500 w-6/12 mx-auto"
+          >
+            Skill test
+          </Typography>
         </div>
+
         <div className="quiz flex flex-col gap-11">
           {quizList.length !== 0 ? (
             quizList.map((quiz) => (

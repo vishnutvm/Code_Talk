@@ -12,7 +12,7 @@ import { verifyToken } from '../../middleware/token.js';
 import { upload } from '../../middleware/fileUpload.js';
 
 const router = express.Router();
-router.get('/:id', verifyToken, getUser);
+router.get('/:id', getUser);
 
 router.get('/:id/friends', getUserFriends);
 

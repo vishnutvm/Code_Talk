@@ -72,7 +72,7 @@ function QuizAdding() {
   const initialValuesquiz = {
     title: '',
     mark: '',
-    passmark: '',
+    badge: '',
     discription: '',
   };
   const initialValuesquestions = {
@@ -94,8 +94,8 @@ function QuizAdding() {
 
       console.log('form submited');
       if (!qestionspge) {
-        const { title, mark, passmark, discription } = values;
-        if (!(title, mark, passmark, discription)) {
+        const { title, mark, badge, discription } = values;
+        if (!(title, mark, badge, discription)) {
           console.log('err');
           setErr(true);
         } else {
@@ -122,7 +122,7 @@ function QuizAdding() {
             const questions = [...adminquiz.questions, { question, options }];
             const { quiz, banner } = adminquiz;
 
-            const answers = [...adminquiz.answers, answer];
+            const answers = [...adminquiz.answers, options.indexOf(answer)];
             const formdata = { quiz, banner, questions, answers };
             // first sending the image if any as first api call then after the form sending
             const formData = new FormData();
@@ -318,13 +318,13 @@ function QuizAdding() {
                       Total Pass mark
                     </label>
                     <input
-                      type="number"
-                      id="passmark"
+                      type="text"
+                      id="badge"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Pass mark"
                       required=""
                       onChange={handleChange}
-                      value={values.passmark}
+                      value={values.badge}
                     />
                   </div>
                 </div>

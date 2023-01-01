@@ -16,13 +16,25 @@ function ProfilePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:100px)');
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/user/${userId}`, {
+    fetch(`http://localhost:3001/user/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    setUser(data);
-    console.log('user posts', data);
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          console.log('error found');
+        } else {
+          setUser(data);
+        }
+        console.log('user posts', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // const data = await response.json();
+    // setUser(data);
+    // console.log('user posts', data);
   };
 
   useEffect(() => {

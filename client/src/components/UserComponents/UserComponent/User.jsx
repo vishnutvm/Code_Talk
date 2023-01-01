@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { headers } from '../../../constants/constants';
 import { AiFillLinkedin, AiOutlineGithub } from 'react-icons/ai';
+
 import UserImage from '../UserProfileComponent/UserProfilePicture';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
@@ -38,7 +39,7 @@ function UserWidget({ userId, profilePicture }) {
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const isFriend = currentUserFriendList.find(
-    (friend) => friend._id === userId
+    (friend) => friend._id === userId,
   );
   // hearder with token
   const headers = {
@@ -49,6 +50,9 @@ function UserWidget({ userId, profilePicture }) {
   const getUserDetails = async () => {
     try {
       const response = await axios.get(`/user/${userId}`, headers);
+      setUser(response.data);
+      console.log(response);
+      console.log('going to get user detals');
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +67,9 @@ function UserWidget({ userId, profilePicture }) {
   if (_id === userId) {
     user = currentUser;
   }
+
   if (!user) {
+    console.log('no user');
     return null;
   }
 
@@ -77,15 +83,18 @@ function UserWidget({ userId, profilePicture }) {
     phone,
     linkdin,
     github,
+    badges,
   } = user;
-
+  const allBadges = badges.filter((item, i) => badges.indexOf(item) === i);
+  console.log(allBadges);
   console.log(user);
   const patchFriend = async () => {
     try {
       const response = await axios.patch(`/user/${_id}/${userId}`, headers);
 
-      const data = await response.json();
-      dispatch(setFriends({ friends: data }));
+      // const data = await response.json();
+
+      dispatch(setFriends({ friends: response.data }));
     } catch (error) {
       console.log(error);
     }
@@ -112,7 +121,11 @@ function UserWidget({ userId, profilePicture }) {
             >
               {username}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            <Typography color={medium}>
+              {friends.length}
+              {' '}
+              friends
+            </Typography>
           </Box>
         </FlexBetween>
         {_id === userId && (
@@ -135,12 +148,31 @@ function UserWidget({ userId, profilePicture }) {
         )}
       </FlexBetween>
 
-      <Divider />
+      {allBadges && allBadges.length !== 0 && (
+        <div className="div">
+          <Divider />
 
-      {/* need to add a anoter row with badges */}
+          <div className="flex flex-col text-center">
+            <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
+              Badges
+            </Typography>
+
+            <div className="pb-3 flex flex-wrap gap-2 justify-center">
+              {allBadges.map((bdg, i) => (
+                <span
+                  key={`${bdg + i}`}
+                  className="  rounded-lg bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5  dark:bg-gray-700 dark:text-gray-300"
+                >
+                  {bdg}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* second */}
-
+      <Divider />
       <Box p="1rem 0" display="flex" flexDirection="column" gap="1rem">
         {location && (
           <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">

@@ -1,7 +1,9 @@
+/* eslint-disable prefer-const */
 /* eslint-disable import/extensions */
 // import Quiz from '../models/Quiz';
 
 import Quiz from '../models/Quiz.js';
+import User from '../models/User.js';
 
 export const addquizImg = async (req, res) => {
   try {
@@ -15,19 +17,18 @@ export const addquizImg = async (req, res) => {
 };
 
 export const addQuiz = async (req, res) => {
-  console.log('create post trigger');
+  console.log('create quiz trigger');
 
   try {
     console.log(req.body);
-    const {
-      quiz, banner, answers, questions,
-    } = req.body;
+    let { quiz, banner, answers, questions } = req.body;
+
     const newQuiz = new Quiz({
       title: quiz.title,
       banner,
       discription: quiz.discription,
       mark: quiz.mark,
-      passmark: quiz.passmark,
+      badgeName: quiz.badge,
       questions,
       answers,
     });
@@ -68,5 +69,40 @@ export const deleteQuiz = async (req, res) => {
     res.status(200).json(quiz);
   } catch (err) {
     res.status(404).json({ error: err.message });
+  }
+};
+export const getResult = async (req, res) => {
+  console.log('working');
+  try {
+    const { currentQuiz, result, userid } = req.body;
+
+    const quiz = await Quiz.findById(currentQuiz);
+    const user = await User.findById(userid);
+    const earnedPoints = result.result
+      .map((anz, i) => quiz.answers[i] === anz)
+      .filter((i) => i)
+      .map((i) => quiz.mark)
+      .reduce((prev, cur) => prev + cur, 0);
+
+    const ispass = (quiz.mark * 5 * 80) / 100 <= earnedPoints;
+
+    // user result save to db
+
+    if (!quiz.attempts.includes(userid)) {
+      quiz.attempts.push(userid);
+    }
+    if (ispass && !quiz.passed.includes(userid)) {
+      quiz.passed.push(userid);
+      user.badges.push(quiz.badgeName);
+
+    }
+    await quiz.save();
+    await user.save();
+
+    console.log(earnedPoints);
+    const totalPoints = quiz.mark * 5;
+    res.status(200).json({ earnedPoints, ispass, totalPoints });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

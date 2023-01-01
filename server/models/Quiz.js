@@ -5,7 +5,7 @@ const quizSchema = new mongoose.Schema({
   banner: String,
   discription: String,
   mark: Number,
-  passmark: Number,
+  badgeName: String,
   questions: { type: Array, default: [] },
   answers: { type: Array, default: [] },
   createdAt: { type: Date, default: Date.now },

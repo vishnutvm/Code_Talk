@@ -8,6 +8,7 @@ import {
   getAllQuiz,
   deleteQuiz,
   getQuiz,
+  getResult
 } from '../../controllers/quizControllers.js';
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router.get('/getAllquiz', getAllQuiz);
 router.post('/addquizImg', upload.single('picture'), addquizImg);
 router.delete('/:quizId/delete', deleteQuiz);
 router.get('/getQuiz/:quizId', getQuiz);
+router.post('/getResult', getResult);
 
 export default router;

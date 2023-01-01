@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
+import { Typography } from '@mui/material';
 import Navbar from '../../navbar';
+import axios from '../../../../utils/axios';
 import {
   MoveNextQuestion,
   MovePrevQuestion,
@@ -20,11 +22,9 @@ function QuestionsPage() {
   const [checked, setChecked] = useState(undefined);
   const navigate = useNavigate();
 
-
-
-
   useEffect(() => {
     console.log(result);
+    console.log(queue.length, '=>', result.length);
   }, [result]);
 
   const clickedPrev = () => {
@@ -54,6 +54,8 @@ function QuestionsPage() {
   };
 
   if (result.length && result.length >= queue.length) {
+    // send data to backend and push the results to the redux
+    console.log('result page');
     navigate('/result');
   }
 
@@ -63,19 +65,31 @@ function QuestionsPage() {
         <Navbar turnoffDark />
       </div>
 
-      <div className=" isolate h-screen  bg-white flex w-screen justify-center center ">
-        <main className=" py-10 flex flex-col gap-7 w-10/12 ">
-          <div className="heading">
+      <div className=" isolate h-screen  bg-white flex w-screen justify-center center">
+        <main className=" py-10 flex flex-col gap-7 w-10/12  ">
+          {/* <div className="heading ">
             <h1 className="text-3xl font-semibold tracking-tight text-center md:text-6xl underline">
               Quiz
             </h1>
+
+          </div> */}
+          <div className="div flex w-full justify-center">
+            <Typography
+              fontWeight="bold "
+              fontSize="clamp(1.5rem,2.5rem,3rem)"
+              color="primary"
+              className="text-center border-double border-4 border-sky-500 w-8/12"
+            >
+              Questions
+            </Typography>
           </div>
+
           {/* the question will shown herer */}
           <div className="questions">
             <QuestionsComponent onChecked={onChecked} />
           </div>
 
-          <div className="quiz flex  w-full justify-between">
+          <div className="quiz flex  w-full justify-around">
             {trace > 0 ? (
               <button
                 type="button"

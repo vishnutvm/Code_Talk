@@ -47,12 +47,6 @@ app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
 app.use('/quiz', quizRouts);
-// app.post('/test', (req, res) => {
-//   console.log('the user callled');
-//   console.log(req);
-
-//   res.json(req.body);
-// });
 
 const PORT = process.env.PORT || 4001;
 try {
