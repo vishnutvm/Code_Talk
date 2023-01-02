@@ -16,7 +16,7 @@ const Container = styled.div`
   border-radius: 2rem;
   margin: 3% 2rem 2rem 2rem;
   padding: 1rem;
-  overflow: scroll;
+  /* overflow: scroll; */
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     width: 90%;
     align-items: center;
@@ -31,7 +31,7 @@ function QuizManagement() {
   const [quizList, setQuizList] = useState([]);
 
   const getAllQuiz = async () => {
-    const data = await await (await axios.get('/quiz/getAllquiz'))?.data;
+    const data = await (await axios.get('/quiz/getAllquiz'))?.data;
     setQuizList(data);
     console.log(data);
   };

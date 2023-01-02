@@ -58,18 +58,18 @@ export const userSlice = createSlice({
       console.log('on this step');
 
       const updatedPost = posts.filter(
-        (post) => post._id !== action.payload.id
+        (post) => post._id !== action.payload.id,
       );
       posts = updatedPost;
       return { ...state, posts };
     },
     editPost: (state, action) => {
-      let { posts } = state;
+      const { posts } = state;
       console.log(posts);
       const updatedPost = action.payload.posts.reverse();
       // posts = updatedPost;
       console.log('redux here');
-      console.log('debug',updatedPost)
+      console.log('debug', updatedPost);
       return { ...state, posts: updatedPost };
     },
     updateUser: (state, action) => {
@@ -97,6 +97,6 @@ export const {
   editPost,
   updateUser,
   addVerifyUser,
-  removeVerifyUser
+  removeVerifyUser,
 } = userSlice.actions;
 export default userSlice.reducer;

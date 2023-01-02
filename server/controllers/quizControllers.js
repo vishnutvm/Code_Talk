@@ -21,7 +21,9 @@ export const addQuiz = async (req, res) => {
 
   try {
     console.log(req.body);
-    let { quiz, banner, answers, questions } = req.body;
+    let {
+      quiz, banner, answers, questions,
+    } = req.body;
 
     const newQuiz = new Quiz({
       title: quiz.title,
@@ -94,7 +96,6 @@ export const getResult = async (req, res) => {
     if (ispass && !quiz.passed.includes(userid)) {
       quiz.passed.push(userid);
       user.badges.push(quiz.badgeName);
-
     }
     await quiz.save();
     await user.save();

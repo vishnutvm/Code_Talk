@@ -50,7 +50,11 @@ const UserSchema = new mongoose.Schema({
   },
   joindDate: {
     type: String,
-    default: () => new Date().toString(),
+    default: () => new Date().toISOString().slice(0, 10),
+  },
+  joindMonth: {
+    type: String,
+    default: () => new Date().getMonth() + 1,
   },
 });
 

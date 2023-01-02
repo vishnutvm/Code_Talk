@@ -3,7 +3,7 @@
 /* eslint-disable react/button-has-type */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from '../../../utils/axios';
 import { baseUrl } from '../../../constants/constants';
@@ -20,13 +20,14 @@ const Container = styled.div`
   border-radius: 2rem;
   margin: 6% 2rem 2rem 2rem;
   padding: 1rem;
-  overflow: scroll;
+  /* overflow: scroll; */
 
   @media screen and (min-width: 320px) and (max-width: 1080px) {
-    width: 90%;
+    
+    width: 100%;
     align-items: center;
     justify-content: center;
-    margin: auto;
+    margin:  auto;
   }
 `;
 
@@ -72,7 +73,17 @@ function UserManagement() {
       <Container>
         {/* This is an example component */}
         <div className=" mx-auto min-w-full">
+          <div className="wrapper w-full flex justify-center my-3">
+            <Typography
+              fontWeight="bold "
+              fontSize="clamp(1rem,2rem,3rem)"
+              color="primary"
+            >
+              User Management
+            </Typography>
+          </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -161,6 +172,7 @@ function UserManagement() {
                       </td>
                     </tr>
                   ))}
+      
               </tbody>
             </table>
           </div>

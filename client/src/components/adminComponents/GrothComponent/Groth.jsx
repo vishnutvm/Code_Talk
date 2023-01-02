@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IoStatsChart } from 'react-icons/io5';
 import { Box } from '@mui/system';
 import { hoverEffect, themeColor } from '../../../adminTheme';
+
 
 const GrothCard = styled.div`
   height: 100%;
@@ -54,7 +55,9 @@ const UsersIncrease = styled.h5`
   border-radius: 2rem;
 `;
 
-function Groth() {
+function Groth({users,today}) {
+
+
   return (
     <GrothCard>
       <CardContent>
@@ -66,8 +69,14 @@ function Groth() {
           <GrothText>Users</GrothText>
         </Box>
 
-        <TotalUsers>468</TotalUsers>
-        <UsersIncrease>+ 34 since last month</UsersIncrease>
+        <TotalUsers>{users && users.length}</TotalUsers>
+        <UsersIncrease>
+          +
+          {' '}
+          {today && today.length}
+          {' '}
+          Joined Today
+        </UsersIncrease>
       </CardContent>
     </GrothCard>
   );

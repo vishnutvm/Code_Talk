@@ -15,7 +15,7 @@ import { changePage } from '../../../redux/adminState';
 const Container = styled.div`
   margin: 10px;
   width: 20%;
-  height: 100% !important;
+  height: 99% !important;
   border-radius: 2rem;
   background-color: #091322;
   display: flex;

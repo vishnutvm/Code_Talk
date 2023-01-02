@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import WishHeader from '../WelcomeComponent/wishHeader';
 // Groth section mayuse in future
@@ -7,6 +7,7 @@ import WishHeader from '../WelcomeComponent/wishHeader';
 import QuizSection from '../QuizSectionHome/QuizSectionHome';
 import ResentUsers from '../ResentUsersComponent/ResentUsers';
 import Groth from '../GrothComponent/Groth';
+import axios from '../../../utils/axios';
 // styles
 const Container = styled.div`
   width: 75%;
@@ -110,34 +111,58 @@ const ResentUsersWrapper = styled.div`
   //
 `;
 
-// const SecondSectionCol2 = styled.div`
-//   @media screen and (min-width: 320px) and (max-width: 1190px) {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     flex-direction: column;
-//   }
-// `;
-
 function MainContent() {
+  const [users, setusers] = useState('');
+  const [today, setToday] = useState('');
+  const [resentUsers, setresentUsers] = useState('');
+  const [quizList, setQuizList] = useState([]);
+  const getUsers = async () => {
+    await axios
+      .get('/admin/getusersReport')
+      .then((response) => {
+        console.log(response);
+        setusers(response.data.users);
+        setToday(response.data.sorted);
+        setresentUsers(
+          response.data.users.length > 2
+            ? response.data.users.slice(-2).reverse()
+            : response.data.users
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const getQuiz = async () => {
+    const data = await (await axios.get('/quiz/getAllquiz'))?.data;
+    setQuizList(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    console.log(users);
+    getUsers();
+    getQuiz();
+  }, []);
+
   return (
     <Container>
       <WishHeader />
       <SubContainer>
         <FirstSection>
           <FirstSectionCol1>
-            <Groth />
+            <Groth users={users} today={today} />
             {/* <Info /> */}
           </FirstSectionCol1>
           <FirstSectionCol2>
-            <QuizSection />
+            <QuizSection quizList={quizList} />
           </FirstSectionCol2>
         </FirstSection>
         <SecondSection>
           <SecondSectionCol1>
             <ResentUsersWrapper>
               <TitleText>Recent Users</TitleText>
-              <ResentUsers />
+              <ResentUsers users={resentUsers} />
             </ResentUsersWrapper>
           </SecondSectionCol1>
         </SecondSection>

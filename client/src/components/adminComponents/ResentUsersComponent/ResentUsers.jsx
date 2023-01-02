@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 // import ProjectImageone from '../../assets/Images/project1.jpeg';
@@ -65,7 +66,7 @@ const Title = styled.h4`
 const Active = styled.div`
   color: green;
 `;
-const Offline = styled.div`
+const Inactive = styled.div`
   color: red;
 `;
 
@@ -77,38 +78,37 @@ const Container = styled.div`
   }
 `;
 
-function ResentUsers() {
+function ResentUsers({ users }) {
+  console.log(users);
   return (
     <ResentUsersWrap>
       <CardContent>
-        <Users>
-          <Info>
-            {/* <Avatar>
-              <img src={AvatarImage} alt="" />
-            </Avatar> */}
-            <Avatar />
+        {users &&
+          users.map((user) => (
+            <Users key={user._id}>
+              <Info>
+                {user.profilePicture ? (
+                  <Avatar>
+                    <img
+                      src={user.profilePicture && user.profilePicture}
+                      alt=""
+                    />
+                  </Avatar>
+                ) : (
+                  <Avatar />
+                )}
 
-            <Title>Vishnu</Title>
-          </Info>
-          <Container>
-            {/* <Badge content="Paid" paid /> */}
-            <Active>Active</Active>
-          </Container>
-        </Users>
-        <Users>
-          <Info>
-            <Avatar />
-            {/* <Avatar>
-              <img src={AvatarImage2} alt="" />
-            </Avatar> */}
-
-            <Title>John Philips</Title>
-          </Info>
-          <Container>
-            {/* <Badge content="Late" late /> */}
-            <Offline>Offline</Offline>
-          </Container>
-        </Users>
+                <Title>{user.username}</Title>
+              </Info>
+              <Container>
+                {user.verified ? (
+                  <Active>Active</Active>
+                ) : (
+                  <Inactive>InActive</Inactive>
+                )}
+              </Container>
+            </Users>
+          ))}
       </CardContent>
     </ResentUsersWrap>
   );

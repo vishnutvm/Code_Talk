@@ -14,7 +14,7 @@ function QuestionsComponent({ onChecked }) {
   const dispatch = useDispatch();
 
   const question = useSelector(
-    (state) => state.questions.queue[state.questions.trace],
+    (state) => state.questions.queue[state.questions.trace]
   );
 
   const trace = useSelector((state) => state.questions.trace);
@@ -27,8 +27,6 @@ function QuestionsComponent({ onChecked }) {
   }, [checked]);
 
   const onSelect = (i) => {
-    // setChecked(true);
-    // console.log(i);
     onChecked(i);
     setChecked(i);
     console.log('radio button change');
@@ -84,7 +82,6 @@ function QuestionsComponent({ onChecked }) {
         </div>
       </div>
     </div>
-
   );
 }
 

@@ -41,6 +41,7 @@ export const getAllUsers = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
 export const blockUsers = async (req, res) => {
   console.log('blocking users');
   try {
@@ -53,7 +54,7 @@ export const blockUsers = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: userId },
       { blocked },
-      { new: true },
+      { new: true }
     );
     console.log(updatedUser);
 
@@ -81,6 +82,22 @@ export const addQuiz = async (req, res) => {
     console.log(req.body);
     // const users = await User.find();
     res.status(200).json('worki');
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+export const getUserReport = async (req, res) => {
+  console.log('getting Groth Report');
+  try {
+    const currendDate = new Date().toISOString().slice(0, 10);
+
+    const users = await User.find();
+    const sorted = await User.find({
+      joindDate: {
+        $eq: currendDate,
+      },
+    });
+    res.status(200).json({ users, sorted });
   } catch (err) {
     res.status(404).json({ error: err.message });
   }

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
 import ProjectImageone from '../../../assets/Images/project1.jpeg';
@@ -7,9 +8,11 @@ import {
   darkThemeColor,
   themeColor,
 } from '../../../adminTheme';
-
+import { baseUrl } from '../../../constants/constants';
+import { useDispatch } from 'react-redux';
+import { changePage } from '../../../redux/adminState';
 const QuesList = styled.div`
-width:80%;
+  width: 80%;
 
   height: auto;
   background-color: white;
@@ -18,9 +21,9 @@ width:80%;
   border-radius: 1rem;
   box-shadow: ${cardShadow};
   transition: 0.4s ease-in-out;
-  display:flex;
-  flex-direction:column;
-  gap:1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   &:hover {
     box-shadow: ${hoverEffect};
   }
@@ -29,7 +32,7 @@ width:80%;
     display:flex;
   flex-direction:column;
   gap:1rem; */
-  width:80%;
+    width: 80%;
     height: max-content;
   }
 `;
@@ -38,8 +41,8 @@ const Ques = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.3rem;
-  @media screen and (min-width: 320px) and (max-width: 1476px){
-    justify-content:space-around;
+  @media screen and (min-width: 320px) and (max-width: 1476px) {
+    justify-content: space-around;
   }
 `;
 const QuesImage = styled.div`
@@ -54,7 +57,7 @@ const Detail = styled.div`
 `;
 const Title = styled.h3`
   font-weight: 500;
-  font-size:1rem;
+  font-size: 1rem;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     font-size: 1rem;
   }
@@ -68,28 +71,27 @@ const AllQues = styled.h5`
   cursor: pointer;
 `;
 
-function QuizSection() {
+function QuizSection({ quizList }) {
+  const dispatch = useDispatch()
   return (
     <QuesList>
-      <Ques>
-        <QuesImage>
-          <img src={ProjectImageone} alt="" />
-        </QuesImage>
-        <Detail>
-          <Title>Mongo DB 2021</Title>
-          <SubTitle>1 day remaining</SubTitle>
-        </Detail>
-      </Ques>
-      <Ques>
-        <QuesImage>
-          <img src={ProjectImageone} alt="" />
-        </QuesImage>
-        <Detail>
-          <Title>Date with GIT</Title>
-          <SubTitle>1 day remaining</SubTitle>
-        </Detail>
-      </Ques>
-      <AllQues>See all Quis</AllQues>
+      {quizList.length !== 0 ? (
+        quizList.map((quiz) => (
+          <Ques>
+            <QuesImage>
+              <img src={`${baseUrl}/assets/${quiz.banner}`} alt="" />
+            </QuesImage>
+            <Detail>
+              <Title>{quiz.title}</Title>
+              <SubTitle>{quiz.badgeName}</SubTitle>
+            </Detail>
+          </Ques>
+        ))
+      ) : (
+        <h1>null</h1>
+      )}
+
+      <AllQues onClick={() => dispatch(changePage('quiz'))} >See all Quis</AllQues>
     </QuesList>
   );
 }

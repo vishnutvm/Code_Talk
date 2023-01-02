@@ -11,14 +11,14 @@ import QuizAddingPage from '../QuizAddingPage/QuizAddingPage';
 
 const Container = styled.div`
   display: flex;
-  height: 97vh;
+  height: 99vh;
   background: linear-gradient(to bottom right, white 0%, #e6e4ff 70%);
   border-radius: 2rem;
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     flex-direction: column;
     padding: 1rem;
     gap: 1rem;
-   
+    /* margin:0 0 3rem 0; */
   }
 `;
 

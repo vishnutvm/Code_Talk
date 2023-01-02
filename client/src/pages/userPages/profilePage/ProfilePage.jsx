@@ -14,7 +14,7 @@ function ProfilePage() {
   const token = useSelector((state) => state.user.token);
   const navigate = useNavigate();
 
-  const isNotMobileScreen = useMediaQuery('(min-width:100px)');
+  const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
 
   const getUser = async () => {
     fetch(`http://localhost:3001/user/${userId}`, {
@@ -34,7 +34,6 @@ function ProfilePage() {
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   useEffect(() => {
