@@ -6,6 +6,7 @@ import {
   getUserFriends,
   addRemoveFriends,
   edituser,
+  resetpass,
 } from '../../controllers/userControllers.js';
 
 import { verifyToken } from '../../middleware/token.js';
@@ -22,5 +23,6 @@ router.patch('/:id/:friendId', addRemoveFriends);
 
 // router.post('/edituser/:id', verifyToken, edituser);
 router.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
+router.post('/resetpass/:id', resetpass);
 
 export default router;

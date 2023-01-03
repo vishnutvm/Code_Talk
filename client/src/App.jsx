@@ -16,6 +16,7 @@ import QuizMainPage from './pages/userPages/quizPages/quizMainPage/QuizMainPage'
 import QuestionsPage from './pages/userPages/quizPages/questionsPage/QuestionsPage';
 import ResultPage from './pages/userPages/quizPages/resultPage/ResultPage';
 import ErrPage from './pages/404Page/ErrPage';
+import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordChangePage';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -44,6 +45,12 @@ function App() {
             <Route
               path="/editProfile"
               element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/editPassword"
+              element={
+                isUserAuth ? <PasswordChangePage /> : <Navigate to="/" />
+              }
             />
             <Route
               path="/admin"

@@ -42,3 +42,11 @@ export const loginSchema = yup.object().shape({
   username: yup.string().min(3).max(25).required('Please enter your name'),
   password: yup.string().required('Please enter your password'),
 });
+// password reset
+export const editPassSchema = yup.object().shape({
+  oldPassword: yup.string().min(6).required('Please enter your password'),
+  newPassword: yup
+    .string()
+    .min(6)
+    .required('Please enter new password'),
+});

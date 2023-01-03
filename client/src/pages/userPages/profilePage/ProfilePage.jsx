@@ -7,11 +7,13 @@ import FriendsListWidgest from '../../../components/UserComponents/FriendsListCo
 import CreatePost from '../../../components/UserComponents/CreatePostComponent/CreatePost';
 import PostsWidget from '../../../components/UserComponents/PostsComponent/PostsWidget';
 import UserWidget from '../../../components/UserComponents/UserComponent/User';
+import ProfileSettings from '../../../components/UserComponents/ProfileSettings/ProfileSettings';
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.user.token);
+  const { _id } = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
@@ -57,6 +59,11 @@ function ProfilePage() {
         <Box flexBasis={isNotMobileScreen ? '26%' : undefined}>
           <UserWidget userId={userId} profilePicture={user.profilePicture} />
           <Box m="2rem 0" />
+          {!isNotMobileScreen && userId === _id && (
+            <Box m="2rem 0">
+              <ProfileSettings />
+            </Box>
+          )}
           <FriendsListWidgest userId={userId} isProfile />
         </Box>
         <Box
@@ -67,6 +74,11 @@ function ProfilePage() {
           <Box m="2rem 0" />
           <PostsWidget userId={userId} isProfile />
         </Box>
+        {isNotMobileScreen && userId === _id && (
+          <Box>
+            <ProfileSettings />
+          </Box>
+        )}
       </Box>
     </Box>
   );

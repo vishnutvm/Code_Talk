@@ -1,4 +1,5 @@
 /* eslint-disable import/extensions */
+/* eslint-disable import/extensions */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
@@ -339,6 +340,28 @@ export const edituser = async (req, res) => {
       const updatedUser = await User.findById(id);
       res.status(201).json(updatedUser);
     });
+  } catch (err) {
+    console.log(err);
+    res.status(409).json({ error: err.message });
+  }
+};
+// reset password
+export const resetpass = async (req, res) => {
+  console.log('reseting password debug');
+
+  try {
+    console.log(req.body);
+    const { id } = req.params;
+    const { newPassword, oldPassword } = req.body;
+    const user = await User.findById(id);
+    const isAuth = await bcrypt.compare(oldPassword, user.password);
+    if (!isAuth) return res.status(400).json({ error: 'Wrong password' });
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+    user.password = passwordHash;
+    await user.save();
+    res.status(200).json({ msg: 'password updated' });
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });

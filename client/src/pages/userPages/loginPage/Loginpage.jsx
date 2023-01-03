@@ -300,11 +300,7 @@ function Loginpage() {
                   placeholder="Password"
                 />
               </div>
-              {errors.password && touched.password ? (
-                <p style={{ color: 'red' }} className="form-error">
-                  {errors.password}
-                </p>
-              ) : null}
+        
 
               {/* conform pass */}
 
