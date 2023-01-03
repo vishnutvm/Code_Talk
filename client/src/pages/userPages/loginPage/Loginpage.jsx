@@ -1,9 +1,13 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useRef, useState } from 'react';
 import './loginPage.css';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import loginPageImage from './img/log.svg';
 import registerPageImage from './img/register.svg';
 import { setLogin, addVerifyUser } from '../../../redux/userState/index';
@@ -29,6 +33,109 @@ function Loginpage() {
   const [reVerifyUser, setreVerifyUser] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const googleSignup = useGoogleLogin({
+    onSuccess: async (respose) => {
+      try {
+        const res = await axios
+          .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: {
+              Authorization: `Bearer ${respose.access_token}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            let googleRegForm = {
+              email: response.data.email,
+              username: response.data.name,
+              password: response.data.sub,
+              isgoogle: true,
+            };
+            googleRegForm = JSON.stringify(googleRegForm);
+
+            fetch(`${baseUrl}/user/register`, {
+              method: 'POST',
+
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: googleRegForm,
+            })
+              .then((resp) => resp.json())
+              .then((data) => {
+                if (data.msg) {
+                  setRegisterErr(data.msg);
+                } else {
+                  dispatch(
+                    setLogin({
+                      user: data.user,
+                      token: data.token,
+                    })
+                  );
+                  navigate('/home');
+                }
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  });
+  const googleSignin = useGoogleLogin({
+    onSuccess: async (respose) => {
+      try {
+        const res = await axios
+          .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: {
+              Authorization: `Bearer ${respose.access_token}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            let googleSignForm = {
+              googleEmail: response.data.email,
+              username: '',
+              password: response.data.sub,
+              isgoogle: true,
+            };
+            googleSignForm = JSON.stringify(googleSignForm);
+
+            fetch(`${baseUrl}/user/login`, {
+              method: 'POST',
+
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: googleSignForm,
+            })
+              .then((resp) => resp.json())
+              .then((data) => {
+                if (data.msg) {
+                  setRegisterErr(data.msg);
+                } else {
+                  dispatch(
+                    setLogin({
+                      user: data.user,
+                      token: data.token,
+                    })
+                  );
+                  navigate('/home');
+                }
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  });
+
   // style
   const signin = () => {
     console.log('sign in pressed');
@@ -47,7 +154,7 @@ function Loginpage() {
       addVerifyUser({
         email: reVerifyUser.email,
         userId: reVerifyUser.userId,
-      }),
+      })
     );
     navigate('/verifyEmail');
   };
@@ -56,19 +163,18 @@ function Loginpage() {
     console.log(pageType);
   });
 
-  const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
-    initialValues:
+  const { values, errors, handleBlur, handleChange, handleSubmit, touched } =
+    useFormik({
+      initialValues:
         pageType === 'register' ? initialValuesRegister : initialValuesLogin,
-    validationSchema: pageType === 'register' ? registerSchema : loginSchema,
+      validationSchema: pageType === 'register' ? registerSchema : loginSchema,
 
-    // eslint-disable-next-line no-shadow
-    onSubmit: async (values) => {
-      if (pageType === 'register') {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const savedUserResponse = await fetch(
-          `${baseUrl}/user/register`,
-          {
+      // eslint-disable-next-line no-shadow
+      onSubmit: async (values) => {
+        if (pageType === 'register') {
+          const formDataJson = JSON.stringify(values);
+          console.log(formDataJson);
+          const savedUserResponse = await fetch(`${baseUrl}/user/register`, {
             method: 'POST',
             // eslint-disable-next-line max-len
             // Set the headers that specify you're sending a JSON body request and accepting JSON response
@@ -77,89 +183,88 @@ function Loginpage() {
               Accept: 'application/json',
             },
             body: formDataJson,
-          },
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (!data.msg) {
-              // signin();
-              console.log(data);
-              console.log(data.data.email);
-              // redirecting to otp page rather than login page
-              dispatch(
-                addVerifyUser({
-                  email: data.data.email,
-                  userId: data.data.userId,
-                }),
-              );
-
-              navigate('/verifyEmail');
-
-              // navigate('/verifyEmail', {
-              //   email: data.data.email,
-              //   id: data.data.userId,
-              // });
-            } else {
-              console.log('success');
-              setRegisterErr(data.msg);
-              // setUserexist(true);
-            }
-
-            console.log('success', data);
           })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+            .then((response) => response.json())
+            .then((data) => {
+              if (!data.msg) {
+                // signin();
+                console.log(data);
+                console.log(data.data.email);
+                // redirecting to otp page rather than login page
+                dispatch(
+                  addVerifyUser({
+                    email: data.data.email,
+                    userId: data.data.userId,
+                  })
+                );
 
-        console.log(savedUserResponse.error);
-      } else {
-        const formDataJson = JSON.stringify(values);
-        console.log(formDataJson);
-        const loginUserResponse = await fetch(
-          'http://localhost:3001/user/login',
-          {
-            method: 'POST',
-            // eslint-disable-next-line max-len
-            // Set the headers that specify you're sending a JSON body request and accepting JSON response
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: formDataJson,
-          },
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('success', data);
-            console.log(data.user);
-            console.log(data.token);
-            // setting token and naviate to home page
+                navigate('/verifyEmail');
 
-            if (!data.msg) {
-              dispatch(
-                setLogin({
-                  user: data.user,
-                  token: data.token,
-                }),
-              );
-              navigate('/home');
-            } else {
-              if (data.email && data.userId) {
-                setreVerifyUser({ email: data.email, userId: data.userId });
+                // navigate('/verifyEmail', {
+                //   email: data.data.email,
+                //   id: data.data.userId,
+                // });
+              } else {
+                console.log('success');
+                setRegisterErr(data.msg);
+                // setUserexist(true);
               }
-              setUserLoginErr(data.msg);
+
+              console.log('success', data);
+            })
+            .catch((error) => {
+              console.log('Err', error);
+            });
+
+          console.log(savedUserResponse.error);
+        } else {
+          const formDataJson = JSON.stringify(values);
+          console.log(formDataJson);
+          const loginUserResponse = await fetch(
+            'http://localhost:3001/user/login',
+            {
+              method: 'POST',
+              // eslint-disable-next-line max-len
+              // Set the headers that specify you're sending a JSON body request and accepting JSON response
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: formDataJson,
             }
-          })
-          .catch((error) => {
-            console.log('Err', error);
-          });
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('success', data);
+              console.log(data.user);
+              console.log(data.token);
+              // setting token and naviate to home page
 
-        console.log(loginUserResponse.error);
-      }
+              if (!data.msg) {
+                dispatch(
+                  setLogin({
+                    user: data.user,
+                    token: data.token,
+                  })
+                );
+                navigate('/home');
+              } else {
+                if (data.email && data.userId) {
+                  setreVerifyUser({ email: data.email, userId: data.userId });
+                }
+                setUserLoginErr(data.msg);
+              }
+            })
+            .catch((error) => {
+              console.log('Err', error);
+            });
 
-      console.log(values);
-    },
-  });
+          console.log(loginUserResponse.error);
+        }
+
+        console.log(values);
+      },
+    });
 
   return (
     <>
@@ -213,9 +318,7 @@ function Loginpage() {
 
               {useLoginErr && (
                 <p style={{ color: 'red' }} className="form-error">
-                  {useLoginErr}
-                  {' '}
-                  !
+                  {useLoginErr} !
                 </p>
               )}
               {useLoginErr === 'Your account is not verified' ? (
@@ -240,7 +343,7 @@ function Loginpage() {
                 <a href="/" className="social-icon">
                   <i className="fab fa-twitter" />
                 </a>
-                <a href="/" className="social-icon">
+                <a onClick={googleSignin} className="social-icon">
                   <i className="fab fa-google" />
                 </a>
                 <a href="/" className="social-icon">
@@ -300,7 +403,6 @@ function Loginpage() {
                   placeholder="Password"
                 />
               </div>
-        
 
               {/* conform pass */}
 
@@ -339,7 +441,7 @@ function Loginpage() {
                 <a href="/" className="social-icon">
                   <i className="fab fa-twitter" />
                 </a>
-                <a href="/" className="social-icon">
+                <a onClick={googleSignup} className="social-icon">
                   <i className="fab fa-google" />
                 </a>
                 <a href="/" className="social-icon">

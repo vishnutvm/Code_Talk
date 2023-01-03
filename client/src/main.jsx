@@ -12,13 +12,10 @@ import App from './App';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-     
-      
       <PersistGate loading={null} persistor={persistStore(store)} />
       <GoogleOAuthProvider clientId="155796053177-ecsrlkspffqf0f3v1lnq731i5qm3v9cl.apps.googleusercontent.com">
-      <App />
+        <App />
       </GoogleOAuthProvider>
-   
     </Provider>
   </React.StrictMode>
 );

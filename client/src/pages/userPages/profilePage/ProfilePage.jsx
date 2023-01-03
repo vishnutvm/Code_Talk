@@ -13,7 +13,7 @@ function ProfilePage() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.user.token);
-  const { _id } = useSelector((state) => state.user.user);
+  const { _id, isgoogle = false } = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
@@ -74,7 +74,7 @@ function ProfilePage() {
           <Box m="2rem 0" />
           <PostsWidget userId={userId} isProfile />
         </Box>
-        {isNotMobileScreen && userId === _id && (
+        {isNotMobileScreen && userId === _id && !isgoogle && (
           <Box>
             <ProfileSettings />
           </Box>

@@ -56,6 +56,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => new Date().getMonth() + 1,
   },
+  isgoogle: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model('User', UserSchema);

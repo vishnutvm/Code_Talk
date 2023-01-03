@@ -1,3 +1,8 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable block-scoped-var */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+/* eslint-disable prefer-const */
 /* eslint-disable import/extensions */
 /* eslint-disable import/extensions */
 /* eslint-disable no-shadow */
@@ -5,6 +10,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 // import crypto from 'crypto';
+import generateUsername from 'generate-username-from-email';
 import User from '../models/User.js';
 import UserOTPVerification from '../models/UserOTPVerification.js';
 import { generateOTP } from '../utils/generateOTP.js';
@@ -18,25 +24,55 @@ export const register = async (req, res) => {
 
   try {
     // destructuring data
-    const { username, email, password } = req.body;
-    const userExist = await User.findOne({ username });
+    let { username, email, password, isgoogle = false } = req.body;
+    if (isgoogle) {
+      username = generateUsername(email);
+    }
     const emailExist = await User.findOne({ email });
+    if (emailExist) {
+      return res
+        .status(500)
+        .json({ msg: 'Email alredy registerd plees to login' });
+    }
+
+    const userExist = await User.findOne({ username });
+
     if (userExist) {
       return res.status(500).json({ msg: 'Username alredy taken' });
     }
-    if (emailExist) {
-      return res.status(500).json({ msg: 'Email alredy registerd' });
-    }
+
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const user = new User({
-      username,
-      email,
-      password: passwordHash,
-    });
+    if (isgoogle) {
+      var user = new User({
+        username,
+        email,
+        verified: true,
+        isgoogle: true,
+        password: passwordHash,
+      });
+    } else {
+      var user = new User({
+        username,
+        email,
+        password: passwordHash,
+      });
+    }
+
     const insertedUser = await user.save();
-    // res.status(201).json(insertedUser);
+
+    if (isgoogle) {
+      const user = await User.findOne({ username });
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      //  to prevent password going to the frontend
+      delete user.password;
+
+      //  sendin the user data and token to frontend
+      return res.status(200).json({ token, user });
+
+      // res.status(201).json(insertedUser);
+    }
     // email otp verification here
 
     const otp = generateOTP();
@@ -55,10 +91,6 @@ export const register = async (req, res) => {
     await NewUserOTPVerification.save();
 
     await sendEmail(user.email, 'Verify Email', html);
-
-    // const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
-
-    // await sendEmail(user.email, 'Verify Email', url);
 
     // sending data to frontend when all ok
 
@@ -80,9 +112,13 @@ export const register = async (req, res) => {
 // login user
 export const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, isgoogle = false, googleEmail = '' } = req.body;
     // checking if user exists
-    const user = await User.findOne({ username });
+    if (isgoogle) {
+      var user = await User.findOne({ email: googleEmail });
+    } else {
+      var user = await User.findOne({ username });
+    }
     if (!user) return res.status(400).json({ msg: 'User does not exist. ' });
     // checkin password
     const isAuth = await bcrypt.compare(password, user.password);

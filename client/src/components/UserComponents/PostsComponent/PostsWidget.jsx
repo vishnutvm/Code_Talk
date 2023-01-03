@@ -45,10 +45,6 @@ function PostsWidget({ userId, isProfile = false }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   debugger
-  // }, [posts]);
-
   console.log(posts);
   return (
     <>

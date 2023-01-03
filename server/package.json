@@ -9,6 +9,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "generate-username-from-email": "^1.0.2",
     "gridfs-stream": "^1.1.1",
     "helmet": "^6.0.0",
     "http-errors": "^2.0.0",
