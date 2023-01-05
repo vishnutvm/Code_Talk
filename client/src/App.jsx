@@ -8,7 +8,6 @@ import { themeSettings } from './theme';
 
 import UserRouts from './routs/UserRouts';
 import AdminRouts from './routs/AdminRouts';
-import ErrRouts from './routs/ErrRouts';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -21,7 +20,7 @@ function App() {
           <CssBaseline />
           <UserRouts />
           <AdminRouts />
-          <ErrRouts />
+          {/* <ErrRouts /> */}
         </ThemeProvider>
       </BrowserRouter>
     </div>
