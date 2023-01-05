@@ -12,7 +12,7 @@
 
 ## Introduction
 
-A  Social media  website using React js, Node js, Express js, and MongoDb.
+A  Social media  website using React js, Redux, Node js, Express js, and MongoDb.
 
 NOTE: Please read the RUN section before opening an issue.
 
@@ -22,7 +22,7 @@ NOTE: Please read the RUN section before opening an issue.
 
 ![screenshot](projcet-home.png)
 
-![screenshot](chat-page.png)
+
 
 
 CodeTalk is a social network for developers to showcase their projects or products with other developers across the globe. Just like any other social network out there, you can like posts, save them privately, leave a comment and follow your favorite developers to build your feed. Also, have features for real-time messages and video chat
