@@ -199,15 +199,9 @@ function Loginpage() {
                 );
 
                 navigate('/verifyEmail');
-
-                // navigate('/verifyEmail', {
-                //   email: data.data.email,
-                //   id: data.data.userId,
-                // });
               } else {
                 console.log('success');
                 setRegisterErr(data.msg);
-                // setUserexist(true);
               }
 
               console.log('success', data);

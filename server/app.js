@@ -14,14 +14,12 @@ import morgan from 'morgan';
 import mongoDB from './config/db.js';
 import { upload } from './middleware/fileUpload.js';
 // Routs
-import signUpRouts from './routes/user/signUpRout.js';
-import loginRouts from './routes/user/loginRout.js';
-import homeRouts from './routes/user/homeRout.js';
+
 import postRouts from './routes/post/postRouts.js';
 import adminRouts from './routes/admin/adminRouts.js';
-import verifyEmailRouts from './routes/user/verifyEmailRout.js';
 import messsageRouts from './routes/chat/messageRouts.js';
 import quizRouts from './routes/quiz/quizRouts.js';
+import userRouts from './routes/user/userRouts.js';
 // import { generateUploadURL } from './s3.js';
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -37,12 +35,7 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 const server = http.createServer(app);
 
-// RoutssignUpRoutsz
-app.use('/user', signUpRouts);
-app.use('/user', loginRouts);
-app.use('/user', homeRouts);
-app.use('/user', verifyEmailRouts);
-
+app.use('/user', userRouts);
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
@@ -67,7 +60,6 @@ const io = new Server(server, {
 });
 
 global.onlineUsers = new Map(); // holds all active sockets
-
 
 io.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);

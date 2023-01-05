@@ -14,9 +14,7 @@ import generateUsername from 'generate-username-from-email';
 import User from '../models/User.js';
 import UserOTPVerification from '../models/UserOTPVerification.js';
 import { generateOTP } from '../utils/generateOTP.js';
-// import { sendEmail } from '../utils/sendEmail.js';
 import { sendEmail } from '../utils/sendEmail.js';
-// import Token from '../models/Token.js';
 // Register user
 
 export const register = async (req, res) => {
@@ -200,13 +198,6 @@ export const verifyEmail = async (req, res) => {
               { new: true }
             );
 
-            // User.updateOne({ _id: userId }, { verified: true });
-
-            // const updatedUser = await User.findByIdAndUpdate(
-            //   { _id: userId },
-            //   { blocked },
-            //   { new: true },
-
             await UserOTPVerification.deleteMany({ userId });
             res
               .status(201)
@@ -229,10 +220,6 @@ export const resentOTP = async (req, res) => {
   const OtpHash = await bcrypt.hash(otp, salt);
 
   const user = await User.findById(userId);
-  // const UserOTPVerificationRecord = await UserOTPVerification.find({
-  //   userId,
-  // });
-  // await UserOTPVerification.deleteMany({ userId });
   const userOtpRecord = await UserOTPVerification.find({
     userId,
   });
@@ -250,12 +237,6 @@ export const resentOTP = async (req, res) => {
   await NewUserOTPVerification.save();
 
   await sendEmail(user.email, 'Verify Email', html);
-
-  // const url = `${process.env.BASE_URL}users/${insertedUser._id}/verify/${token.token}`;
-
-  // await sendEmail(user.email, 'Verify Email', url);
-
-  // sending data to frontend when all ok
 
   // sending otp verification
   res.json({
