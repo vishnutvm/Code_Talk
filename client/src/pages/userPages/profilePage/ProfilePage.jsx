@@ -8,6 +8,7 @@ import CreatePost from '../../../components/UserComponents/CreatePostComponent/C
 import PostsWidget from '../../../components/UserComponents/PostsComponent/PostsWidget';
 import UserWidget from '../../../components/UserComponents/UserComponent/User';
 import ProfileSettings from '../../../components/UserComponents/ProfileSettings/ProfileSettings';
+import { baseUrl } from '../../../constants/constants';
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -19,7 +20,7 @@ function ProfilePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
 
   const getUser = async () => {
-    fetch(`http://localhost:3001/user/${userId}`, {
+    fetch(`${baseUrl}/user/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })

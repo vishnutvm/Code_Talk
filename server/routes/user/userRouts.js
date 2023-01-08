@@ -20,6 +20,7 @@ const router = express.Router();
 router.post('/login', login);
 router.post('/register', register);
 router.get('/:id', getUser);
+// router.get('/getuser', getUser);
 router.get('/:id/friends', getUserFriends);
 
 router.patch('/:id/:friendId', addRemoveFriends);

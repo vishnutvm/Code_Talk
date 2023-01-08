@@ -39,7 +39,7 @@ function UserWidget({ userId, profilePicture }) {
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const isFriend = currentUserFriendList.find(
-    (friend) => friend._id === userId,
+    (friend) => friend._id === userId
   );
   // hearder with token
   const headers = {
@@ -58,15 +58,18 @@ function UserWidget({ userId, profilePicture }) {
     }
   };
 
+  // useEffect(() => {
+  //   if (_id !== userId) {
+  //     getUserDetails();
+  //   }
+  // }, []);
   useEffect(() => {
-    if (_id !== userId) {
-      getUserDetails();
-    }
+    getUserDetails();
   }, []);
 
-  if (_id === userId) {
-    user = currentUser;
-  }
+  // if (_id === userId) {
+  //   user = currentUser;
+  // }
 
   if (!user) {
     console.log('no user');
@@ -121,11 +124,7 @@ function UserWidget({ userId, profilePicture }) {
             >
               {username}
             </Typography>
-            <Typography color={medium}>
-              {friends.length}
-              {' '}
-              friends
-            </Typography>
+            <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
         {_id === userId && (
