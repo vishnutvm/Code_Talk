@@ -59,7 +59,7 @@ function CreatePost({ profilePicture, postId = null }) {
   );
   const [editPrev, setEditprev] = useState(
     editingPost && editingPost.picturePath
-      ? `http://localhost:3001/assets/${editingPost.picturePath}`
+      ? `${baseUrl}/assets/${editingPost.picturePath}`
       : '',
   );
   // handle post edit

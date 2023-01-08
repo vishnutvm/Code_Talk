@@ -5,15 +5,12 @@ import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
   FavoriteOutlined,
-  // ShareOutlined,
-  EditOutlined,
-  DeleteOutline,
 } from '@mui/icons-material';
 import axios from 'axios';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Menu, Transition } from '@headlessui/react';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import Friend from '../FriendComponent/Friend';
 import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
@@ -132,7 +129,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                         onClick={editThePost}
                       >
@@ -159,7 +156,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                         onClick={deleteThePost}
                       >
@@ -178,6 +175,11 @@ function PostWidget({
                           />
                         </svg>
                       </a>
+
+
+
+
+
                     )}
                   </Menu.Item>
                 </Menu.Items>

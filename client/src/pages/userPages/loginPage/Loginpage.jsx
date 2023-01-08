@@ -214,19 +214,16 @@ function Loginpage() {
         } else {
           const formDataJson = JSON.stringify(values);
           console.log(formDataJson);
-          const loginUserResponse = await fetch(
-            'http://localhost:3001/user/login',
-            {
-              method: 'POST',
-              // eslint-disable-next-line max-len
-              // Set the headers that specify you're sending a JSON body request and accepting JSON response
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: formDataJson,
-            }
-          )
+          const loginUserResponse = await fetch(`${baseUrl}/user/login`, {
+            method: 'POST',
+            // eslint-disable-next-line max-len
+            // Set the headers that specify you're sending a JSON body request and accepting JSON response
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: formDataJson,
+          })
             .then((response) => response.json())
             .then((data) => {
               console.log('success', data);
