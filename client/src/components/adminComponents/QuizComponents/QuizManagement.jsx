@@ -90,23 +90,12 @@ function QuizManagement() {
                           <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
                             {quiz.title}
                           </div>
-                          {/* <a
-                            href="#"
-                            className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
-                          >
-                            Take the test
-                          </a> */}
+
                           <p className="mt-2 text-slate-500">
                             {quiz.discription}
                           </p>
                         </div>
                         <div className="buttons flex items-center px-4 justify-center">
-                          {/* <button
-                            type="button"
-                            className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-                          >
-                            Edit
-                          </button> */}
                           <button
                             type="button"
                             className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
@@ -133,7 +122,6 @@ function QuizManagement() {
                     <div className="mt-auto flex gap-3">
                       <div className="bg-gray-200 w-20 h-8 animate-pulse rounded-full" />
                       <div className="bg-gray-200 w-20 h-8 animate-pulse rounded-full" />
-                      {/* <div className="bg-gray-200 w-20 h-8 animate-pulse rounded-full ml-auto" /> */}
                     </div>
                   </div>
                 </div>

@@ -23,7 +23,6 @@ function ChatContactComponent() {
     dispatch(setCurrentChat(userId));
   };
 
-
   return (
     <div className="chatWrapper  ">
       {/* toggle button */}
@@ -93,7 +92,7 @@ function ChatContactComponent() {
             <div className="flex flex-row items-center px-1 justify-between text-xs">
               <span className="font-bold text-center">Friends</span>
               <span className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
-                4
+                {friends && friends.length}
               </span>
             </div>
 
