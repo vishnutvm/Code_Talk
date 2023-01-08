@@ -126,7 +126,7 @@ function MainContent() {
         setresentUsers(
           response.data.users.length > 2
             ? response.data.users.slice(-2).reverse()
-            : response.data.users
+            : response.data.users,
         );
       })
       .catch((error) => {

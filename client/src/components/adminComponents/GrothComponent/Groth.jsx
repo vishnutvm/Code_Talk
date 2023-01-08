@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IoStatsChart } from 'react-icons/io5';
 import { Box } from '@mui/system';
 import { hoverEffect, themeColor } from '../../../adminTheme';
-
 
 const GrothCard = styled.div`
   height: 100%;
@@ -55,9 +55,7 @@ const UsersIncrease = styled.h5`
   border-radius: 2rem;
 `;
 
-function Groth({users,today}) {
-
-
+function Groth({ users, today }) {
   return (
     <GrothCard>
       <CardContent>
