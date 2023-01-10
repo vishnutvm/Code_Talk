@@ -35,7 +35,7 @@ app.use(cors());
 // test
 // agin test
 // hosting static
-app.use(express.static(path.join(__dirname, '/client/dist')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 // stati
 
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
@@ -49,6 +49,11 @@ app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
 app.use('/quiz', quizRouts);
+
+// for server 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 const PORT = process.env.PORT || 4001;
 
