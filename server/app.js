@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // hosting static
-app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/client/dist')));
 // stati
 
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
