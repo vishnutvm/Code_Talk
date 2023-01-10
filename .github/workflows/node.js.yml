@@ -30,6 +30,7 @@ jobs:
         npm run build
         cd ..
         cd server
+        rm -rf node_modules
         npm i
         pm2 stop all
         pm2 start app.js
