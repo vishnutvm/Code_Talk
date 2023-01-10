@@ -35,7 +35,7 @@ jobs:
         rm -rf node_modules
         npm i
         cp ../../../.env .env
-        mkdir public/assets
+        mkdir -p public/assets
         pm2 stop all
         pm2 start app.js
         sudo service nginx restart
