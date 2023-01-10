@@ -25,6 +25,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: |
         cd client
+        npm i @headlessui/react
         npm i
         npm run build
         cd ..
