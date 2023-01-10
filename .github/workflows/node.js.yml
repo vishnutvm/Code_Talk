@@ -24,10 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: ls
-    - run: cd ./server/
+    - run: cd server
     - run: ls
-    - run: npm i
-    - run: cd ..
-    - run: cd ./client/
-    - run: npm i
-    - run: npm run build
+    - run: cd client
+    - run: ls
