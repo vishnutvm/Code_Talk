@@ -34,6 +34,7 @@ jobs:
         cd server
         rm -rf node_modules
         npm i
+        cp ../../../.env .env
         pm2 stop all
         pm2 start app.js
         sudo service nginx restart
