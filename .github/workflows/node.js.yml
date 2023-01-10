@@ -34,4 +34,5 @@ jobs:
         npm i
         pm2 stop all
         pm2 start app.js
+        sudo service nginx restart
         
