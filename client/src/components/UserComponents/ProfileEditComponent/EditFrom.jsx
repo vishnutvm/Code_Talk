@@ -55,7 +55,7 @@ function EditFrom() {
     formData.append('profilePicture', profilePicture);
 
     if (picture) {
-      console.log(picture);
+      // console.log(picture);
       formData.append('picture', picture);
     }
 
@@ -68,7 +68,7 @@ function EditFrom() {
 
       .then((response) => {
         dispatch(updateUser(response));
-        console.log(response);
+        // console.log(response);
         navigate('/');
       })
       .catch((error) => {

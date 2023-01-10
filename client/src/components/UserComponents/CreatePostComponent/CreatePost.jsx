@@ -33,8 +33,7 @@ import { editPost, setPosts } from '../../../redux/userState';
 import { baseUrl } from '../../../constants/constants';
 
 // eslint-disable-next-line react/prop-types
-function CreatePost({ profilePicture, postId = null }) {
-  console.log('working', profilePicture);
+function CreatePost({ profilePicture, postId = null, setedit }) {
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(postId);
   const [close, setclose] = useState(null);
@@ -51,16 +50,17 @@ function CreatePost({ profilePicture, postId = null }) {
   const { medium } = palette.neutral;
   const navigate = useNavigate();
   // getting the post for edit
-  const editingPost = useSelector((state) => state.user.posts.find((pos) => pos._id === postId));
-  console.log(editingPost);
+  const editingPost = useSelector((state) =>
+    state.user.posts.find((pos) => pos._id === postId)
+  );
   const [post, setPost] = useState(editingPost ? editingPost.discription : '');
   const [isImage, setIsImage] = useState(
-    !!(editingPost && editingPost.picturePath),
+    !!(editingPost && editingPost.picturePath)
   );
   const [editPrev, setEditprev] = useState(
     editingPost && editingPost.picturePath
       ? `${baseUrl}/assets/${editingPost.picturePath}`
-      : '',
+      : ''
   );
   // handle post edit
   const handleEditPost = () => {
@@ -72,19 +72,14 @@ function CreatePost({ profilePicture, postId = null }) {
     formData.append('userId', _id);
     formData.append('postId', editingPost._id);
     formData.append('discription', post);
-    // if (editPrev) {
-    //   console.log(editPrev);
-    //   formData.append('picturePath', editingPost.picturePath);
-    // }
+
     if (image) {
-      console.log(image);
       formData.append('picture', image);
       formData.append('picturePath', image.name);
     }
 
     // found bug need to remove
-    console.log(formData);
-    const res = fetch(`${baseUrl}/posts/editPost`, {
+    fetch(`${baseUrl}/posts/editPost`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -98,7 +93,8 @@ function CreatePost({ profilePicture, postId = null }) {
         setPost('');
         setEditing(null);
         setclose(true);
-        navigate(0);
+        setedit(false);
+        // navigate(0);
       })
       .catch((err) => {
         console.log('err', err);
@@ -111,12 +107,9 @@ function CreatePost({ profilePicture, postId = null }) {
     formData.append('userId', _id);
     formData.append('discription', post);
     if (image) {
-      console.log(image);
       formData.append('picture', image);
       formData.append('picturePath', image.name);
     }
-
-    console.log(formData, '');
 
     const res = fetch(`${baseUrl}/posts/createPost`, {
       method: 'POST',
@@ -125,8 +118,6 @@ function CreatePost({ profilePicture, postId = null }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        console.log(formData, 'formdata');
         const posts = data;
         dispatch(setPosts({ posts }));
         // reset the state

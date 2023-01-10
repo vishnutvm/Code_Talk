@@ -14,8 +14,6 @@ function Friend({ userPicturePath, friendId, username, isProfile = false }) {
   const { _id } = useSelector((state) => state.user.user);
   const token = useSelector((state) => state.user.token);
   const friends = useSelector((state) => state.user.user.friends);
-  // checking if friedns comming
-  // console.log(friends, 'frendte');
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;

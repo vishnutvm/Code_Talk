@@ -16,7 +16,7 @@ function ResultComponent() {
 
   const [finalResult, setfinalResult] = useState(undefined);
   const getResult = () => {
-    console.log('Get result works');
+    // console.log('Get result works');
     const userid = _id;
     axios
       .post('/quiz/getResult', {
@@ -25,7 +25,7 @@ function ResultComponent() {
         userid,
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setfinalResult(response.data);
       })
       .catch((err) => {
@@ -40,7 +40,6 @@ function ResultComponent() {
     navigate('/quiz');
     // dispatch(resetQuiz());
     // dispatch(restResult())
-    console.log('next clicked');
   };
 
   return (

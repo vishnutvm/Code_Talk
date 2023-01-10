@@ -21,6 +21,7 @@ import messsageRouts from './routes/chat/messageRouts.js';
 import quizRouts from './routes/quiz/quizRouts.js';
 import userRouts from './routes/user/userRouts.js';
 // import { generateUploadURL } from './s3.js';
+
 // Config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,10 +32,16 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// hosting static
+app.use(express.static(path.join(__dirname, '/client/build')));
+// stati
+
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
+// server
 const server = http.createServer(app);
 
+// routs
 app.use('/user', userRouts);
 app.use('/posts', postRouts);
 app.use('/admin', adminRouts);
@@ -42,6 +49,8 @@ app.use('/chat', messsageRouts);
 app.use('/quiz', quizRouts);
 
 const PORT = process.env.PORT || 4001;
+
+// starting monodb, starting server, socket
 try {
   mongoDB().then(() => {
     server.listen(PORT, () => {

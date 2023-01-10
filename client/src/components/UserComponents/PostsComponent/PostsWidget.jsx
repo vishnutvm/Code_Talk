@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../../../redux/userState';
 import { baseUrl } from '../../../constants/constants';
 import PostWidget from '../PostComponent/PostWidget';
 
 function PostsWidget({ userId, isProfile = false }) {
-  console.log(isProfile);
+  const [loading, setloading] = useState(false);
+  // console.log(isProfile);
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.user.posts);
   const token = useSelector((state) => state.user.token);
@@ -45,7 +46,12 @@ function PostsWidget({ userId, isProfile = false }) {
     }
   }, []);
 
-  console.log(posts);
+  // useEffect(() => {
+  //   // console.log(posts);
+  //   setloading(true);
+  // }, [posts]);
+
+  // console.log(posts);
   return (
     <>
       {posts.map(

@@ -23,7 +23,7 @@ function OTP() {
       data: { userId, otp },
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(removeVerifyUser());
         navigate('/');
       })

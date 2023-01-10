@@ -65,7 +65,7 @@ function PostWidget({
 
   // delete the post
   const deleteThePost = async () => {
-    console.log('called delete post');
+    // console.log('called delete post');
     axios({
       method: 'DELETE',
       url: `${baseUrl}/posts/${postId}/delete`,
@@ -74,7 +74,7 @@ function PostWidget({
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       dispatch(deletePost({ id: postId }));
     });
   };
@@ -86,7 +86,13 @@ function PostWidget({
   //   model
   // };
   if (edit) {
-    return <CreatePost profilePicture={userPicturePath} postId={postId} />;
+    return (
+      <CreatePost
+        profilePicture={userPicturePath}
+        postId={postId}
+        setedit={setedit}
+      />
+    );
   }
   return (
     <WidgetWrapper m="2rem 1rem">

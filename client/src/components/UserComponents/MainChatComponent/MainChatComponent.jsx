@@ -38,7 +38,7 @@ function MainChatComponent({ socket }) {
           to: currentChatUserId,
         },
       }).then((response) => {
-        console.log(response);
+        // console.log(response);
         setMessages(response.data);
       });
     }
@@ -63,31 +63,25 @@ function MainChatComponent({ socket }) {
       message: msg,
     });
     const msgs = [...message];
-    console.log(msg);
+    // console.log(msg);
     msgs.push({ fromSelf: true, message: msg });
     setMessages(msgs);
   };
 
   useEffect(() => {
-    console.log('useeffect working');
     if (socket.current) {
-      console.log('get arraival message');
       socket.current.on('msg-recieve', (msg) => {
-        console.log('msg err');
-        console.log(msg);
         setarrivalMessage({ fromSelf: false, message: msg });
       });
     }
   }, []);
 
   useEffect(() => {
-    console.log('arrival message woringh');
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage]);
 
   // scroll effect apge
   useEffect(() => {
-    console.log('scroll is workingg');
 
     scrollRef.current?.scrollIntoView(false);
   }, [message]);

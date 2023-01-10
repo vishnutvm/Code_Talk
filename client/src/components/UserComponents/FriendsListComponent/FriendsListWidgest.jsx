@@ -11,7 +11,6 @@ function FriendsListWidgest({ userId, isProfile = false }) {
   const { palette } = useTheme();
   const token = useSelector((state) => state.user.token);
   const friends = useSelector((state) => state.user.user.friends);
-  console.log(friends);
   const getFriends = async () => {
     const response = await fetch(`${baseUrl}/user/${userId}/friends`, {
       method: 'GET',

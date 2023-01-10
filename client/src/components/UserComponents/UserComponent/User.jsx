@@ -23,7 +23,7 @@ import { setFriends } from '../../../redux/userState';
 import axios from '../../../utils/axios';
 // eslint-disable-next-line react/prop-types
 function UserWidget({ userId, profilePicture }) {
-  console.log(profilePicture);
+  // console.log(profilePicture);
   // eslint-disable-next-line prefer-const
   let [user, setUser] = useState(null);
   const { palette } = useTheme();
@@ -51,18 +51,12 @@ function UserWidget({ userId, profilePicture }) {
     try {
       const response = await axios.get(`/user/${userId}`, headers);
       setUser(response.data);
-      console.log(response);
-      console.log('going to get user detals');
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // useEffect(() => {
-  //   if (_id !== userId) {
-  //     getUserDetails();
-  //   }
-  // }, []);
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -89,8 +83,8 @@ function UserWidget({ userId, profilePicture }) {
     badges,
   } = user;
   const allBadges = badges.filter((item, i) => badges.indexOf(item) === i);
-  console.log(allBadges);
-  console.log(user);
+  // console.log(allBadges);
+  // console.log(user);
   const patchFriend = async () => {
     try {
       const response = await axios.patch(`/user/${_id}/${userId}`, headers);

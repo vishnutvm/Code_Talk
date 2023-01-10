@@ -16,8 +16,6 @@ function ChatContactComponent() {
   const currentUser = useSelector((state) => state.user.user);
   const [toggle, setToggle] = useState(false);
   const isNotMobileScreen = useMediaQuery('(min-width:800px)');
-  // const [selectedUser, setselectedUser] = useState('');
-  console.log(friends);
 
   const ClickedForChat = (userId) => {
     dispatch(setCurrentChat(userId));
