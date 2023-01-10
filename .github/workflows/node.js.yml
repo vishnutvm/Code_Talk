@@ -24,4 +24,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run:
-        ls
+        cd server
+        cat app.js
