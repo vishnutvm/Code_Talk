@@ -23,5 +23,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd server
     - run: ls
+    - run: cd Code_Talk
+    - run: cd server
+    - run: npm i
+    - run: cd ..
+    - run: cd client
+    - run: npm i
+    - run: npm run build
