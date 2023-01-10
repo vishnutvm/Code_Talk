@@ -32,6 +32,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// test
 // hosting static
 app.use(express.static(path.join(__dirname, '/client/dist')));
 // stati
