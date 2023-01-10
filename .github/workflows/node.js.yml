@@ -25,4 +25,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run:
         cd client
-        ls
+        npm i
