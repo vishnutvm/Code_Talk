@@ -27,11 +27,14 @@ jobs:
         cd client
         npm i @headlessui/react
         npm i
+        rm -rf src/constants/constants.js
+        mv src/constants/server.js src/constants/constants.js
         npm run build
         cd ..
         cd server
         rm -rf node_modules
         npm i
+        cp ../../../.env .env
         pm2 stop all
         pm2 start app.js
         sudo service nginx restart
