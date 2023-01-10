@@ -31,3 +31,6 @@ jobs:
         cd ..
         cd server
         npm i
+        pm2 stop all
+        pm2 start app.js
+        
