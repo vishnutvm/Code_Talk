@@ -262,7 +262,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                         onClick={editThePost}
                       >
@@ -288,7 +288,7 @@ function PostWidget({
                       <button
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                         onClick={() => setModel(true)}
                         type="button"
@@ -363,7 +363,7 @@ function PostWidget({
                 </label>
                 <textarea
                   id="comment"
-                  rows={6}
+                  rows={3}
                   className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                   placeholder="Write a comment..."
                   required=""
@@ -393,7 +393,7 @@ function PostWidget({
                               src={`${baseUrl}/assets/${comment.userprofile}`}
                               alt="Profile image"
                             />
-                          )}               
+                          )}
 
                           {/* commented user name */}
                           {comment.username}
@@ -415,7 +415,7 @@ function PostWidget({
                       {comment.comment}
                     </p>
                   </article>
-                ))
+              ))
               : ''}
           </div>
         </section>
