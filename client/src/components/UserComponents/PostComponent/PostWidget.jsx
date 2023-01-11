@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useState, Fragment } from 'react';
@@ -5,18 +7,22 @@ import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
   FavoriteOutlined,
+  ShareOutlined,
 } from '@mui/icons-material';
-import axios from 'axios';
+// import axios from 'axios';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
+import * as moment from 'moment';
+
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import Friend from '../FriendComponent/Friend';
 import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
 import { setPost, deletePost } from '../../../redux/userState';
 import CreatePost from '../CreatePostComponent/CreatePost';
 import { baseUrl } from '../../../constants/constants';
+import axios from '../../../utils/axios';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -36,6 +42,8 @@ function PostWidget({
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const loggedInUserId = useSelector((state) => state.user.user._id);
+  const loggedInUser = useSelector((state) => state.user.user);
+  const [updatedComment, setupdatedComment] = useState(comments);
   // const isLiked = Boolean(likes[loggedInUserId]);
   // const likeCount = Object.keys(likes).length;
 
@@ -46,8 +54,13 @@ function PostWidget({
   const [isLiked, setIsLiked] = useState(Boolean(likes[loggedInUserId]));
   const [likeCount, setlikeCount] = useState(Object.keys(likes).length);
   const curUserId = useSelector((state) => state.user.user._id);
+  const { username, profilePicture } = useSelector((state) => state.user.user);
+  // const user = useSelector((state) => state.user.user);
   const [edit, setedit] = useState(null);
   const [model, setModel] = useState(false);
+  const [comment, setcomment] = useState();
+  // const { username, profilePicture, _id } = user;
+
   const patchLike = async () => {
     const response = await fetch(`${baseUrl}/posts/${postId}/like`, {
       method: 'PATCH',
@@ -61,6 +74,42 @@ function PostWidget({
     dispatch(setPost({ post: updatedPost }));
     setlikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     setIsLiked(!isLiked);
+  };
+  const addcomment = async () => {
+    // const response = await fetch(`${baseUrl}/posts/${postId}/comment`, {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ userId: loggedInUserId }),
+    // });
+    console.log(comment);
+    console.log('working');
+    axios({
+      method: 'POST',
+      url: `${baseUrl}/posts/${postId}/comment`,
+
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      data: {
+        comment,
+        username,
+        userprofile: profilePicture,
+        time: moment().format('MMM Do YY'),
+      },
+    }).then((response) => {
+      setcomment('');
+      setupdatedComment(response.data.Comments);
+      console.log(updatedComment);
+      // dispatch(setPost({ post: response.data }));
+
+      console.log(response.data);
+    });
+
+    // const updatedPost = await response.json();
   };
 
   // delete the post
@@ -82,11 +131,19 @@ function PostWidget({
   const editThePost = () => {
     setedit(true);
   };
-  // const togleModel = () => {
-  //   model
-  // };
-  if (edit) {
+  const commentSubmit = () => {
+    console.log(comment);
+    setcomment('');
+  };
 
+  if (edit) {
+    return (
+      <CreatePost
+        profilePicture={userPicturePath}
+        postId={postId}
+        setedit={setedit}
+      />
+    );
   }
   return (
     <WidgetWrapper m="2rem 1rem">
@@ -286,39 +343,82 @@ function PostWidget({
             <Typography>{likeCount}</Typography>
           </FlexBetween>
 
-          {/* <FlexBetween gap="0.3rem">
+          <FlexBetween gap="0.3rem">
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
-          </FlexBetween> */}
+            <Typography>{updatedComment.length}</Typography>
+          </FlexBetween>
         </FlexBetween>
         {/* <ShareOutlined /> */}
-
-        {/* {curUserId === postUserId && (
-          <FlexBetween gap="0.7rem">
-            <IconButton onClick={editThePost}>
-              <EditOutlined />
-            </IconButton>
-            <IconButton onClick={deleteThePost}>
-              <DeleteOutline />
-            </IconButton>
-          </FlexBetween>
-        )} */}
       </FlexBetween>
 
       {isComments && (
-        <Box mt="0.5rem">
-          {comments.map((comment) => (
-            <Box key={`${name}-${name}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
-          <Divider />
-        </Box>
+        <section className="bg-white dark:bg-gray-900 py-4 lg:py-8">
+          <div className="max-w-2xl mx-auto px-4">
+            <form className="mb-6">
+              <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                <label htmlFor="comment" className="sr-only">
+                  Your comment
+                </label>
+                <textarea
+                  id="comment"
+                  rows={6}
+                  className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                  placeholder="Write a comment..."
+                  required=""
+                  onChange={(e) => setcomment(e.target.value)}
+                  value={comment}
+                />
+              </div>
+              <button
+                type="button"
+                className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 bg-blue-500"
+                onClick={addcomment}
+              >
+                Post comment
+              </button>
+            </form>
+            {updatedComment.length
+              ? updatedComment.map((comment, i) => (
+                  // eslint-disable-next-line react/jsx-indent
+                  <article className="p-3 mb-3 text-base bg-white rounded-lg dark:bg-gray-900">
+                    <footer className="flex justify-between items-center mb-2">
+                      <div className="flex items-center">
+                        <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                          {/* commentd user image */}
+                          {comment.userprofile && (
+                            <img
+                              className="mr-2 w-6 h-6 rounded-full"
+                              src={`${baseUrl}/assets/${comment.userprofile}`}
+                              alt="Profile image"
+                            />
+                          )}               
+
+                          {/* commented user name */}
+                          {comment.username}
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 ">
+                          <time
+                            dateTime="2022-02-08"
+                            title="February 8th, 2022"
+                          >
+                            {comment.time}
+                          </time>
+                          {/* moment().format("MMM Do YY"); */}
+                        </p>
+                      </div>
+
+                      {/* Dropdown menu */}
+                    </footer>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {comment.comment}
+                    </p>
+                  </article>
+                ))
+              : ''}
+          </div>
+        </section>
       )}
     </WidgetWrapper>
   );

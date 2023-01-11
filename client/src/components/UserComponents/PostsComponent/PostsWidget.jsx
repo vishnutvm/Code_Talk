@@ -37,7 +37,9 @@ function PostsWidget({ userId, isProfile = false }) {
     });
 
     const data = await response.json();
+    // console.log(data);
     dispatch(setPosts({ posts: data }));
+    setloading(false);
   };
 
   // use effect action swich between user post and all user post
@@ -46,14 +48,10 @@ function PostsWidget({ userId, isProfile = false }) {
     if (isProfile) {
       getUserPost();
     } else {
+      console.log('working');
       getPost();
     }
   }, []);
-
-  // useEffect(() => {
-  //   // console.log(posts);
-  //   setloading(true);
-  // }, [posts]);
 
   // console.log(posts);
   return (

@@ -14,10 +14,10 @@ const postSchema = mongoose.Schema(
     },
     Comments: {
       type: Array,
-      default: ['nice'],
+      default: [],
     },
   },
-  { timestamp: true },
+  { timestamp: true }
 );
 
 const Post = mongoose.model('Post', postSchema);

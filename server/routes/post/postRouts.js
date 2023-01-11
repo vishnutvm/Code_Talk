@@ -7,6 +7,7 @@ import {
   deletePost,
   editPost,
   createPost,
+  commentPost
 } from '../../controllers/postControllers.js';
 import { verifyToken } from '../../middleware/token.js';
 import { upload } from '../../middleware/fileUpload.js';
@@ -20,8 +21,9 @@ router.get('/', verifyToken, getFeedPosts);
 
 router.get('/:userId/posts', verifyToken, getUserPosts);
 
-// like post
+// like,comment post
 router.patch('/:id/like', verifyToken, likePost);
+router.post('/:id/comment', verifyToken, commentPost);
 
 // delete user post
 

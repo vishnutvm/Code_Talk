@@ -42,7 +42,7 @@ export const editPost = async (req, res) => {
     Post.findOneAndUpdate(
       { _id: postId },
       { discription, picturePath },
-      { new: true },
+      { new: true }
     ).then(async (update) => {
       console.log(update);
       const updatedPosts = await Post.find().populate('createdBy');
@@ -114,8 +114,24 @@ export const likePost = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(
       id,
       { like: post.like },
-      { new: true },
+      { new: true }
     );
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+
+export const commentPost = async (req, res) => {
+  console.log('like rout gettin');
+  try {
+    const { id } = req.params;
+    const comment = req.body;
+    console.log(req.body);
+    const post = await Post.findById(id);
+    post.Comments.push(comment);
+    await post.save();
+    const updatedPost = await Post.findById(id);
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ error: err.message });

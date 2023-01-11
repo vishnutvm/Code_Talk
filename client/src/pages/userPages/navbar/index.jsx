@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { React, useState } from 'react';
 // import VideoChatOutlinedIcon from '@mui/icons-material/VideoChatOutlined';
 import {
@@ -29,6 +30,7 @@ import { setMode } from '../../../redux/modeState';
 import { setLogout } from '../../../redux/userState';
 import FlexBetween from '../../../components/UserComponents/FlexBetweenHelperComponent/FlexBetween';
 import { baseUrl } from '../../../constants/constants';
+
 function Navbar({ turnoffDark }) {
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
