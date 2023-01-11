@@ -41,6 +41,7 @@ export const addQuiz = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
 export const getAllQuiz = async (req, res) => {
   console.log('getting getAllQuizc');
   try {
@@ -69,6 +70,42 @@ export const deleteQuiz = async (req, res) => {
     await Quiz.deleteOne({ _id: quizId });
     const quiz = await Quiz.find();
     res.status(200).json(quiz);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+export const editQuiz = async (req, res) => {
+  console.log('edit quiz trigger');
+
+  try {
+    const { quizId } = req.params;
+    console.log(req.body);
+    console.log(quizId);
+    let {
+      quiz, banner, answers, questions,
+    } = req.body;
+
+
+  
+    Quiz.findOneAndUpdate(
+      { _id: quizId },
+      {
+        title: quiz.title,
+        banner,
+        discription: quiz.discription,
+        mark: quiz.mark,
+        badgeName: quiz.badge,
+        questions,
+        answers,
+      },
+      { new: true },
+    ).then(async (update) => {
+      console.log(update);
+      res.status(200).json('worki');
+    });
+
+
+
   } catch (err) {
     res.status(404).json({ error: err.message });
   }

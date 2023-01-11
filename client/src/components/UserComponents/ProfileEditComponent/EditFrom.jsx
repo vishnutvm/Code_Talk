@@ -41,7 +41,8 @@ function EditFrom() {
   const isNonMobile = useMediaQuery('(min-width:600px)');
   const id = user._id;
   const handleFormSubmit = (values) => {
-    const { username, email, phone, location, picture, linkdin, github } = values;
+    const { username, email, phone, location, picture, linkdin, github } =
+      values;
 
     const profilePicture = picture ? picture.path : user.profilePicture;
 
@@ -137,7 +138,9 @@ function EditFrom() {
               <Dropzone
                 acceptedFiles=".jpg,.jpeg,.png"
                 multiple={false}
-                onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}
+                onDrop={(acceptedFiles) =>
+                  setFieldValue('picture', acceptedFiles[0])
+                }
               >
                 {({ getRootProps, getInputProps }) => (
                   <Box

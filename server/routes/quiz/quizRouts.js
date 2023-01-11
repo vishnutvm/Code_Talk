@@ -8,7 +8,8 @@ import {
   getAllQuiz,
   deleteQuiz,
   getQuiz,
-  getResult
+  getResult,
+  editQuiz,
 } from '../../controllers/quizControllers.js';
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.post('/addquiz', addQuiz);
 router.get('/getAllquiz', getAllQuiz);
 router.post('/addquizImg', upload.single('picture'), addquizImg);
 router.delete('/:quizId/delete', deleteQuiz);
+router.post('/:quizId/edit', editQuiz);
 router.get('/getQuiz/:quizId', getQuiz);
 router.post('/getResult', getResult);
 

@@ -86,13 +86,7 @@ function PostWidget({
   //   model
   // };
   if (edit) {
-    return (
-      <CreatePost
-        profilePicture={userPicturePath}
-        postId={postId}
-        setedit={setedit}
-      />
-    );
+
   }
   return (
     <WidgetWrapper m="2rem 1rem">

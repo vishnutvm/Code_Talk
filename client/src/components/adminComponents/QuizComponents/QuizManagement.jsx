@@ -7,6 +7,10 @@ import axios from '../../../utils/axios';
 import { baseUrl } from '../../../constants/constants';
 import { changePage } from '../../../redux/adminState';
 
+import QuizAddingPage from '../../../pages/adminPages/QuizAddingPage/QuizAddingPage';
+import QuizAdding from './QuizAdding';
+import QuizEditComponent from './QuizEditComponent';
+
 const Container = styled.div`
   width: 75%;
   heigth: 80vh;
@@ -29,7 +33,7 @@ function QuizManagement() {
   const dispatch = useDispatch();
   const headers = { 'Content-Type': 'application/json' };
   const [quizList, setQuizList] = useState([]);
-
+  const [editing, setEditing] = useState(false);
   const getAllQuiz = async () => {
     const data = await (await axios.get('/quiz/getAllquiz'))?.data;
     setQuizList(data);
@@ -45,17 +49,29 @@ function QuizManagement() {
       setQuizList(response.data);
     });
   };
+  const editTheQuiz = async (quizId) => {
+    console.log('called editing post');
+    console.log(quizId);
+    axios.get(`/quiz/getQuiz/${quizId}`).then((response) => {
+      console.log(response.data);
+      setEditing(response.data);
+    });
+  };
 
   useEffect(() => {
     getAllQuiz();
-  }, []);
+  }, [editing]);
 
+  if (editing) {
+    console.log(editing);
+    return <QuizEditComponent setEditing={setEditing} editing={editing} />;
+  }
   return (
     <>
       {/* component */}
       <Container>
         {/* quiz management */}
-        <div className="flex flex-col items-center w-full gap-7 h-full">
+        <div className="flex flex-col items-center w-full gap-7 h-full overflow-scroll">
           <div className="div ">
             <h1 className="text-3xl font-semibold tracking-tight text-center md:text-6xl underline">
               Quiz
@@ -102,6 +118,13 @@ function QuizManagement() {
                             onClick={() => deleteTheQuiz(quiz._id)}
                           >
                             Delete
+                          </button>
+                          <button
+                            type="button"
+                            className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            onClick={() => editTheQuiz(quiz._id)}
+                          >
+                            Edit
                           </button>
                         </div>
                       </div>

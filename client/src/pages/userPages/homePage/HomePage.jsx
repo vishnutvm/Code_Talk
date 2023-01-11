@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Navbar from '../navbar';
 import UserWidget from '../../../components/UserComponents/UserComponent/User';
@@ -10,9 +10,14 @@ import QuizWidget from '../../../components/UserComponents/QuizWidget/QuizWidget
 
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
+  // const [loading, setloading] = useState(true);
+
+  // useEffect(() => {
+  //   console.log(loading);
+  // }, [loading, setloading]);
   // const { username, profilePicture, _id } = user;
   const { _id, profilePicture } = useSelector((state) => state.user.user);
-  console.log(profilePicture);
+  // console.log(profilePicture);
   return (
     <Box>
       <Navbar />
@@ -23,6 +28,7 @@ function HomePage() {
         gap="1rem"
         justifyContent="space-between"
       >
+ 
         <Box flexBasis={isNotMobileScreen ? '26px' : undefined}>
           <UserWidget userId={_id} profilePicture={profilePicture} />
         </Box>
@@ -48,7 +54,7 @@ function HomePage() {
 
         {isNotMobileScreen && (
           <Box className="mb-3 w-1/5">
-            <Box flexBasis="26%" className="mb-3" >
+            <Box flexBasis="26%" className="mb-3">
               <QuizWidget />
             </Box>
 

@@ -28,7 +28,7 @@ import { useNavigate } from 'react-router';
 import { setMode } from '../../../redux/modeState';
 import { setLogout } from '../../../redux/userState';
 import FlexBetween from '../../../components/UserComponents/FlexBetweenHelperComponent/FlexBetween';
-
+import { baseUrl } from '../../../constants/constants';
 function Navbar({ turnoffDark }) {
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
@@ -116,7 +116,7 @@ function Navbar({ turnoffDark }) {
           <Avatar
             sx={{ width: 45, height: 45 }}
             alt={username}
-            src={`http://localhost:3001/assets/${profilePicture}`}
+            src={`${baseUrl}/assets/${profilePicture}`}
             onClick={() => setopen(true)}
           />
 

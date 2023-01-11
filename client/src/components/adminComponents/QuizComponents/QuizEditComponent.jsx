@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
@@ -50,7 +52,7 @@ const Container = styled.div`
   }
 `;
 
-function QuizAdding() {
+function QuizEditComponent({ setEditing = false, editing }) {
   // the setEditing is a fuction which change the state  use this later
 
   // const uploadImage = useRef();
@@ -62,6 +64,7 @@ function QuizAdding() {
   const [err, setErr] = useState('false');
   const [qestionspge, setqestionspge] = useState(false);
   const adminquiz = useSelector((state) => state.adminquiz);
+  const [editTrack, seteditTrack] = useState(0);
 
   // const headers = {
   //   'Content-Type': 'application/json',
@@ -71,18 +74,25 @@ function QuizAdding() {
     image && dispatch(setBanner(image.name));
   }, [image]);
 
+  // useEffect(() => {
+  //   console.log(
+  //     editing?.questions[editTrack].options[editing.answers[editTrack]]
+  //   );
+  //   // console.log(editing.answers);
+  // }, [editTrack, editing.answers, editing?.questions]);
+
   const initialValuesquiz = {
-    title: '',
-    mark: '',
-    badge: '',
-    discription: '',
+    title: editing.title,
+    mark: editing.mark,
+    badge: editing.badgeName,
+    discription: editing.discription,
   };
   const initialValuesquestions = {
-    question: '',
-    answer: '',
-    option1: '',
-    option2: '',
-    option3: '',
+    question: editing?.questions[editTrack]?.question,
+    answer: editing?.questions[editTrack]?.options[editing.answers[editTrack]],
+    option1: editing?.questions[editTrack]?.options[0],
+    option2: editing?.questions[editTrack]?.options[1],
+    option3: editing?.questions[editTrack]?.options[2],
   };
 
   const { values, handleChange, handleSubmit } = useFormik({
@@ -112,8 +122,7 @@ function QuizAdding() {
           setErr(true);
         } else {
           dispatch(addquestion(values));
-
-          // values.question = '';
+          seteditTrack(editTrack + 1);
 
           if (next === 5) {
             // const data = { ...adminquiz };
@@ -122,8 +131,8 @@ function QuizAdding() {
             const { question, answer, option1, option2, option3 } = values;
             const options = [option1, option2, option3];
             const questions = [...adminquiz.questions, { question, options }];
-            const { quiz, banner } = adminquiz;
-
+            let { quiz, banner } = adminquiz;
+            banner = banner === null ? editing.banner : banner;
             const answers = [...adminquiz.answers, options.indexOf(answer)];
             const formdata = { quiz, banner, questions, answers };
             // first sending the image if any as first api call then after the form sending
@@ -135,19 +144,20 @@ function QuizAdding() {
                 body: formData,
               });
             }
-
+            // /:quizId/edit
             // sending data to backend
             axios
-              .post('/quiz/addquiz', formdata, {
+              .post(`/quiz/${editing._id}/edit`, formdata, {
                 headers: {
                   headers: { 'Content-Type': 'multipart/form-data' },
                 },
               })
               .then((response) => {
                 console.log(response);
-
-                dispatch(changePage('quiz'));
+                console.log(response);
+                setEditing(false);
                 dispatch(resetQuiz());
+                dispatch(changePage('quiz'));
               })
               .catch((error) => {
                 console.log(error);
@@ -155,11 +165,16 @@ function QuizAdding() {
           }
 
           next < 5 && setNext(next + 1);
-
+          // presetting the vlaue
+          values.question = '';
+          values.answer = '';
+          values.option1 = '';
+          values.option2 = '';
           console.log(next);
         }
       }
     },
+    enableReinitialize: true,
   });
   return (
     <>
@@ -182,22 +197,11 @@ function QuizAdding() {
                     src={URL.createObjectURL(image)}
                   />
                 ) : (
-                  <div
-                    role="status"
-                    className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center rounded-xl"
-                  >
-                    <div className="flex justify-center items-center w-full h-48 bg-gray-300  sm:w-96 dark:bg-gray-700 rounded-xl">
-                      <svg
-                        className="w-12 h-12 text-gray-200"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                        fill="currentColor"
-                        viewBox="0 0 640 512"
-                      >
-                        <path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <img
+                    alt="imae"
+                    className="object-cover h-48 w-96 rounded-xl"
+                    src={`${baseUrl}/assets/${editing.banner}`}
+                  />
                 )}
               </div>
             </div>
@@ -331,7 +335,7 @@ function QuizAdding() {
                     // onClick={addquestions}
                     className="m-auto text-white bg-blue-700 hover:bg-blue-800 hover:cu focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Add Questions
+                    Update Questions
                   </button>
                 </div>
               </form>
@@ -348,8 +352,8 @@ function QuizAdding() {
                     <input
                       type="text"
                       id="question"
-                      className="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Title.."
+                      className="placeholder-black  bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Question.."
                       required=""
                       onChange={handleChange}
                       value={values.question}
@@ -365,7 +369,7 @@ function QuizAdding() {
                     <input
                       type="text"
                       id="answer"
-                      className="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="placeholder-black  bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Answer.."
                       required=""
                       onChange={handleChange}
@@ -383,8 +387,8 @@ function QuizAdding() {
                       <input
                         type="text"
                         id="option1"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="option 1"
+                        className=" placeholder-black  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Option1"
                         required=""
                         onChange={handleChange}
                         value={values.option1}
@@ -401,8 +405,8 @@ function QuizAdding() {
                       <input
                         type="text"
                         id="option2"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="option 2"
+                        className=" placeholder-black  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Option2"
                         required=""
                         onChange={handleChange}
                         value={values.option2}
@@ -418,8 +422,8 @@ function QuizAdding() {
                       <input
                         type="text"
                         id="option3"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="option 3"
+                        className=" placeholder-black  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Option3"
                         required=""
                         onChange={handleChange}
                         value={values.option3}
@@ -447,4 +451,4 @@ function QuizAdding() {
   );
 }
 
-export default QuizAdding;
+export default QuizEditComponent;
