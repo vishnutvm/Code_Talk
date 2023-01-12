@@ -1,8 +1,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-function SingleMessageComponent({ message }) {
+import { Avatar } from '@mui/material';
+import axios from '../../../utils/axios';
+import { baseUrl } from '../../../constants/constants';
+
+function SingleMessageComponent({
+  message,
+  currentUserPicture,
+  chatUserImage,
+}) {
   return (
     <div
       key={uuidv4()}
@@ -21,11 +30,26 @@ function SingleMessageComponent({ message }) {
       >
         {/* here the user avather */}
         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-          A
+          {message.fromSelf ? (
+            <Avatar
+              sx={{ width: '100%', height: '100%' }}
+              alt=""
+              src={`${baseUrl}/assets/${currentUserPicture}`}
+            />
+          ) : (
+            <Avatar
+              sx={{ width: '100%', height: '100%' }}
+              alt=""
+              src={`${baseUrl}/assets/${chatUserImage}`}
+            />
+          )}
         </div>
         {/* here the massage by sender */}
         <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
           <div>{message.message}</div>
+          <div className="text-xs mt-2 font-thin text-gray-400 ">
+            {message.time && message.time}
+          </div>
         </div>
       </div>
     </div>

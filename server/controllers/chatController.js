@@ -8,16 +8,20 @@
 import Chat from '../models/Chat.js';
 
 export const addMessage = async (req, res) => {
-  // console.log('getting chats');
+  console.log('getting chats');
   try {
-    const { from, to, message } = req.body;
-    // console.log(req.body);
+    const {
+      from, to, message, time,
+    } = req.body;
+
+    console.log(req.body);
     const newChat = new Chat({
-      message: { text: message },
+      message: { text: message, time },
       users: [from, to],
       sender: from,
     });
     await newChat.save();
+    console.log(newChat);
     return res.status(201).json({ msg: 'Message adding success' });
   } catch (err) {
     return res.status(409).json({ msg: 'Message adding faild' });
@@ -39,6 +43,7 @@ export const getAllMessage = async (req, res) => {
       //  for identify in front end
       fromSelf: msg.sender.toString() === from,
       message: msg.message.text,
+      time: msg.message.time,
     }));
     res.status(201).json(processedMessage);
   } catch (err) {

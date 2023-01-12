@@ -50,7 +50,7 @@ app.use('/admin', adminRouts);
 app.use('/chat', messsageRouts);
 app.use('/quiz', quizRouts);
 
-// for server 
+// for server
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
@@ -97,8 +97,8 @@ io.on('connection', (socket) => {
     console.log('sockettest', sendUserSocket);
     if (sendUserSocket) {
       console.log(data.message, 'value'.bgGreen);
-
-      io.to(sendUserSocket).emit('msg-recieve', data.message);
+      const message = { text: data.message, time: data.time };
+      io.to(sendUserSocket).emit('msg-recieve', message);
     } else {
       console.log('user is not live');
     }

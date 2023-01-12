@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
+import * as moment from 'moment';
 import ChatInputComponent from '../ChatInputComponent/ChatInputComponent';
 import axios from '../../../utils/axios';
 import SingleMessageComponent from '../SingleMessageComponent/SingleMessageComponent';
@@ -19,6 +20,19 @@ function MainChatComponent({ socket }) {
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
   const [arrivalMessage, setarrivalMessage] = useState(null);
+  const [chatUserImage, setchatUserImage] = useState(undefined);
+
+  const currentUserPicture = useSelector(
+    (state) => state.user.user.profilePicture
+  );
+
+  const getUserPhoto = () => {
+    axios.get(`/user/${currentChatUserId}`).then((data) => {
+      setchatUserImage(data.data.profilePicture && data.data.profilePicture);
+      console.log(data.data.profilePicture);
+    });
+  };
+
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
@@ -41,11 +55,14 @@ function MainChatComponent({ socket }) {
         // console.log(response);
         setMessages(response.data);
       });
+      getUserPhoto();
+      console.log(currentUserPicture);
     }
   }, [currentChatUserId]);
 
   // handle messagesending
   const handleSendMsg = async (msg) => {
+    const time = moment().format('LT');
     // workin with chat
     axios({
       method: 'POST',
@@ -55,23 +72,30 @@ function MainChatComponent({ socket }) {
         from: currentUserId,
         to: currentChatUserId,
         message: msg,
+        time,
       },
     });
     socket.current.emit('send-msg', {
       from: currentUserId,
       to: currentChatUserId,
       message: msg,
+      time,
     });
     const msgs = [...message];
     // console.log(msg);
-    msgs.push({ fromSelf: true, message: msg });
+    msgs.push({ fromSelf: true, message: msg, time });
+    console.log(msgs);
     setMessages(msgs);
   };
 
   useEffect(() => {
     if (socket.current) {
       socket.current.on('msg-recieve', (msg) => {
-        setarrivalMessage({ fromSelf: false, message: msg });
+        setarrivalMessage({
+          fromSelf: false,
+          message: msg.text,
+          time: msg.time,
+        });
       });
     }
   }, []);
@@ -82,7 +106,6 @@ function MainChatComponent({ socket }) {
 
   // scroll effect apge
   useEffect(() => {
-
     scrollRef.current?.scrollIntoView(false);
   }, [message]);
 
@@ -95,7 +118,13 @@ function MainChatComponent({ socket }) {
               {/* sender chat wrapper */}
 
               {message.map((msg) => {
-                return <SingleMessageComponent message={msg} />;
+                return (
+                  <SingleMessageComponent
+                    message={msg}
+                    chatUserImage={chatUserImage}
+                    currentUserPicture={currentUserPicture}
+                  />
+                );
               })}
             </div>
           </div>
