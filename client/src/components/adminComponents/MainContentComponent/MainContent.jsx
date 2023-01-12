@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import WishHeader from '../WelcomeComponent/wishHeader';
 // Groth section mayuse in future
 // import Groth from './Groth';
@@ -8,6 +9,7 @@ import QuizSection from '../QuizSectionHome/QuizSectionHome';
 import ResentUsers from '../ResentUsersComponent/ResentUsers';
 import Groth from '../GrothComponent/Groth';
 import axios from '../../../utils/axios';
+import { changePage } from '../../../redux/adminState';
 // styles
 const Container = styled.div`
   width: 75%;
@@ -116,6 +118,8 @@ function MainContent() {
   const [today, setToday] = useState('');
   const [resentUsers, setresentUsers] = useState('');
   const [quizList, setQuizList] = useState([]);
+  const [loading, setloading] = useState(true);
+  const dispatch = useDispatch();
   const getUsers = async () => {
     await axios
       .get('/admin/getusersReport')
@@ -126,8 +130,11 @@ function MainContent() {
         setresentUsers(
           response.data.users.length > 2
             ? response.data.users.slice(-2).reverse()
-            : response.data.users,
+            : response.data.users
         );
+        setTimeout(() => {
+          setloading(false);
+        }, 500);
       })
       .catch((error) => {
         console.log(error);
@@ -148,25 +155,31 @@ function MainContent() {
   return (
     <Container>
       <WishHeader />
-      <SubContainer>
-        <FirstSection>
-          <FirstSectionCol1>
-            <Groth users={users} today={today} />
-            {/* <Info /> */}
-          </FirstSectionCol1>
-          <FirstSectionCol2>
-            <QuizSection quizList={quizList} />
-          </FirstSectionCol2>
-        </FirstSection>
-        <SecondSection>
-          <SecondSectionCol1>
-            <ResentUsersWrapper>
-              <TitleText>Recent Users</TitleText>
-              <ResentUsers users={resentUsers} />
-            </ResentUsersWrapper>
-          </SecondSectionCol1>
-        </SecondSection>
-      </SubContainer>
+      {loading ? (
+        <div role="status" className="max-w-md animate-pulse m-auto">
+          <img src="https://i.stack.imgur.com/hzk6C.gif" alt="" />
+        </div>
+      ) : (
+        <SubContainer>
+          <FirstSection>
+            <FirstSectionCol1>
+              <Groth users={users} today={today} />
+              {/* <Info /> */}
+            </FirstSectionCol1>
+            <FirstSectionCol2>
+              <QuizSection quizList={quizList} />
+            </FirstSectionCol2>
+          </FirstSection>
+          <SecondSection>
+            <SecondSectionCol1>
+              <ResentUsersWrapper onClick={() => dispatch(changePage('users'))}>
+                <TitleText>Recent Users</TitleText>
+                <ResentUsers users={resentUsers} />
+              </ResentUsersWrapper>
+            </SecondSectionCol1>
+          </SecondSection>
+        </SubContainer>
+      )}
     </Container>
   );
 }

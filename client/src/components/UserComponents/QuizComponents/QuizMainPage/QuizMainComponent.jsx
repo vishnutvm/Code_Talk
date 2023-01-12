@@ -21,12 +21,18 @@ function QuizMainComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quizList, setQuizList] = useState([]);
+  const [loading, setloading] = useState(true);
   const { _id } = useSelector((state) => state.user.user);
   // const currentQuiz = useSelector((state) => state.questions.currentQuiz);
   const getAllQuiz = async () => {
-    const data = await await (await axios.get('/quiz/getAllquiz'))?.data;
-    setQuizList(data);
-    console.log(data);
+    // const data = await await (await axios.get('/quiz/getAllquiz'))?.data;
+
+    axios.get('/quiz/getAllquiz').then((data) => {
+      setQuizList(data.data);
+      setTimeout(() => {
+        setloading(false);
+      }, 300);
+    });
   };
 
   const attendQuiz = (quizId) => {
@@ -69,7 +75,7 @@ function QuizMainComponent() {
         </div>
 
         <div className="quiz flex flex-col gap-11">
-          {quizList.length !== 0 ? (
+          {!loading ? (
             quizList.map((quiz) => (
               <div
                 className="signlequiz hover:cursor-pointer "

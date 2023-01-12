@@ -8,8 +8,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import { useRef } from 'react';
-// import QuestionsComponent from '../../UserComponents/QuizComponents/QuizMainPage/QuestionsComponent';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Dropzone from 'react-dropzone';
 import { useTheme } from '@emotion/react';
 import { Box } from '@mui/system';
@@ -63,9 +64,24 @@ function QuizAdding() {
   const [qestionspge, setqestionspge] = useState(false);
   const adminquiz = useSelector((state) => state.adminquiz);
 
-  // const headers = {
-  //   'Content-Type': 'application/json',
-  // };
+  const succesNotify = (message) => {
+    toast.success(message, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
+  const ErrNotify = (message) => {
+    toast.error(message, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
 
   useEffect(() => {
     image && dispatch(setBanner(image.name));
@@ -97,22 +113,35 @@ function QuizAdding() {
       console.log('form submited');
       if (!qestionspge) {
         const { title, mark, badge, discription } = values;
-        if (!(title, mark, badge, discription)) {
+
+        if (!title || !mark || !badge || !discription) {
           console.log('err');
-          setErr(true);
+
+          ErrNotify('All Feald were Require');
         } else {
           dispatch(setquiz(values));
+          succesNotify('Quiz Added');
+
           setqestionspge(true);
         }
       } else {
         console.log(next);
         const { question, answer, option1, option2, option3 } = values;
-        if (!(question, answer, option1, option2, option3)) {
+
+        const options = [option1, option2, option3];
+
+        if (!question || !answer || !option1 || !option2 || !option3) {
           console.log('err');
           setErr(true);
+
+          ErrNotify('All Feald were Require');
+        } else if (!options.includes(answer)) {
+          ErrNotify('Answer not  mach with options');
         } else {
+          console.log('triggering');
           dispatch(addquestion(values));
 
+          succesNotify(`${next} quiz added`);
           // values.question = '';
 
           if (next === 5) {
@@ -121,6 +150,7 @@ function QuizAdding() {
             // inserting the last values manually bcz it not getting
             const { question, answer, option1, option2, option3 } = values;
             const options = [option1, option2, option3];
+
             const questions = [...adminquiz.questions, { question, options }];
             const { quiz, banner } = adminquiz;
 
@@ -153,6 +183,7 @@ function QuizAdding() {
                 console.log(error);
               });
           }
+
           // presetting the vlaue
           values.question = '';
           values.answer = '';
@@ -172,6 +203,8 @@ function QuizAdding() {
       <Container>
         {/* quiz management */}
         <div className="flex flex-col items-center w-full gap-7 h-full">
+          <ToastContainer />
+
           <div className="div ">
             <h1 className=" text:xl md:text-3xl font-mono font-semibold tracking-tight text-center  underline">
               CREATE NEW QUIZ

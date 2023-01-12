@@ -1,16 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
-import ProjectImageone from '../../../assets/Images/project1.jpeg';
-import {
-  cardShadow,
-  hoverEffect,
-  darkThemeColor,
-  themeColor,
-} from '../../../adminTheme';
-import { baseUrl } from '../../../constants/constants';
 import { useDispatch } from 'react-redux';
+import { useMediaQuery } from '@mui/material';
+import { cardShadow, hoverEffect, themeColor } from '../../../adminTheme';
+import { baseUrl } from '../../../constants/constants';
 import { changePage } from '../../../redux/adminState';
+
 const QuesList = styled.div`
   width: 80%;
 
@@ -72,7 +68,8 @@ const AllQues = styled.h5`
 `;
 
 function QuizSection({ quizList }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   return (
     <QuesList>
       {quizList.length !== 0 ? (
@@ -83,7 +80,19 @@ function QuizSection({ quizList }) {
             </QuesImage>
             <Detail>
               <Title>{quiz.title}</Title>
-              <SubTitle>{quiz.badgeName}</SubTitle>
+              {isNotMobileScreen ? (
+                <SubTitle>
+                  {quiz.discription.length > 100 &&
+                    quiz.discription.slice(0, 100)}{' '}
+                  . . .
+                </SubTitle>
+              ) : (
+                <SubTitle>
+                  {quiz.discription.length > 50 &&
+                    quiz.discription.slice(0, 50)}{' '}
+                  . . .
+                </SubTitle>
+              )}
             </Detail>
           </Ques>
         ))
@@ -91,7 +100,9 @@ function QuizSection({ quizList }) {
         <h1>null</h1>
       )}
 
-      <AllQues onClick={() => dispatch(changePage('quiz'))} >See all Quis</AllQues>
+      <AllQues onClick={() => dispatch(changePage('quiz'))}>
+        See all Quis
+      </AllQues>
     </QuesList>
   );
 }

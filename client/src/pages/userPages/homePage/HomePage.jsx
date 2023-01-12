@@ -10,60 +10,63 @@ import QuizWidget from '../../../components/UserComponents/QuizWidget/QuizWidget
 
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
-  // const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(true);
 
-  // useEffect(() => {
-  //   console.log(loading);
-  // }, [loading, setloading]);
-  // const { username, profilePicture, _id } = user;
   const { _id, profilePicture } = useSelector((state) => state.user.user);
-  // console.log(profilePicture);
+  setTimeout(() => {
+    setloading(false);
+  }, 500);
   return (
     <Box>
       <Navbar />
-      <Box
-        width="100%"
-        padding="2rem 6%"
-        display={isNotMobileScreen ? 'flex' : 'block'}
-        gap="1rem"
-        justifyContent="space-between"
-      >
- 
-        <Box flexBasis={isNotMobileScreen ? '26px' : undefined}>
-          <UserWidget userId={_id} profilePicture={profilePicture} />
-        </Box>
-        {!isNotMobileScreen && (
-          <Box gap="0.5rem">
-            <Box flexBasis="26%" className="my-3">
-              <FriendsListWidgest userId={_id} />
-            </Box>
-
-            <Box flexBasis="26%">
-              <QuizWidget />
-            </Box>
-          </Box>
-        )}
-
+      {loading ? (
+        <div role="status" className="max-w-md animate-pulse m-auto">
+          <img src="https://i.stack.imgur.com/hzk6C.gif" alt="" />
+        </div>
+      ) : (
         <Box
-          flexBasis={isNotMobileScreen ? '42%' : undefined}
-          mt={isNotMobileScreen ? undefined : '2rem'}
+          width="100%"
+          padding="2rem 6%"
+          display={isNotMobileScreen ? 'flex' : 'block'}
+          gap="1rem"
+          justifyContent="space-between"
         >
-          <CreatePost profilePicture={profilePicture} />
-          <PostsWidget userId={_id} />
-        </Box>
-
-        {isNotMobileScreen && (
-          <Box className="mb-3 w-1/5">
-            <Box flexBasis="26%" className="mb-3">
-              <QuizWidget />
-            </Box>
-
-            <Box flexBasis="26%">
-              <FriendsListWidgest userId={_id} />
-            </Box>
+          <Box flexBasis={isNotMobileScreen ? '26px' : undefined}>
+            <UserWidget userId={_id} profilePicture={profilePicture} />
           </Box>
-        )}
-      </Box>
+          {!isNotMobileScreen && (
+            <Box gap="0.5rem">
+              <Box flexBasis="26%" className="my-3">
+                <FriendsListWidgest userId={_id} />
+              </Box>
+
+              <Box flexBasis="26%">
+                <QuizWidget />
+              </Box>
+            </Box>
+          )}
+
+          <Box
+            flexBasis={isNotMobileScreen ? '42%' : undefined}
+            mt={isNotMobileScreen ? undefined : '2rem'}
+          >
+            <CreatePost profilePicture={profilePicture} />
+            <PostsWidget userId={_id} />
+          </Box>
+
+          {isNotMobileScreen && (
+            <Box className="mb-3 w-1/5">
+              <Box flexBasis="26%" className="mb-3">
+                <QuizWidget />
+              </Box>
+
+              <Box flexBasis="26%">
+                <FriendsListWidgest userId={_id} />
+              </Box>
+            </Box>
+          )}
+        </Box>
+      )}
     </Box>
   );
 }
