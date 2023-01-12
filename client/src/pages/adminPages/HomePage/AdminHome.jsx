@@ -8,6 +8,7 @@ import Sidebar from '../../../components/adminComponents/AdmnSideBarComponent/Si
 import UserManagement from '../UserManagement/UserManagement';
 import QuizManagementPage from '../QuizManagement/QuizManagementPage';
 import QuizAddingPage from '../QuizAddingPage/QuizAddingPage';
+import ReportPage from '../ReportPage/ReportPage';
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ const AdminHome = () => {
       {page === 'users' && <UserManagement />}
       {page === 'quiz' && <QuizManagementPage />}
       {page === 'quizadding' && <QuizAddingPage />}
-      {/* {page === 'quiz' && <QuizManagementPage />} */}
+      {page === 'report' && <ReportPage />}
     </Container>
   );
 };

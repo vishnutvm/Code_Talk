@@ -102,3 +102,22 @@ export const getUserReport = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+export const getUserCompleteReport = async (req, res) => {
+  console.log('getting userposts');
+  try {
+    const users = await User.aggregate([
+      {
+        $group: {
+          _id: '$joindMonth',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    console.log(users);
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};

@@ -16,8 +16,14 @@ const postSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
+    createdAt: {
+      type: String,
+      default: () => new Date().toISOString(),
+    },
   },
-  { timestamp: true }
+  {
+    timestamps: true
+  }
 );
 
 const Post = mongoose.model('Post', postSchema);

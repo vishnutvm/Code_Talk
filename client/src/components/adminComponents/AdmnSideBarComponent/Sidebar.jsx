@@ -105,10 +105,10 @@ function Sidebar() {
             <BiTask />
             <h3>Quiz</h3>
           </Link>
-          {/* <Link onClick={() => dispatch(changePage('report'))}>
+          <Link onClick={() => dispatch(changePage('report'))}>
             <AiOutlinePieChart />
             <h3>Reports</h3>
-          </Link> */}
+          </Link>
         </Links>
       </LinksContainer>
     </Container>

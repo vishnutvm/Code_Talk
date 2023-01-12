@@ -21,9 +21,7 @@ export const addQuiz = async (req, res) => {
 
   try {
     console.log(req.body);
-    let {
-      quiz, banner, answers, questions,
-    } = req.body;
+    let { quiz, banner, answers, questions } = req.body;
 
     const newQuiz = new Quiz({
       title: quiz.title,
@@ -81,12 +79,8 @@ export const editQuiz = async (req, res) => {
     const { quizId } = req.params;
     console.log(req.body);
     console.log(quizId);
-    let {
-      quiz, banner, answers, questions,
-    } = req.body;
+    let { quiz, banner, answers, questions } = req.body;
 
-
-  
     Quiz.findOneAndUpdate(
       { _id: quizId },
       {
@@ -98,14 +92,11 @@ export const editQuiz = async (req, res) => {
         questions,
         answers,
       },
-      { new: true },
+      { new: true }
     ).then(async (update) => {
       console.log(update);
       res.status(200).json('worki');
     });
-
-
-
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
@@ -142,5 +133,17 @@ export const getResult = async (req, res) => {
     res.status(200).json({ earnedPoints, ispass, totalPoints });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const getReport = async (req, res) => {
+  console.log('getting report');
+  try {
+    const quiz = await Quiz.find().select({ title: 1, attempts: 1 });
+    console.log(quiz);
+
+    res.status(200).json(quiz);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
   }
 };

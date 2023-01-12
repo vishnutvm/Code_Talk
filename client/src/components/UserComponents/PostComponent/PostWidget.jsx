@@ -42,10 +42,8 @@ function PostWidget({
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const loggedInUserId = useSelector((state) => state.user.user._id);
-  const loggedInUser = useSelector((state) => state.user.user);
+
   const [updatedComment, setupdatedComment] = useState(comments);
-  // const isLiked = Boolean(likes[loggedInUserId]);
-  // const likeCount = Object.keys(likes).length;
 
   const token = useSelector((state) => state.user.token);
   const { palette } = useTheme();
@@ -76,14 +74,6 @@ function PostWidget({
     setIsLiked(!isLiked);
   };
   const addcomment = async () => {
-    // const response = await fetch(`${baseUrl}/posts/${postId}/comment`, {
-    //   method: 'POST',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ userId: loggedInUserId }),
-    // });
     console.log(comment);
     console.log('working');
     axios({
@@ -131,10 +121,10 @@ function PostWidget({
   const editThePost = () => {
     setedit(true);
   };
-  const commentSubmit = () => {
-    console.log(comment);
-    setcomment('');
-  };
+  // const commentSubmit = () => {
+  //   console.log(comment);
+  //   setcomment('');
+  // };
 
   if (edit) {
     return (
@@ -262,7 +252,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
+                          'block px-4 py-2 text-sm text-gray-700'
                         )}
                         onClick={editThePost}
                       >
@@ -288,7 +278,7 @@ function PostWidget({
                       <button
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
+                          'block px-4 py-2 text-sm text-gray-700'
                         )}
                         onClick={() => setModel(true)}
                         type="button"
@@ -415,7 +405,7 @@ function PostWidget({
                       {comment.comment}
                     </p>
                   </article>
-              ))
+                ))
               : ''}
           </div>
         </section>

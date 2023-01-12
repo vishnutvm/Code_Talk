@@ -54,7 +54,7 @@ const UserSchema = new mongoose.Schema({
   },
   joindMonth: {
     type: String,
-    default: () => new Date().getMonth() + 1,
+    default: () => new Date().toLocaleString('default', { month: 'long' }),
   },
   isgoogle: {
     type: Boolean,
