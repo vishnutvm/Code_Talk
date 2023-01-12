@@ -39,7 +39,9 @@ function PostsWidget({ userId, isProfile = false }) {
     const data = await response.json();
     // console.log(data);
     dispatch(setPosts({ posts: data }));
-    setloading(false);
+    setTimeout(() => {
+      setloading(false);
+    }, 500);
   };
 
   // use effect action swich between user post and all user post
@@ -74,7 +76,7 @@ function PostsWidget({ userId, isProfile = false }) {
           )
         )
       ) : (
-        <div role="status" className="space-y-2.5 animate-pulse max-w-lg mt-4">
+        <div role="status" className="space-y-2.5 animate-pulse max-w-lg mt-4 mx-auto">
           <div className="flex items-center w-full space-x-2">
             <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32" />
             <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24" />

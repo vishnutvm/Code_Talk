@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IoStatsChart } from 'react-icons/io5';
 import { Box } from '@mui/system';
-import { useDispatch } from 'react-redux';
 import { hoverEffect, themeColor } from '../../../adminTheme';
-import { changePage } from '../../../redux/adminState';
 
 const GrothCard = styled.div`
   height: 100%;
@@ -58,9 +56,8 @@ const UsersIncrease = styled.h5`
 `;
 
 function Groth({ users, today }) {
-  const dispatch = useDispatch();
   return (
-    <GrothCard onClick={() => dispatch(changePage('report'))}>
+    <GrothCard>
       <CardContent>
         <Box>
           <Chart>

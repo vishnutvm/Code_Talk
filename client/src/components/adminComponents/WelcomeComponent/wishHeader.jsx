@@ -1,16 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-function WishHeader() {
-  return (
-    <NavbarContainer>
-      <Text>
-        Good morning,
-        <span> Admin</span>
-      </Text>
-    </NavbarContainer>
-  );
-}
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -24,7 +13,7 @@ const NavbarContainer = styled.nav`
 `;
 
 const Text = styled.h1`
-font-size:16px;
+  font-size: 16px;
   span {
     font-weight: 700;
     color: #484258;
@@ -33,5 +22,36 @@ font-size:16px;
     margin-top: 1rem;
   }
 `;
+
+function WishHeader() {
+  const [wish, setwish] = useState('');
+
+  const greeting = () => {
+    const { hour } = Date.now();
+    if (hour < 12) {
+      setwish('Morning');
+    }
+    if (hour < 17) {
+      setwish('Afternoon');
+    }
+    setwish('Evening');
+  };
+
+  useEffect(() => {
+    greeting();
+  }, []);
+
+  return (
+    <NavbarContainer>
+      <Text>
+        Good
+        {' '}
+        {wish}
+        ,
+        <span> Admin</span>
+      </Text>
+    </NavbarContainer>
+  );
+}
 
 export default WishHeader;

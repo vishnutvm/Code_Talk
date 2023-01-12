@@ -49,9 +49,6 @@ function Navbar({ turnoffDark }) {
 
   // managing error
   const { username, profilePicture, _id } = user;
-  //  let username = "vishnu"
-  // console.log(username);
-  // console.log(user);
   return (
     <FlexBetween padding="1rem 2rem" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -90,7 +87,7 @@ function Navbar({ turnoffDark }) {
         <FlexBetween gap="2rem">
           <VideocamRounded sx={{ fontSize: '25px' }} />
           <IconButton onClick={() => navigate('/chat')}>
-            <Badge badgeContent={4} color="warning">
+            <Badge color="warning">
               {theme.palette.mode === 'dark' ? (
                 <TextsmsRounded sx={{ fontsize: '25px', color: 'primary' }} />
               ) : (
@@ -99,10 +96,7 @@ function Navbar({ turnoffDark }) {
             </Badge>
           </IconButton>
 
-          {/* <Message sx={{ fontSize: '25px' }} /> */}
-          {/* <Notifications sx={{ fontSize: '25px' }} /> */}
-
-          <Badge badgeContent={1} color="warning">
+          <Badge color="warning">
             <Notifications sx={{ fontSize: '25px' }} />
           </Badge>
           {!turnoffDark && (

@@ -20,6 +20,9 @@ import { DeleteOutlined, EditOutlined } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import FlexBetween from '../../UserComponents/FlexBetweenHelperComponent/FlexBetween';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // import QuesAddComponent from './QuesAddComponent';
 import {
   setquiz,
@@ -66,6 +69,25 @@ function QuizEditComponent({ setEditing = false, editing }) {
   const adminquiz = useSelector((state) => state.adminquiz);
   const [editTrack, seteditTrack] = useState(0);
 
+  const succesNotify = (message) => {
+    toast.success(message, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
+  const ErrNotify = (message) => {
+    toast.error(message, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
+
   // const headers = {
   //   'Content-Type': 'application/json',
   // };
@@ -73,13 +95,6 @@ function QuizEditComponent({ setEditing = false, editing }) {
   useEffect(() => {
     image && dispatch(setBanner(image.name));
   }, [image]);
-
-  // useEffect(() => {
-  //   console.log(
-  //     editing?.questions[editTrack].options[editing.answers[editTrack]]
-  //   );
-  //   // console.log(editing.answers);
-  // }, [editTrack, editing.answers, editing?.questions]);
 
   const initialValuesquiz = {
     title: editing.title,
@@ -107,23 +122,30 @@ function QuizEditComponent({ setEditing = false, editing }) {
       console.log('form submited');
       if (!qestionspge) {
         const { title, mark, badge, discription } = values;
-        if (!(title, mark, badge, discription)) {
+
+        if (!title || !mark || !badge || !discription) {
           console.log('err');
           setErr(true);
+          ErrNotify('All Feald were Require');
         } else {
           dispatch(setquiz(values));
+          succesNotify('Quiz Added');
           setqestionspge(true);
         }
       } else {
         console.log(next);
         const { question, answer, option1, option2, option3 } = values;
-        if (!(question, answer, option1, option2, option3)) {
+        const options = [option1, option2, option3];
+        if (!question || !answer || !option1 || !option2 || !option3) {
           console.log('err');
           setErr(true);
+          ErrNotify('All Feald were Require');
+        } else if (!options.includes(answer)) {
+          ErrNotify('Answer not  mach with options');
         } else {
           dispatch(addquestion(values));
           seteditTrack(editTrack + 1);
-
+          succesNotify(`${next} quiz added`);
           if (next === 5) {
             // const data = { ...adminquiz };
 
@@ -182,6 +204,7 @@ function QuizEditComponent({ setEditing = false, editing }) {
       <Container>
         {/* quiz management */}
         <div className="flex flex-col items-center w-full gap-7 h-full">
+          <ToastContainer />
           <div className="div ">
             <h1 className=" text:xl md:text-3xl font-mono font-semibold tracking-tight text-center  underline">
               CREATE NEW QUIZ
