@@ -7,7 +7,7 @@ import CreatePost from '../../../components/UserComponents/CreatePostComponent/C
 import PostsWidget from '../../../components/UserComponents/PostsComponent/PostsWidget';
 import FriendsListWidgest from '../../../components/UserComponents/FriendsListComponent/FriendsListWidgest';
 import QuizWidget from '../../../components/UserComponents/QuizWidget/QuizWidget';
-
+// test
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const [loading, setloading] = useState(true);
