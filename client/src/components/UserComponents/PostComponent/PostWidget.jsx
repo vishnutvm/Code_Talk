@@ -268,7 +268,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                         onClick={editThePost}
                       >
@@ -294,7 +294,7 @@ function PostWidget({
                       <button
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                         onClick={() => setModel(true)}
                         type="button"
@@ -401,7 +401,7 @@ function PostWidget({
                           {/* commented user name */}
                           {comment.username}
                         </p>
-                    
+
                       </div>
 
                       {/* Dropdown menu */}
@@ -410,7 +410,7 @@ function PostWidget({
                       {comment.comment}
                     </p>
                   </article>
-                ))
+              ))
               : ''}
           </div>
         </section>
@@ -420,7 +420,3 @@ function PostWidget({
 }
 
 export default PostWidget;
-
-
-
-
