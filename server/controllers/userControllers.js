@@ -22,7 +22,9 @@ export const register = async (req, res) => {
 
   try {
     // destructuring data
-    let { username, email, password, isgoogle = false } = req.body;
+    let {
+      username, email, password, isgoogle = false,
+    } = req.body;
     if (isgoogle) {
       username = generateUsername(email);
     }
@@ -110,7 +112,9 @@ export const register = async (req, res) => {
 // login user
 export const login = async (req, res) => {
   try {
-    const { username, password, isgoogle = false, googleEmail = '' } = req.body;
+    const {
+      username, password, isgoogle = false, googleEmail = '',
+    } = req.body;
     // checking if user exists
     if (isgoogle) {
       var user = await User.findOne({ email: googleEmail });
@@ -167,6 +171,20 @@ export const getUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// getuser detais
+export const findUser = async (req, res) => {
+  console.log('here');
+  try {
+    const { username } = req.body;
+    const user = await User.find({ username });
+    console.log(user);
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    console.log('error hooo');
+    res.status(500).json({ error: err.message });
+  }
+};
 
 export const verifyEmail = async (req, res) => {
   console.log('verifyEmail');
@@ -195,7 +213,7 @@ export const verifyEmail = async (req, res) => {
             const updatedUser = await User.findByIdAndUpdate(
               { _id: userId },
               { verified: true },
-              { new: true }
+              { new: true },
             );
 
             await UserOTPVerification.deleteMany({ userId });
@@ -257,7 +275,7 @@ export const getUserFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+      user.friends.map((id) => User.findById(id)),
     );
 
     // destructring the results and filtering unwanted data
@@ -302,7 +320,7 @@ export const addRemoveFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+      user.friends.map((id) => User.findById(id)),
     );
 
     // destructring the results and filtering unwanted data
@@ -351,7 +369,7 @@ export const edituser = async (req, res) => {
         location,
         profilePicture,
       },
-      { new: true }
+      { new: true },
     ).then(async (update) => {
       console.log(update);
       const updatedUser = await User.findById(id);

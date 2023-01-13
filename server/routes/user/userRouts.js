@@ -11,6 +11,7 @@ import {
   register,
   verifyEmail,
   resentOTP,
+  findUser,
 } from '../../controllers/userControllers.js';
 
 import { verifyToken } from '../../middleware/token.js';
@@ -29,5 +30,6 @@ router.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
 router.post('/resetpass/:id', resetpass);
 router.post('/verifyEmail', verifyEmail);
 router.post('/resentOTP', resentOTP);
+router.post('/getuser', findUser);
 
 export default router;
