@@ -62,7 +62,6 @@ function PostWidget({
   const [model, setModel] = useState(false);
   const [comment, setcomment] = useState();
 
-
   const succesNotify = (message) => {
     toast.success(message, {
       position: 'bottom-right',
@@ -103,7 +102,7 @@ function PostWidget({
         comment,
         username,
         userprofile: profilePicture,
-        time: moment().format('MMM Do YY'),
+        // time: moment().format('MMM Do YY'),
       },
     }).then((response) => {
       setcomment('');
@@ -402,15 +401,7 @@ function PostWidget({
                           {/* commented user name */}
                           {comment.username}
                         </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 ">
-                          <time
-                            dateTime="2022-02-08"
-                            title="February 8th, 2022"
-                          >
-                            {comment.time}
-                          </time>
-                          {/* moment().format("MMM Do YY"); */}
-                        </p>
+                    
                       </div>
 
                       {/* Dropdown menu */}
@@ -429,3 +420,7 @@ function PostWidget({
 }
 
 export default PostWidget;
+
+
+
+
