@@ -11,7 +11,6 @@ import QuizWidget from '../../../components/UserComponents/QuizWidget/QuizWidget
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const [loading, setloading] = useState(true);
-
   const { _id, profilePicture } = useSelector((state) => state.user.user);
   setTimeout(() => {
     setloading(false);

@@ -384,3 +384,22 @@ export const resetpass = async (req, res) => {
     res.status(409).json({ error: err.message });
   }
 };
+
+export const searchUser = async (req, res) => {
+  try {
+    const { username } = req.body;
+    console.log(username);
+    const user = await User.findOne({ username }, { _id: 1 });
+    console.log(user);
+    if (user) {
+      console.log(user);
+      res.status(200).json(user);
+    } else {
+      res.status(500).json({ msg: 'No User found' });
+    }
+  } catch (err) {
+    console.log(err);
+    console.log('error hooo');
+    res.status(500).json({ error: err.message });
+  }
+};

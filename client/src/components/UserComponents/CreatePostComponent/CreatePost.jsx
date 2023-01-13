@@ -26,17 +26,40 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import UserImage from '../UserProfileComponent/UserProfilePicture';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import WidgetWrapper from '../WidgetWrapperHelperComponent/WindgetWrapper';
 import { editPost, setPosts } from '../../../redux/userState';
 import { baseUrl } from '../../../constants/constants';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 // eslint-disable-next-line react/prop-types
 function CreatePost({ profilePicture, postId = null, setedit }) {
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(postId);
   const [close, setclose] = useState(null);
+
+  const ErrNotify = (message) => {
+    toast.error(message, {
+      position: 'top-center',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
+
+  const succesNotify = (message) => {
+    toast.success(message, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
 
   // image state
 
@@ -87,6 +110,7 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
       .then((response) => response.json())
       .then((data) => {
         const posts = data;
+        succesNotify('Editing succes');
         dispatch(editPost({ posts }));
         // reset the state
         setImage(null);
@@ -94,9 +118,11 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
         setEditing(null);
         setclose(true);
         setedit(false);
+
         // navigate(0);
       })
       .catch((err) => {
+        ErrNotify('Editing faild');
         console.log('err', err);
       });
   };
@@ -119,12 +145,14 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
       .then((response) => response.json())
       .then((data) => {
         const posts = data;
+        succesNotify('Post Creation success');
         dispatch(setPosts({ posts }));
         // reset the state
         setImage(null);
         setPost('');
       })
       .catch((err) => {
+        ErrNotify('Post Creation faild');
         console.log('err', err);
       });
   };
@@ -133,95 +161,85 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
 
   if (editing) {
     return (
-      <WidgetWrapper
-        m="2rem 2rem"
-        sx={{ padding: '0.5rem 0.5rem 0.75rem 1.5rem' }}
-      >
-        <Tooltip title="cancel" arrow placement="right">
-          <IconButton
-            sx={{ display: 'block', marginLeft: 'auto', marginRight: '0' }}
-            onClick={handleEditPost}
-          >
-            <CloseOutlined />
-          </IconButton>
-        </Tooltip>
-
-        <FlexBetween gap="1.5rem">
-          <UserImage imagePath={profilePicture} />
-          <InputBase
-            placeholder="What's on your mind..."
-            onChange={(e) => setPost(e.target.value)}
-            value={post}
-            sx={{
-              width: '100%',
-              backgroundColor: palette.neutral.light,
-              borderRadius: '2rem',
-              padding: '1rem 2rem',
-            }}
-          />
-        </FlexBetween>
-        {isImage && (
-          <Box
-            border={`1px solid ${medium}`}
-            borderRadius="5px"
-            mt="1rem"
-            p="1rem"
-          >
-            <Dropzone
-              acceptedFiles=".jpg,.jpeg,.png"
-              multiple={false}
-              onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+      <>
+        <ToastContainer />
+        <WidgetWrapper
+          m="2rem 2rem"
+          sx={{ padding: '0.5rem 0.5rem 0.75rem 1.5rem' }}
+        >
+          <Tooltip title="cancel" arrow placement="right">
+            <IconButton
+              sx={{ display: 'block', marginLeft: 'auto', marginRight: '0' }}
+              onClick={handleEditPost}
             >
-              {({ getRootProps, getInputProps }) => (
-                <FlexBetween>
-                  <Box
-                    {...getRootProps()}
-                    border={`2px dashed ${palette.primary.main}`}
-                    p="1rem"
-                    width="100%"
-                    sx={{ '&:hover': { cursor: 'pointer' } }}
-                  >
-                    <input {...getInputProps()} />
-                    {!image ? (
-                      <p>Add New Image Here</p>
-                    ) : (
-                      <FlexBetween>
-                        <Typography>{image && image.name}</Typography>
-                        <EditOutlined />
-                      </FlexBetween>
-                    )}
-                  </Box>
-                  {isImage && (
-                    <IconButton
-                      onClick={() => {
-                        setImage(null);
-                        setEditprev('');
-                        setIsImage(false);
-                      }}
-                      sx={{ width: '15%' }}
-                    >
-                      <DeleteOutlined />
-                    </IconButton>
-                  )}
-                </FlexBetween>
-              )}
-            </Dropzone>
-            <Box>
-              {/* need to change after edit success */}
+              <CloseOutlined />
+            </IconButton>
+          </Tooltip>
 
-              {image ? (
-                <img
-                  width="100%"
-                  height="auto"
-                  alt="post"
-                  style={{
-                    borderRadius: '0.75rem',
-                    marginTop: '0.75rem',
-                  }}
-                  src={URL.createObjectURL(image)}
-                />
-              ) : (
-                editPrev && (
+          <FlexBetween gap="1.5rem">
+            <UserImage imagePath={profilePicture} />
+            <InputBase
+              placeholder="What's on your mind..."
+              onChange={(e) => setPost(e.target.value)}
+              value={post}
+              sx={{
+                width: '100%',
+                backgroundColor: palette.neutral.light,
+                borderRadius: '2rem',
+                padding: '1rem 2rem',
+              }}
+            />
+          </FlexBetween>
+          {isImage && (
+            <Box
+              border={`1px solid ${medium}`}
+              borderRadius="5px"
+              mt="1rem"
+              p="1rem"
+            >
+              <Dropzone
+                acceptedFiles=".jpg,.jpeg,.png"
+                multiple={false}
+                onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <FlexBetween>
+                    <Box
+                      {...getRootProps()}
+                      border={`2px dashed ${palette.primary.main}`}
+                      p="1rem"
+                      width="100%"
+                      sx={{ '&:hover': { cursor: 'pointer' } }}
+                    >
+                      <input {...getInputProps()} />
+                      {!image ? (
+                        <p>Add New Image Here</p>
+                      ) : (
+                        <FlexBetween>
+                          <Typography>{image && image.name}</Typography>
+                          <EditOutlined />
+                        </FlexBetween>
+                      )}
+                    </Box>
+                    {isImage && (
+                      <IconButton
+                        onClick={() => {
+                          setImage(null);
+                          setEditprev('');
+                          setIsImage(false);
+                        }}
+                        sx={{ width: '15%' }}
+                      >
+                        <DeleteOutlined />
+                      </IconButton>
+                    )}
+                  </FlexBetween>
+                )}
+              </Dropzone>
+              <Box>
+                {/* need to change after edit success */}
+
+                {image ? (
                   <img
                     width="100%"
                     height="auto"
@@ -230,145 +248,161 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
                       borderRadius: '0.75rem',
                       marginTop: '0.75rem',
                     }}
-                    src={editPrev && editPrev}
+                    src={URL.createObjectURL(image)}
                   />
-                )
-              )}
+                ) : (
+                  editPrev && (
+                    <img
+                      width="100%"
+                      height="auto"
+                      alt="post"
+                      style={{
+                        borderRadius: '0.75rem',
+                        marginTop: '0.75rem',
+                      }}
+                      src={editPrev && editPrev}
+                    />
+                  )
+                )}
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
 
-        <Divider sx={{ margin: '1.25rem 0' }} />
+          <Divider sx={{ margin: '1.25rem 0' }} />
 
-        <FlexBetween>
-          <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
-            <ImageOutlined sx={{ color: mediumMain }} />
-            <Typography
-              color={mediumMain}
-              sx={{ '&:hover': { cursor: 'pointer', color: medium } }}
+          <FlexBetween>
+            <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
+              <ImageOutlined sx={{ color: mediumMain }} />
+              <Typography
+                color={mediumMain}
+                sx={{ '&:hover': { cursor: 'pointer', color: medium } }}
+              >
+                Image
+              </Typography>
+            </FlexBetween>
+
+            <FlexBetween gap="0.25rem">
+              <VideocamOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Video</Typography>
+            </FlexBetween>
+
+            <Button
+              // if there is not post value desable the button
+              disabled={!post}
+              // eslint-disable-next-line no-return-assign
+              onClick={handleEditPost}
+              sx={{
+                color: palette.background.alt,
+                backgroundColor: palette.primary.main,
+                borderRadius: '3rem',
+              }}
             >
-              Image
-            </Typography>
+              UPDATE
+            </Button>
           </FlexBetween>
-
-          <FlexBetween gap="0.25rem">
-            <VideocamOutlined sx={{ color: mediumMain }} />
-            <Typography color={mediumMain}>Video</Typography>
-          </FlexBetween>
-
-          <Button
-            // if there is not post value desable the button
-            disabled={!post}
-            // eslint-disable-next-line no-return-assign
-            onClick={handleEditPost}
-            sx={{
-              color: palette.background.alt,
-              backgroundColor: palette.primary.main,
-              borderRadius: '3rem',
-            }}
-          >
-            UPDATE
-          </Button>
-        </FlexBetween>
-      </WidgetWrapper>
+        </WidgetWrapper>
+      </>
     );
   }
   if (!close) {
     return (
-      <WidgetWrapper mb="1.2rem">
-        <FlexBetween gap="1.5rem">
-          <UserImage imagePath={profilePicture} />
-          <InputBase
-            placeholder="What's on your mind..."
-            onChange={(e) => setPost(e.target.value)}
-            value={post}
-            sx={{
-              width: '100%',
-              backgroundColor: palette.neutral.light,
-              borderRadius: '2rem',
-              padding: '1rem 2rem',
-            }}
-          />
-        </FlexBetween>
-        {isImage && (
-          <Box
-            border={`1px solid ${medium}`}
-            borderRadius="5px"
-            mt="1rem"
-            p="1rem"
-          >
-            <Dropzone
-              acceptedFiles=".jpg,.jpeg,.png"
-              multiple={false}
-              onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+      <>
+        <ToastContainer />
+        <WidgetWrapper mb="1.2rem">
+          <FlexBetween gap="1.5rem">
+            <UserImage imagePath={profilePicture} />
+            <InputBase
+              placeholder="What's on your mind..."
+              onChange={(e) => setPost(e.target.value)}
+              value={post}
+              sx={{
+                width: '100%',
+                backgroundColor: palette.neutral.light,
+                borderRadius: '2rem',
+                padding: '1rem 2rem',
+              }}
+            />
+          </FlexBetween>
+          {isImage && (
+            <Box
+              border={`1px solid ${medium}`}
+              borderRadius="5px"
+              mt="1rem"
+              p="1rem"
             >
-              {({ getRootProps, getInputProps }) => (
-                <FlexBetween>
-                  <Box
-                    {...getRootProps()}
-                    border={`2px dashed ${palette.primary.main}`}
-                    p="1rem"
-                    width="100%"
-                    sx={{ '&:hover': { cursor: 'pointer' } }}
-                  >
-                    <input {...getInputProps()} />
-                    {!image ? (
-                      <p>Add Image Here</p>
-                    ) : (
-                      <FlexBetween>
-                        <Typography>
-                          {image ? image.name : editingPost}
-                        </Typography>
-                        <EditOutlined />
-                      </FlexBetween>
-                    )}
-                  </Box>
-                  {image && (
-                    <IconButton
-                      onClick={() => setImage(null)}
-                      sx={{ width: '15%' }}
+              <Dropzone
+                acceptedFiles=".jpg,.jpeg,.png"
+                multiple={false}
+                onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <FlexBetween>
+                    <Box
+                      {...getRootProps()}
+                      border={`2px dashed ${palette.primary.main}`}
+                      p="1rem"
+                      width="100%"
+                      sx={{ '&:hover': { cursor: 'pointer' } }}
                     >
-                      <DeleteOutlined />
-                    </IconButton>
-                  )}
-                </FlexBetween>
-              )}
-            </Dropzone>
-          </Box>
-        )}
+                      <input {...getInputProps()} />
+                      {!image ? (
+                        <p>Add Image Here</p>
+                      ) : (
+                        <FlexBetween>
+                          <Typography>
+                            {image ? image.name : editingPost}
+                          </Typography>
+                          <EditOutlined />
+                        </FlexBetween>
+                      )}
+                    </Box>
+                    {image && (
+                      <IconButton
+                        onClick={() => setImage(null)}
+                        sx={{ width: '15%' }}
+                      >
+                        <DeleteOutlined />
+                      </IconButton>
+                    )}
+                  </FlexBetween>
+                )}
+              </Dropzone>
+            </Box>
+          )}
 
-        <Divider sx={{ margin: '1.25rem 0' }} />
+          <Divider sx={{ margin: '1.25rem 0' }} />
 
-        <FlexBetween>
-          <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
-            <ImageOutlined sx={{ color: mediumMain }} />
-            <Typography
-              color={mediumMain}
-              sx={{ '&:hover': { cursor: 'pointer', color: medium } }}
+          <FlexBetween>
+            <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
+              <ImageOutlined sx={{ color: mediumMain }} />
+              <Typography
+                color={mediumMain}
+                sx={{ '&:hover': { cursor: 'pointer', color: medium } }}
+              >
+                Image
+              </Typography>
+            </FlexBetween>
+
+            <FlexBetween gap="0.25rem">
+              <VideocamOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Video</Typography>
+            </FlexBetween>
+
+            <Button
+              // if there is not post value desable the button
+              disabled={!post}
+              onClick={handlePost}
+              sx={{
+                color: palette.background.alt,
+                backgroundColor: palette.primary.main,
+                borderRadius: '3rem',
+              }}
             >
-              Image
-            </Typography>
+              POST
+            </Button>
           </FlexBetween>
-
-          <FlexBetween gap="0.25rem">
-            <VideocamOutlined sx={{ color: mediumMain }} />
-            <Typography color={mediumMain}>Video</Typography>
-          </FlexBetween>
-
-          <Button
-            // if there is not post value desable the button
-            disabled={!post}
-            onClick={handlePost}
-            sx={{
-              color: palette.background.alt,
-              backgroundColor: palette.primary.main,
-              borderRadius: '3rem',
-            }}
-          >
-            POST
-          </Button>
-        </FlexBetween>
-      </WidgetWrapper>
+        </WidgetWrapper>
+      </>
     );
   }
 

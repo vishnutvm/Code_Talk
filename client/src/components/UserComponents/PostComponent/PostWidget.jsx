@@ -12,6 +12,10 @@ import {
 // import axios from 'axios';
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // import { useNavigate } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import * as moment from 'moment';
@@ -57,6 +61,17 @@ function PostWidget({
   const [edit, setedit] = useState(null);
   const [model, setModel] = useState(false);
   const [comment, setcomment] = useState();
+
+
+  const succesNotify = (message) => {
+    toast.success(message, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
   // const { username, profilePicture, _id } = user;
 
   const patchLike = async () => {
@@ -113,6 +128,7 @@ function PostWidget({
         'Content-Type': 'application/json',
       },
     }).then((response) => {
+      succesNotify('Post Deleted');
       // console.log(response.data);
       dispatch(deletePost({ id: postId }));
     });
@@ -137,6 +153,7 @@ function PostWidget({
   }
   return (
     <WidgetWrapper m="2rem 1rem">
+      <ToastContainer />
       <div className="relative">
         <div
           tabIndex={-1}
@@ -306,7 +323,6 @@ function PostWidget({
           </div>
         )}
       </div>
-
       <Typography color={main} sx={{ mt: '1rem' }}>
         {discription}
       </Typography>
@@ -319,7 +335,6 @@ function PostWidget({
           src={`${baseUrl}/assets/${picturePath}`}
         />
       )}
-
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
           <FlexBetween gap="0.3rem">
@@ -342,7 +357,6 @@ function PostWidget({
         </FlexBetween>
         {/* <ShareOutlined /> */}
       </FlexBetween>
-
       {isComments && (
         <section className="bg-white dark:bg-gray-900 py-4 lg:py-8">
           <div className="max-w-2xl mx-auto px-4">
