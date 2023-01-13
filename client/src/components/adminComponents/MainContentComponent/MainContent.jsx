@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import WishHeader from '../WelcomeComponent/wishHeader';
-// Groth section mayuse in future
-// import Groth from './Groth';
-// import Info from '../InfoComponent/Info';
+
 import QuizSection from '../QuizSectionHome/QuizSectionHome';
 import ResentUsers from '../ResentUsersComponent/ResentUsers';
 import Groth from '../GrothComponent/Groth';

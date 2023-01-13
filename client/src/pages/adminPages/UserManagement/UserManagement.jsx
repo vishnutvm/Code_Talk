@@ -6,9 +6,9 @@ import styled from 'styled-components';
 import { Button, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../../utils/axios';
 import { baseUrl } from '../../../constants/constants';
-import 'react-toastify/dist/ReactToastify.css';
 
 const headers = {
   'Content-Type': 'application/json',

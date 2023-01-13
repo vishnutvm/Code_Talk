@@ -26,10 +26,12 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { response } from 'express';
 import { setMode } from '../../../redux/modeState';
 import { setLogout } from '../../../redux/userState';
 import FlexBetween from '../../../components/UserComponents/FlexBetweenHelperComponent/FlexBetween';
 import { baseUrl } from '../../../constants/constants';
+import axios from '../../../utils/axios';
 
 function Navbar({ turnoffDark }) {
   const [isMobile, setIsmobile] = useState(false);
@@ -37,7 +39,7 @@ function Navbar({ turnoffDark }) {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [open, setopen] = useState(false);
-
+  const [search, setsearch] = useState('');
   // console.log(user);
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const theme = useTheme();
@@ -46,6 +48,12 @@ function Navbar({ turnoffDark }) {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const { alt } = theme.palette.background;
+
+  // const searching = () => {
+  //   axios.get('/getuser', search).then((reponse) => {
+  //     console.log(reponse.data);
+  //   });
+  // };
 
   // managing error
   const { username, profilePicture, _id } = user;
@@ -73,7 +81,11 @@ function Navbar({ turnoffDark }) {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search profile ..." />
+            <InputBase
+              onChange={(e) => setsearch(e.target.value)}
+              value={search}
+              placeholder="Search profile ..."
+            />
             <IconButton>
               <Search />
             </IconButton>
