@@ -7,8 +7,7 @@ import axios from '../../../utils/axios';
 import { baseUrl } from '../../../constants/constants';
 import { changePage } from '../../../redux/adminState';
 
-import QuizAddingPage from '../../../pages/adminPages/QuizAddingPage/QuizAddingPage';
-import QuizAdding from './QuizAdding';
+
 import QuizEditComponent from './QuizEditComponent';
 
 const Container = styled.div`
