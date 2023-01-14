@@ -1,13 +1,41 @@
 /* eslint-disable import/extensions */
 // import User from '../models/User.js';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import dotenv from 'dotenv';
 
 import Post from '../models/Post.js';
+
+dotenv.config();
 // import { uploadFile } from '../s3.js';
+
+const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketRegion = process.env.AWS_BUCKET_REGION;
+const accessKey = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey,
+  },
+  region: bucketRegion,
+});
 
 export const createPost = async (req, res) => {
   console.log('file', req.file);
   console.log('file', req.file.buffer);
   console.log('post creation trigger');
+
+  const params = {
+    Bucket: bucketName,
+    Body: req.file.buffer,
+    Key: req.file.originalname,
+    ContentType: req.file.mimetype,
+  };
+  const command = new PutObjectCommand(params);
+  
+  await s3.send(command);
+  
   try {
     // // uploading imagge
     const { userId, discription, picturePath } = req.body;
