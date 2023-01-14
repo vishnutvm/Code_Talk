@@ -15,6 +15,8 @@ function MainChatComponent({ socket }) {
   const [message, setMessages] = useState([]);
   const token = useSelector((state) => state.user.token);
 
+  // const dispatch = useDispatch();
+  //   const token = useSelector((state) => state.user.token);
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
   const [arrivalMessage, setarrivalMessage] = useState(null);
