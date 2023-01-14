@@ -184,12 +184,6 @@ function QuizAdding() {
               });
           }
 
-          // presetting the vlaue
-          values.question = '';
-          values.answer = '';
-          values.option1 = '';
-          values.option2 = '';
-          values.option3 = '';
           next < 5 && setNext(next + 1);
 
           console.log(next);
