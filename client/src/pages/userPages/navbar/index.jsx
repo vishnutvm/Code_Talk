@@ -128,7 +128,7 @@ function Navbar({ turnoffDark }) {
 
         {isNotMobileScreen ? (
           <FlexBetween gap="2rem">
-            <VideocamRounded sx={{ fontSize: '25px' }} />
+            {/* <VideocamRounded sx={{ fontSize: '25px' }} /> */}
             <IconButton onClick={() => navigate('/chat')}>
               <Badge color="warning">
                 {theme.palette.mode === 'dark' ? (
@@ -139,9 +139,9 @@ function Navbar({ turnoffDark }) {
               </Badge>
             </IconButton>
 
-            <Badge color="warning">
+            {/* <Badge color="warning">
               <Notifications sx={{ fontSize: '25px' }} />
-            </Badge>
+            </Badge> */}
             {!turnoffDark && (
               <IconButton onClick={() => dispatch(setMode())}>
                 {theme.palette.mode === 'dark' ? (
@@ -225,16 +225,17 @@ function Navbar({ turnoffDark }) {
               alignItems="center"
               gap="3rem"
             >
-              <VideocamRounded sx={{ fontSize: '25px' }} />
-              <Badge badgeContent={4} color="warning">
+              {/* <VideocamRounded sx={{ fontSize: '25px' }} /> */}
+              {/* <Badge badgeContent={4} color="warning"> */}
+              <Badge color="warning">
                 <TextsmsRounded
                   onClick={() => navigate('/chat')}
                   sx={{ fontsize: '25px' }}
                 />
               </Badge>
-              <Badge badgeContent={1} color="warning">
+              {/* <Badge color="warning">
                 <Notifications sx={{ fontSize: '25px' }} />
-              </Badge>
+              </Badge> */}
 
               <IconButton onClick={() => dispatch(setMode())}>
                 {theme.palette.mode === 'dark' ? (

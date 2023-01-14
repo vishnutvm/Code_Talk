@@ -13,6 +13,7 @@ import color from 'colors';
 import morgan from 'morgan';
 import mongoDB from './config/db.js';
 import { upload } from './middleware/fileUpload.js';
+
 // Routs
 
 import postRouts from './routes/post/postRouts.js';
@@ -20,7 +21,6 @@ import adminRouts from './routes/admin/adminRouts.js';
 import messsageRouts from './routes/chat/messageRouts.js';
 import quizRouts from './routes/quiz/quizRouts.js';
 import userRouts from './routes/user/userRouts.js';
-// import { generateUploadURL } from './s3.js';
 
 // Config
 const __filename = fileURLToPath(import.meta.url);
@@ -32,9 +32,6 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// test
-// agin test
-// hosting static
 app.use(express.static(path.join(__dirname, '../client/dist')));
 // stati
 

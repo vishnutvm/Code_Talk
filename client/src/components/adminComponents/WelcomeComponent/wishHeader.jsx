@@ -27,14 +27,16 @@ function WishHeader() {
   const [wish, setwish] = useState('');
 
   const greeting = () => {
-    const { hour } = Date.now();
-    if (hour < 12) {
+    const today = new Date();
+    const curHr = today.getHours();
+
+    if (curHr < 12) {
       setwish('Morning');
-    }
-    if (hour < 17) {
+    } else if (curHr < 18) {
       setwish('Afternoon');
+    } else {
+      setwish('Evening');
     }
-    setwish('Evening');
   };
 
   useEffect(() => {
