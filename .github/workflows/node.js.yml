@@ -32,6 +32,7 @@ jobs:
         npm i
         cp ../../../.env .env
         mkdir -p public/assets
+        npx kill-port 3001
         pm2 stop all
         pm2 start app.js
         sudo service nginx restart
