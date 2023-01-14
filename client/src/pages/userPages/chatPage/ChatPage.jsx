@@ -17,7 +17,7 @@ function ChatPage() {
   useEffect(() => {
     dispatch(setCurrentChat(null));
     console.log('use effec run');
-    socket.current = io(baseUrl);
+    socket.current = io('https://codetalks.co.uk/');
     socket.current.emit('add-user', currentUserId);
   }, []);
 
