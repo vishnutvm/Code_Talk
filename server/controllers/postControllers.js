@@ -1,82 +1,92 @@
 /* eslint-disable import/extensions */
-// import User from '../models/User.js';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import dotenv from 'dotenv';
 
 import Post from '../models/Post.js';
+import uploadS3 from '../s3.js';
 
-dotenv.config();
-// import { uploadFile } from '../s3.js';
-
-const bucketName = process.env.AWS_BUCKET_NAME;
-const bucketRegion = process.env.AWS_BUCKET_REGION;
-const accessKey = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
-
-const s3 = new S3Client({
-  credentials: {
-    accessKeyId: accessKey,
-    secretAccessKey,
-  },
-  region: bucketRegion,
-});
-
+// create new post
 export const createPost = async (req, res) => {
-  console.log('file', req.file);
-  console.log('file', req.file.buffer);
-  console.log('post creation trigger');
-
-  const params = {
-    Bucket: bucketName,
-    Body: req.file.buffer,
-    Key: req.file.originalname,
-    ContentType: req.file.mimetype,
-  };
-  const command = new PutObjectCommand(params);
-  
-  await s3.send(command);
-  
   try {
-    // // uploading imagge
-    const { userId, discription, picturePath } = req.body;
-    console.log(req.body);
+    if (req.file) {
+      uploadS3(req.file).then(async (response) => {
+        console.log('worki');
+        console.log(response.Location);
 
-    const newPost = new Post({
-      picturePath,
-      discription,
-      createdBy: userId,
-      like: {},
-      Comments: [],
-    });
-    await newPost.save();
-    const post = await Post.find().populate('createdBy');
-    res.status(201).json(post);
+        const { userId, discription } = req.body;
+        // let { picturePath } = req.body;
+
+        // picturePath = response.Location
+        console.log(req.body);
+
+        const newPost = new Post({
+          picturePath: response.Location,
+          discription,
+          createdBy: userId,
+          like: {},
+          Comments: [],
+        });
+        await newPost.save();
+        const post = await Post.find().populate('createdBy');
+        res.status(201).json(post);
+      });
+    } else {
+      const { userId, discription } = req.body;
+      // let { picturePath } = req.body;
+
+      // picturePath = response.Location
+      console.log(req.body);
+
+      const newPost = new Post({
+        discription,
+        createdBy: userId,
+        like: {},
+        Comments: [],
+      });
+      await newPost.save();
+      const post = await Post.find().populate('createdBy');
+      res.status(201).json(post);
+    }
+
+    // console.log(`test${result}`);
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });
   }
 };
 
+// edit the current post(only creater of post)
+
 export const editPost = async (req, res) => {
   console.log('post editing trigger');
   try {
     const { postId, discription, picturePath } = req.body;
     console.log(req.body);
-
-    const post = await Post.findById(postId);
-    console.log(post);
-    Post.findOneAndUpdate(
-      { _id: postId },
-      { discription, picturePath },
-      { new: true }
-    ).then(async (update) => {
-      console.log(update);
-      const updatedPosts = await Post.find().populate('createdBy');
-      res.status(201).json(updatedPosts);
-    });
-    // await newPost.save();
-    // const post = await Post.find().populate('createdBy');
-    // res.status(201).json(post)
+    if (req.file) {
+      uploadS3(req.file).then(async (response) => {
+        const post = await Post.findById(postId);
+        console.log(post);
+        Post.findOneAndUpdate(
+          { _id: postId },
+          { discription, picturePath: response.Location },
+          { new: true }
+        ).then(async (update) => {
+          console.log(update);
+          const updatedPosts = await Post.find().populate('createdBy');
+          res.status(201).json(updatedPosts);
+        });
+      });
+    } else {
+      const post = await Post.findById(postId);
+      console.log(post);
+      Post.findOneAndUpdate(
+        { _id: postId },
+        { discription },
+        { new: true }
+      ).then(async (update) => {
+        console.log(update);
+        const updatedPosts = await Post.find().populate('createdBy');
+        res.status(201).json(updatedPosts);
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });
@@ -93,6 +103,8 @@ export const getFeedPosts = async (req, res) => {
   }
 };
 
+// get post based on user id
+
 export const getUserPosts = async (req, res) => {
   console.log('get user post');
   try {
@@ -105,7 +117,7 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
-// delete the post
+// delete the particular post
 export const deletePost = async (req, res) => {
   console.log('delete user post');
   try {
@@ -123,6 +135,7 @@ export const deletePost = async (req, res) => {
   }
 };
 
+// like / dislike the post
 export const likePost = async (req, res) => {
   console.log('like rout gettin');
   try {
@@ -148,6 +161,7 @@ export const likePost = async (req, res) => {
   }
 };
 
+// comment on the post(can all users)
 export const commentPost = async (req, res) => {
   console.log('like rout gettin');
   try {

@@ -1,21 +1,24 @@
 /* eslint-disable prefer-const */
 /* eslint-disable import/extensions */
-// import Quiz from '../models/Quiz';
 
 import Quiz from '../models/Quiz.js';
 import User from '../models/User.js';
-
+import uploadS3 from '../s3.js';
+// adding quiz bannner imagen(after upload the quiz creation may start)
 export const addquizImg = async (req, res) => {
   try {
-    console.log(req.file);
-    // after connect s3 need to send back the url  of image
-    res.status(200).json('working');
+    uploadS3(req.file).then(async (response) => {
+      console.log(req.file);
+      // after connect s3 need to send back the url  of image
+      res.status(200).json({ path: response.Location });
+    });
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });
   }
 };
 
+// createing new quiz
 export const addQuiz = async (req, res) => {
   console.log('create quiz trigger');
 
@@ -40,6 +43,7 @@ export const addQuiz = async (req, res) => {
   }
 };
 
+// get all quiz
 export const getAllQuiz = async (req, res) => {
   console.log('getting getAllQuizc');
   try {
@@ -50,6 +54,8 @@ export const getAllQuiz = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+// get particular quiz
 export const getQuiz = async (req, res) => {
   console.log('getting quiz');
   try {
@@ -61,6 +67,8 @@ export const getQuiz = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+// delete particular quiz
 export const deleteQuiz = async (req, res) => {
   console.log('deleting quiz');
   try {
@@ -72,6 +80,8 @@ export const deleteQuiz = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+// edit quiz(admin)
 export const editQuiz = async (req, res) => {
   console.log('edit quiz trigger');
 
@@ -101,6 +111,9 @@ export const editQuiz = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+// get result of quiz baseed on total mark,earned scor,passmark(user)
+
 export const getResult = async (req, res) => {
   console.log('working');
   try {
@@ -136,6 +149,7 @@ export const getResult = async (req, res) => {
   }
 };
 
+// get quiz report (for graph)
 export const getReport = async (req, res) => {
   console.log('getting report');
   try {

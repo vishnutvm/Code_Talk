@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// token verification middleware
+
 // eslint-disable-next-line consistent-return
 export const verifyToken = async (req, res, next) => {
   console.log('test1', process.env.JWT_SECRET);

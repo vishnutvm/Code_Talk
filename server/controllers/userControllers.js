@@ -1,3 +1,4 @@
+/* eslint-disable no-self-compare */
 /* eslint-disable no-redeclare */
 /* eslint-disable block-scoped-var */
 /* eslint-disable no-var */
@@ -9,7 +10,8 @@
 /* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-// import crypto from 'crypto';
+import uploadS3 from '../s3.js';
+
 import generateUsername from 'generate-username-from-email';
 import User from '../models/User.js';
 import UserOTPVerification from '../models/UserOTPVerification.js';
@@ -41,7 +43,7 @@ export const register = async (req, res) => {
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
-
+    // checking if the user is login/register using google auth
     if (isgoogle) {
       var user = new User({
         username,
@@ -168,6 +170,8 @@ export const getUser = async (req, res) => {
   }
 };
 
+// Email otp verification
+
 export const verifyEmail = async (req, res) => {
   console.log('verifyEmail');
   try {
@@ -210,6 +214,8 @@ export const verifyEmail = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// resend the otp
 
 export const resentOTP = async (req, res) => {
   const { userId } = req.body;
@@ -289,8 +295,8 @@ export const addRemoveFriends = async (req, res) => {
       user.friends = user.friends.filter((id) => id !== friendId);
 
       // need to remove from there friends list also
-      // eslint-disable-next-line no-self-compare
-      friend.friends = friend.friends.filter((id) => id !== id);
+
+      friend.friends = friend.friends.filter((Id) => Id !== id);
     } else {
       // update the friends list in both account
       user.friends.push(friendId);
@@ -325,37 +331,40 @@ export const edituser = async (req, res) => {
   console.log('here');
   console.log(req.file);
   try {
-    const {
-      username,
-      phone,
-      email,
-      linkdin,
-      github,
-      location,
-      picture,
-      profilePicture,
-    } = req.body;
-    console.log(picture, 'bugging');
-
-    console.log(req.body);
-    const { id } = req.params;
-
-    User.findOneAndUpdate(
-      { _id: id },
-      {
+    uploadS3(req.file).then(async (response) => {
+      const {
         username,
         phone,
         email,
         linkdin,
         github,
         location,
+        picture,
         profilePicture,
-      },
-      { new: true }
-    ).then(async (update) => {
-      console.log(update);
-      const updatedUser = await User.findById(id);
-      res.status(201).json(updatedUser);
+      } = req.body;
+
+      console.log(picture, 'bugging');
+
+      console.log(req.body);
+      const { id } = req.params;
+
+      User.findOneAndUpdate(
+        { _id: id },
+        {
+          username,
+          phone,
+          email,
+          linkdin,
+          github,
+          location,
+          profilePicture: response.Location,
+        },
+        { new: true }
+      ).then(async (update) => {
+        console.log(update);
+        const updatedUser = await User.findById(id);
+        res.status(201).json(updatedUser);
+      });
     });
   } catch (err) {
     console.log(err);
@@ -385,6 +394,7 @@ export const resetpass = async (req, res) => {
   }
 };
 
+// search user using user name
 export const searchUser = async (req, res) => {
   try {
     const { username } = req.body;

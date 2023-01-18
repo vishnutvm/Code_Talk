@@ -2,6 +2,7 @@
 import express from 'express';
 
 import { upload } from '../../middleware/fileUpload.js';
+// importing quiz controller functions
 import {
   addQuiz,
   addquizImg,
@@ -15,6 +16,7 @@ import {
 
 const router = express.Router();
 
+// quiz api
 router.post('/addquiz', addQuiz);
 router.get('/getAllquiz', getAllQuiz);
 router.post('/addquizImg', upload.single('picture'), addquizImg);

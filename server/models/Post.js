@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 
+
+// chat Post model
+
 const postSchema = mongoose.Schema(
   {
     createdBy: {

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 import { cardShadow, hoverEffect, themeColor } from '../../../adminTheme';
-import { baseUrl } from '../../../constants/constants';
+
 import { changePage } from '../../../redux/adminState';
 
 const QuesList = styled.div`
@@ -76,20 +76,20 @@ function QuizSection({ quizList }) {
         quizList.map((quiz) => (
           <Ques>
             <QuesImage>
-              <img src={`${baseUrl}/assets/${quiz.banner}`} alt="" />
+              <img src={`${quiz.banner}`} alt="" />
             </QuesImage>
             <Detail>
               <Title>{quiz.title}</Title>
               {isNotMobileScreen ? (
                 <SubTitle>
                   {quiz.discription.length > 100 &&
-                    quiz.discription.slice(0, 100)}{' '}
+                    quiz.discription.slice(0, 100)}
                   . . .
                 </SubTitle>
               ) : (
                 <SubTitle>
                   {quiz.discription.length > 50 &&
-                    quiz.discription.slice(0, 50)}{' '}
+                    quiz.discription.slice(0, 50)}
                   . . .
                 </SubTitle>
               )}

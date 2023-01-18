@@ -2,14 +2,15 @@
 /* eslint-disable consistent-return */
 /* eslint-disable import/prefer-default-export */
 import jwt from 'jsonwebtoken';
-// eslint-disable-next-line import/extensions
+
 import Admin from '../models/Admin.js';
 import User from '../models/User.js';
-// import Quiz from '../models/Quiz.js';
+
 // login
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+
     // checking if user exists
     const admin = await Admin.findOne({ username });
     if (!admin) return res.status(400).json({ msg: 'wrong username. ' });
@@ -32,6 +33,7 @@ export const login = async (req, res) => {
   }
 };
 
+// get all the users
 export const getAllUsers = async (req, res) => {
   console.log('getting userposts');
   try {
@@ -42,6 +44,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+// blockin/unblocking users for admin
 export const blockUsers = async (req, res) => {
   console.log('blocking users');
   try {
@@ -65,27 +68,7 @@ export const blockUsers = async (req, res) => {
   }
 };
 
-export const addquizImg = async (req, res) => {
-  try {
-    console.log(req.body);
-    console.log(req.file);
-    res.status(200).json('working');
-  } catch (err) {
-    console.log(err);
-    res.status(409).json({ error: err.message });
-  }
-};
-
-export const addQuiz = async (req, res) => {
-  console.log('getting userposts');
-  try {
-    console.log(req.body);
-    // const users = await User.find();
-    res.status(200).json('worki');
-  } catch (err) {
-    res.status(404).json({ error: err.message });
-  }
-};
+// get users groth report,day wise(for dashbord)
 export const getUserReport = async (req, res) => {
   console.log('getting Groth Report');
   try {
@@ -103,6 +86,7 @@ export const getUserReport = async (req, res) => {
   }
 };
 
+// get user complete report(for graph)
 export const getUserCompleteReport = async (req, res) => {
   console.log('getting userposts');
   try {

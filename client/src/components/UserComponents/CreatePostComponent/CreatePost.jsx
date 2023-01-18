@@ -24,7 +24,7 @@ import {
 import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import UserImage from '../UserProfileComponent/UserProfilePicture';
@@ -36,11 +36,11 @@ import { baseUrl } from '../../../constants/constants';
 import 'react-toastify/dist/ReactToastify.css';
 
 // eslint-disable-next-line react/prop-types
-function CreatePost({ profilePicture, postId = null, setedit }) {
+function CreatePost({ profilePicture, postId = null, setedit, setloading }) {
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(postId);
   const [close, setclose] = useState(null);
-
+  // const [loading, setloading] = useState(false);
   const ErrNotify = (message) => {
     toast.error(message, {
       position: 'top-center',
@@ -64,7 +64,9 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
   // image state
 
   const [image, setImage] = useState(null);
+  // loading
 
+  // const [loading, setloading] = useState(false);
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user.user);
   const token = useSelector((state) => state.user.token);
@@ -81,12 +83,43 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
     !!(editingPost && editingPost.picturePath)
   );
   const [editPrev, setEditprev] = useState(
-    editingPost && editingPost.picturePath
-      ? `${baseUrl}/assets/${editingPost.picturePath}`
-      : ''
+    editingPost && editingPost.picturePath ? `${editingPost.picturePath}` : ''
   );
+
+  // handle create post
+  const handlePost = async () => {
+    const formData = new FormData();
+    formData.append('userId', _id);
+    formData.append('discription', post);
+    if (image) {
+      formData.append('picture', image);
+      formData.append('picturePath', image.name);
+    }
+    setloading(true);
+    const res = fetch(`${baseUrl}/posts/createPost`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const posts = data;
+        succesNotify('Post Creation success');
+        dispatch(setPosts({ posts }));
+        // reset the state
+        setImage(null);
+        setPost('');
+        setloading(false);
+      })
+      .catch((err) => {
+        ErrNotify('Post Creation faild');
+        console.log('err', err);
+        setloading(false);
+      });
+  };
   // handle post edit
   const handleEditPost = () => {
+    console.log('wrrrr');
     // need to clearn the edit componenet
     // need to update the post state
     // need to update the post state even the edit post closed
@@ -100,8 +133,7 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
       formData.append('picture', image);
       formData.append('picturePath', image.name);
     }
-
-    // found bug need to remove
+    setloading(true);
     fetch(`${baseUrl}/posts/editPost`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${token}` },
@@ -118,45 +150,15 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
         setEditing(null);
         setclose(true);
         setedit(false);
-
+        setloading(false);
         // navigate(0);
       })
       .catch((err) => {
         ErrNotify('Editing faild');
         console.log('err', err);
+        setloading(false);
       });
   };
-
-  // handle create post
-  const handlePost = async () => {
-    const formData = new FormData();
-    formData.append('userId', _id);
-    formData.append('discription', post);
-    if (image) {
-      formData.append('picture', image);
-      formData.append('picturePath', image.name);
-    }
-
-    const res = fetch(`${baseUrl}/posts/createPost`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const posts = data;
-        succesNotify('Post Creation success');
-        dispatch(setPosts({ posts }));
-        // reset the state
-        setImage(null);
-        setPost('');
-      })
-      .catch((err) => {
-        ErrNotify('Post Creation faild');
-        console.log('err', err);
-      });
-  };
-
   // editing post
 
   if (editing) {
@@ -198,7 +200,7 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
               p="1rem"
             >
               <Dropzone
-                acceptedFiles=".jpg,.jpeg,.png"
+                acceptedFiles=".jpg,.jpeg,.png,.mp4"
                 multiple={false}
                 onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
               >
@@ -346,7 +348,7 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
                     >
                       <input {...getInputProps()} />
                       {!image ? (
-                        <p>Add Image Here</p>
+                        <p>Add Here . . .</p>
                       ) : (
                         <FlexBetween>
                           <Typography>
@@ -383,9 +385,14 @@ function CreatePost({ profilePicture, postId = null, setedit }) {
               </Typography>
             </FlexBetween>
 
-            <FlexBetween gap="0.25rem">
+            <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
               <VideocamOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Video</Typography>
+              <Typography
+                color={mediumMain}
+                sx={{ '&:hover': { cursor: 'pointer', color: medium } }}
+              >
+                Video
+              </Typography>
             </FlexBetween>
 
             <Button

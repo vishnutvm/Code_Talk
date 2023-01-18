@@ -1,5 +1,7 @@
 /* eslint-disable import/extensions */
 import express from 'express';
+
+// importing admin controller functions
 import {
   login,
   getAllUsers,
@@ -7,9 +9,10 @@ import {
   getUserReport,
   getUserCompleteReport,
 } from '../../controllers/adminControllers.js';
-// import { upload } from '../../middleware/fileUpload.js';
 
 const router = express.Router();
+
+// admin api
 router.post('/adminLogin', login);
 router.get('/getallusers', getAllUsers);
 router.patch('/blockUser/:userId', blockUsers);

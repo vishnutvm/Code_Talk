@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -42,6 +44,7 @@ function PostWidget({
   comments,
   isProfile,
   userPicturePath,
+  setloading,
 }) {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -147,6 +150,7 @@ function PostWidget({
         profilePicture={userPicturePath}
         postId={postId}
         setedit={setedit}
+        setloading={setloading}
       />
     );
   }
@@ -268,7 +272,7 @@ function PostWidget({
                         href="#"
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
+                          'block px-4 py-2 text-sm text-gray-700'
                         )}
                         onClick={editThePost}
                       >
@@ -294,7 +298,7 @@ function PostWidget({
                       <button
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
+                          'block px-4 py-2 text-sm text-gray-700'
                         )}
                         onClick={() => setModel(true)}
                         type="button"
@@ -325,14 +329,27 @@ function PostWidget({
       <Typography color={main} sx={{ mt: '1rem' }}>
         {discription}
       </Typography>
-      {picturePath && (
-        <img
-          width="100%"
-          height="auto"
-          alt="post"
-          style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
-          src={`${baseUrl}/assets/${picturePath}`}
-        />
+      {picturePath ? (
+        picturePath?.split('.')[picturePath.split('.').length - 1] !== 'mp4' ? (
+          <img
+            width="100%"
+            height="auto"
+            alt="post"
+            style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
+            src={`${picturePath}`}
+          />
+        ) : (
+          <video
+            width="100%"
+            height="auto"
+            alt="post"
+            controls
+            style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
+            src={`${picturePath}`}
+          />
+        )
+      ) : (
+        ''
       )}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
@@ -393,7 +410,7 @@ function PostWidget({
                           {comment.userprofile && (
                             <img
                               className="mr-2 w-6 h-6 rounded-full"
-                              src={`${baseUrl}/assets/${comment.userprofile}`}
+                              src={`${comment.userprofile}`}
                               alt="Profile image"
                             />
                           )}
@@ -401,16 +418,13 @@ function PostWidget({
                           {/* commented user name */}
                           {comment.username}
                         </p>
-
                       </div>
-
-                   
                     </footer>
                     <p className="text-gray-500 dark:text-gray-400">
                       {comment.comment}
                     </p>
                   </article>
-              ))
+                ))
               : ''}
           </div>
         </section>

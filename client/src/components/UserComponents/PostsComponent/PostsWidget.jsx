@@ -72,6 +72,7 @@ function PostsWidget({ userId, isProfile = false }) {
               likes={like}
               comments={Comments}
               isProfile={isProfile}
+              setloading={setloading}
             />
           )
         )

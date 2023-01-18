@@ -7,7 +7,7 @@ function UserImage({ imagePath, size = '60px' }) {
     <Avatar
       sx={{ width: `${size}`, height: `${size}` }}
       alt=""
-      src={`${baseUrl}/assets/${imagePath}`}
+      src={`${imagePath}`}
     />
   );
 }

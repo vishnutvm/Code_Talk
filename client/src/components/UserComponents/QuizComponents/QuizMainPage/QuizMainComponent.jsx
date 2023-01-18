@@ -87,7 +87,7 @@ function QuizMainComponent() {
                     <div className="md:shrink-0">
                       <img
                         className="h-62 w-full object-cover md:h-full md:w-48"
-                        src={`${baseUrl}/assets/${quiz.banner}`}
+                        src={`${quiz.banner}`}
                         alt="Quiz"
                       />
                     </div>

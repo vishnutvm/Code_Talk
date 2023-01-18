@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { Avatar } from '@mui/material';
-import axios from '../../../utils/axios';
+
 import { baseUrl } from '../../../constants/constants';
 
 function SingleMessageComponent({
@@ -34,13 +34,13 @@ function SingleMessageComponent({
             <Avatar
               sx={{ width: '100%', height: '100%' }}
               alt=""
-              src={`${baseUrl}/assets/${currentUserPicture}`}
+              src={`${currentUserPicture}`}
             />
           ) : (
             <Avatar
               sx={{ width: '100%', height: '100%' }}
               alt=""
-              src={`${baseUrl}/assets/${chatUserImage}`}
+              src={`${chatUserImage}`}
             />
           )}
         </div>

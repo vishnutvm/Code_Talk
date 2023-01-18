@@ -1,12 +1,10 @@
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 /* eslint-disable import/prefer-default-export */
-// import jwt from 'jsonwebtoken';
-
-// eslint-disable-next-line import/extensions
 
 import Chat from '../models/Chat.js';
 
+// send messsage
 export const addMessage = async (req, res) => {
   console.log('getting chats');
   try {
@@ -27,6 +25,8 @@ export const addMessage = async (req, res) => {
     return res.status(409).json({ msg: 'Message adding faild' });
   }
 };
+
+// get all message between 2 users
 
 export const getAllMessage = async (req, res) => {
   // console.log('Gettingg all the chat');
@@ -51,4 +51,3 @@ export const getAllMessage = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
-// const post = await Post.find({ createdBy: userId }).populate('createdBy');

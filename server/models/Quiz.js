@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// chat Quiz model
+
 const quizSchema = new mongoose.Schema({
   title: String,
   banner: String,

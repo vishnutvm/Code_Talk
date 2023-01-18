@@ -39,7 +39,7 @@ const Container = styled.div`
   border-radius: 2rem;
   margin: 3% 2rem 2rem 2rem;
   padding: 1rem;
-  overflow: scroll;
+  overflow: auto;
 
   @media screen and (min-width: 320px) and (max-width: 1080px) {
     width: 90%;
@@ -47,6 +47,7 @@ const Container = styled.div`
     justify-content: center;
     margin: auto;
     gap: 1rem;
+    /* overflow: auto; */
     /* margin-top: 62rem; */
   }
 `;
@@ -145,8 +146,6 @@ function QuizAdding() {
           // values.question = '';
 
           if (next === 5) {
-            // const data = { ...adminquiz };
-
             // inserting the last values manually bcz it not getting
             const { question, answer, option1, option2, option3 } = values;
             const options = [option1, option2, option3];
@@ -159,34 +158,47 @@ function QuizAdding() {
             // first sending the image if any as first api call then after the form sending
             const formData = new FormData();
             formData.append('picture', image && image);
+            // pevented from uploading if not image
             if (image) {
               fetch(`${baseUrl}/quiz/addquizImg`, {
                 method: 'POST',
                 body: formData,
-              });
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  formdata.banner = data.path;
+                  axios
+                    .post('/quiz/addquiz', formdata, {
+                      headers: {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                      },
+                    })
+                    .then((response) => {
+                      console.log(response);
+
+                      dispatch(changePage('quiz'));
+                      dispatch(resetQuiz());
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                });
+            } else {
+              ErrNotify('Plees add Banner image');
             }
 
             // sending data to backend
-            axios
-              .post('/quiz/addquiz', formdata, {
-                headers: {
-                  headers: { 'Content-Type': 'multipart/form-data' },
-                },
-              })
-              .then((response) => {
-                console.log(response);
-
-                dispatch(changePage('quiz'));
-                dispatch(resetQuiz());
-              })
-              .catch((error) => {
-                console.log(error);
-              });
           }
-
-          next < 5 && setNext(next + 1);
-
-          console.log(next);
+          if (next < 5) {
+            setNext(next + 1);
+            values.question = '';
+            values.answer = '';
+            values.option1 = '';
+            values.option2 = '';
+            values.option3 = '';
+            console.log(next);
+          }
         }
       }
     },
@@ -205,7 +217,7 @@ function QuizAdding() {
             </h1>
           </div>
           <div className="uploadImage ">
-            <div className="prevImage  flex ju ">
+            <div className="prevImage  md:flex">
               <div className="bg-indigo-300 rounded-xl">
                 {image ? (
                   <img
@@ -480,4 +492,4 @@ function QuizAdding() {
 }
 
 export default QuizAdding;
-// 
+//

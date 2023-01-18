@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// admin DB model
 const AdminSchema = new mongoose.Schema({
   username: {
     type: String,

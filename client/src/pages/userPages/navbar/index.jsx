@@ -155,7 +155,7 @@ function Navbar({ turnoffDark }) {
             <Avatar
               sx={{ width: 45, height: 45 }}
               alt={username}
-              src={`${baseUrl}/assets/${profilePicture}`}
+              src={`${profilePicture}`}
               onClick={() => setopen(true)}
             />
 

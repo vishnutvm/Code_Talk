@@ -1,40 +1,56 @@
-// /* eslint-disable import/prefer-default-export */
-// /* eslint-disable import/no-import-module-exports */
-// // eslint-disable-next-line import/extensions
-// // import S3 from 'aws-sdk/clients/s3.js';
-// import aws from 'aws-sdk';
-// import fs from 'fs';
-// import dotenv from 'dotenv';
-// import crypto from 'crypto';
-// import { promisify } from 'util';
-// import { S3Client } from '@aws-sdk/client-s3';
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable import/extensions */
 
-// const randomBytes = promisify(crypto.randomBytes);
+import AWS from 'aws-sdk';
 
-// dotenv.config();
+import dotenv from 'dotenv';
+import crypto from 'crypto';
+import path from 'path';
 
-// const bucketName = process.env.AWS_BUCKET_NAME;
-// const region = process.env.AWS_BUCKET_REGION;
-// const accessKeyId = process.env.AWS_ACCESS_KEY;
-// const secretAccesskey = process.env.AWS_SECRET_KEY;
+dotenv.config();
 
-// const s3 = new S3Client({
-//   region,
-//   accessKeyId,
-//   secretAccesskey,
-//   signatureVersion: 'v4',
-// });
+const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketRegion = process.env.AWS_BUCKET_REGION;
+const accessKey = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+AWS.config.update({
+  secretAccessKey,
+  accessKeyId: accessKey,
+  region: bucketRegion,
+  signatureVersion: 'v4', // API version
+});
 
-// export async function generateUploadURL() {
-//   const rawBytes = await randomBytes(16);
-//   const imageName = rawBytes.toString('hex');
+// Creating an S3 instance
+const s3 = new AWS.S3({ signatureVersion: 'v4' });
 
-//   const params = {
-//     Bucket: bucketName,
-//     Key: imageName,
-//     Expires: 60,
-//   };
 
-//   const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-//   return uploadURL;
-// }
+// uploading file to s3,return file location
+function uploadS3(file) {
+  return new Promise(async (res, rej) => {
+    const fileType = path.extname(file.originalname);
+
+    const fileName = crypto.randomBytes(16).toString('hex') + fileType;
+    console.log(fileName);
+    console.log(file);
+    console.log('debug');
+    const params = {
+      Bucket: bucketName,
+      Body: file.buffer,
+      Key: file.originalname,
+    };
+
+    const s3UploadPromise = s3.upload(params).promise();
+    s3UploadPromise
+      .then((data) => {
+        console.log('File uploaded successfully at ', data.Location);
+        res(data);
+        // return data;
+      })
+      .catch((err) => {
+        console.log('Error uploading file: ', err);
+        rej(err);
+      });
+  });
+}
+
+export default uploadS3;

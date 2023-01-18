@@ -32,9 +32,8 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// serving static
 app.use(express.static(path.join(__dirname, '../client/dist')));
-// stati
-
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 // server
@@ -76,8 +75,6 @@ global.onlineUsers = new Map(); // holds all active sockets
 
 io.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  // trying
-
   global.chatSocket = socket;
   socket.on('add-user', (userId) => {
     console.log('add-user-working');

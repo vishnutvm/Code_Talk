@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 
+// chat User model
+
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,

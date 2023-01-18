@@ -6,9 +6,6 @@ import styled from 'styled-components';
 import axios from '../../../utils/axios';
 import { baseUrl } from '../../../constants/constants';
 import { changePage } from '../../../redux/adminState';
-
-import QuizAddingPage from '../../../pages/adminPages/QuizAddingPage/QuizAddingPage';
-import QuizAdding from './QuizAdding';
 import QuizEditComponent from './QuizEditComponent';
 
 const Container = styled.div`
@@ -258,7 +255,7 @@ function QuizManagement() {
                         <div className="md:shrink-0">
                           <img
                             className="h-62 w-full object-cover md:h-full md:w-48"
-                            src={`${baseUrl}/assets/${quiz.banner}`}
+                            src={`${quiz.banner}`}
                             alt="Quiz"
                           />
                         </div>

@@ -7,6 +7,8 @@ import CreatePost from '../../../components/UserComponents/CreatePostComponent/C
 import PostsWidget from '../../../components/UserComponents/PostsComponent/PostsWidget';
 import FriendsListWidgest from '../../../components/UserComponents/FriendsListComponent/FriendsListWidgest';
 import QuizWidget from '../../../components/UserComponents/QuizWidget/QuizWidget';
+import LoadingPage from '../../LoadingPage/LoadingPage';
+
 // test
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
@@ -19,9 +21,10 @@ function HomePage() {
     <Box>
       <Navbar />
       {loading ? (
-        <div role="status" className="max-w-md animate-pulse m-auto">
-          <img src="https://i.stack.imgur.com/hzk6C.gif" alt="" />
-        </div>
+        // <div role="status" className="max-w-md animate-pulse m-auto">
+        //   <img src="https://i.stack.imgur.com/hzk6C.gif" alt="" />
+        // </div>
+        <LoadingPage />
       ) : (
         <Box
           width="100%"
@@ -49,8 +52,11 @@ function HomePage() {
             flexBasis={isNotMobileScreen ? '42%' : undefined}
             mt={isNotMobileScreen ? undefined : '2rem'}
           >
-            <CreatePost profilePicture={profilePicture} />
-            <PostsWidget userId={_id} />
+            <CreatePost
+              profilePicture={profilePicture}
+              setloading={setloading}
+            />
+            <PostsWidget userId={_id} setloading={setloading} />
           </Box>
 
           {isNotMobileScreen && (

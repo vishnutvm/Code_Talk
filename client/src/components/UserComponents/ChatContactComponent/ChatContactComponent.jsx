@@ -6,7 +6,7 @@ import { Avatar, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../../../constants/constants';
+
 import { setCurrentChat } from '../../../redux/chatState';
 
 function ChatContactComponent() {
@@ -77,7 +77,7 @@ function ChatContactComponent() {
               <Avatar
                 sx={{ width: '100%', height: '100%' }}
                 alt=""
-                src={`${baseUrl}/assets/${currentUser.profilePicture}`}
+                src={`${currentUser.profilePicture}`}
               />
             </div>
             <div className="text-sm font-semibold mt-2">
@@ -114,7 +114,7 @@ function ChatContactComponent() {
                     <Avatar
                       sx={{ width: '100%', height: '100%' }}
                       alt=""
-                      src={`${baseUrl}/assets/${friend.profilePicture}`}
+                      src={`${friend.profilePicture}`}
                     />
                   </div>
                   <div className="ml-2 text-sm font-semibold">

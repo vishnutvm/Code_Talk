@@ -8,7 +8,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// // eslint-disable-next-line consistent-return, import/prefer-default-export
+
+// send email 
+
 export const sendEmail = async (email, subject, html) => {
   console.log('trigger');
   try {

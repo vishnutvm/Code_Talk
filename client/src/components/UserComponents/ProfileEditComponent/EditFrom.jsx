@@ -12,17 +12,15 @@ import {
 
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Formik } from 'formik';
-// import { useNavigate } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
+
 import Dropzone from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editUserSchema } from '../../../formSchemas/index';
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
-import axios from '../../../utils/axios';
 
 import { updateUser } from '../../../redux/userState/index';
-// import UserImage from '../UserProfileComponent/UserProfilePicture';
+
 import { baseUrl } from '../../../constants/constants';
 
 function EditFrom() {
@@ -31,11 +29,6 @@ function EditFrom() {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  };
 
   // const navigate = useNavigate();
   const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -60,7 +53,7 @@ function EditFrom() {
       formData.append('picture', picture);
     }
 
-    const res = fetch(`${baseUrl}/user/edituser/${id}`, {
+    fetch(`${baseUrl}/user/edituser/${id}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -117,7 +110,7 @@ function EditFrom() {
               src={
                 values.picture
                   ? URL.createObjectURL(values.picture)
-                  : `${baseUrl}/assets/${user.profilePicture}`
+                  : `${user.profilePicture}`
               }
             />
           </Box>

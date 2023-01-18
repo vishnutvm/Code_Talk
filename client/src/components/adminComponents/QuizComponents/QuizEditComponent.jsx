@@ -1,17 +1,10 @@
-/* eslint-disable prefer-const */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
-/* eslint-disable max-len */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/prop-types */
+
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import { useRef } from 'react';
-// import QuestionsComponent from '../../UserComponents/QuizComponents/QuizMainPage/QuestionsComponent';
 import Dropzone from 'react-dropzone';
 import { useTheme } from '@emotion/react';
 import { Box } from '@mui/system';
@@ -19,11 +12,10 @@ import { IconButton, Typography } from '@mui/material';
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import FlexBetween from '../../UserComponents/FlexBetweenHelperComponent/FlexBetween';
 import { ToastContainer, toast } from 'react-toastify';
+import FlexBetween from '../../UserComponents/FlexBetweenHelperComponent/FlexBetween';
 import 'react-toastify/dist/ReactToastify.css';
 
-// import QuesAddComponent from './QuesAddComponent';
 import {
   setquiz,
   addquestion,
@@ -78,6 +70,7 @@ function QuizEditComponent({ setEditing = false, editing }) {
       draggable: true,
     });
   };
+
   const ErrNotify = (message) => {
     toast.error(message, {
       position: 'bottom-right',
@@ -87,10 +80,6 @@ function QuizEditComponent({ setEditing = false, editing }) {
       draggable: true,
     });
   };
-
-  // const headers = {
-  //   'Content-Type': 'application/json',
-  // };
 
   useEffect(() => {
     image && dispatch(setBanner(image.name));
@@ -160,30 +149,41 @@ function QuizEditComponent({ setEditing = false, editing }) {
             // first sending the image if any as first api call then after the form sending
             const formData = new FormData();
             formData.append('picture', image && image);
+
+            const updateQuizApi = () => {
+              axios
+                .post(`/quiz/${editing._id}/edit`, formdata, {
+                  headers: {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                  },
+                })
+                .then((response) => {
+                  console.log(response);
+                  console.log(response);
+                  setEditing(false);
+                  dispatch(resetQuiz());
+                  dispatch(changePage('quiz'));
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            };
             if (image) {
               fetch(`${baseUrl}/quiz/addquizImg`, {
                 method: 'POST',
                 body: formData,
-              });
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  formdata.banner = data.path;
+                });
+              updateQuizApi();
+            } else {
+              updateQuizApi();
             }
-            // /:quizId/edit
+
             // sending data to backend
-            axios
-              .post(`/quiz/${editing._id}/edit`, formdata, {
-                headers: {
-                  headers: { 'Content-Type': 'multipart/form-data' },
-                },
-              })
-              .then((response) => {
-                console.log(response);
-                console.log(response);
-                setEditing(false);
-                dispatch(resetQuiz());
-                dispatch(changePage('quiz'));
-              })
-              .catch((error) => {
-                console.log(error);
-              });
           }
 
           next < 5 && setNext(next + 1);
@@ -223,7 +223,7 @@ function QuizEditComponent({ setEditing = false, editing }) {
                   <img
                     alt="imae"
                     className="object-cover h-48 w-96 rounded-xl"
-                    src={`${baseUrl}/assets/${editing.banner}`}
+                    src={`${editing.banner}`}
                   />
                 )}
               </div>
