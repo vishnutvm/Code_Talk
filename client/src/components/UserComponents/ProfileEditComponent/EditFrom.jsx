@@ -30,7 +30,6 @@ function EditFrom() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const navigate = useNavigate();
   const isNonMobile = useMediaQuery('(min-width:600px)');
   const id = user._id;
   const handleFormSubmit = (values) => {

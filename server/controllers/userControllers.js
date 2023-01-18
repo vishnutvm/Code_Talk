@@ -10,9 +10,9 @@
 /* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import generateUsername from 'generate-username-from-email';
 import uploadS3 from '../s3.js';
 
-import generateUsername from 'generate-username-from-email';
 import User from '../models/User.js';
 import UserOTPVerification from '../models/UserOTPVerification.js';
 import { generateOTP } from '../utils/generateOTP.js';
@@ -331,19 +331,36 @@ export const edituser = async (req, res) => {
   console.log('here');
   console.log(req.file);
   try {
-    uploadS3(req.file).then(async (response) => {
-      const {
-        username,
-        phone,
-        email,
-        linkdin,
-        github,
-        location,
-        picture,
-        profilePicture,
-      } = req.body;
+    if (req.file !== undefined) {
+      uploadS3(req.file).then(async (response) => {
+        const { username, phone, email, linkdin, github, location, picture } =
+          req.body;
 
-      console.log(picture, 'bugging');
+        console.log(picture, 'bugging');
+
+        console.log(req.body);
+        const { id } = req.params;
+
+        User.findOneAndUpdate(
+          { _id: id },
+          {
+            username,
+            phone,
+            email,
+            linkdin,
+            github,
+            location,
+            profilePicture: response.Location,
+          },
+          { new: true }
+        ).then(async (update) => {
+          console.log(update);
+          const updatedUser = await User.findById(id);
+          res.status(201).json(updatedUser);
+        });
+      });
+    } else {
+      const { username, phone, email, linkdin, github, location } = req.body;
 
       console.log(req.body);
       const { id } = req.params;
@@ -357,7 +374,6 @@ export const edituser = async (req, res) => {
           linkdin,
           github,
           location,
-          profilePicture: response.Location,
         },
         { new: true }
       ).then(async (update) => {
@@ -365,7 +381,7 @@ export const edituser = async (req, res) => {
         const updatedUser = await User.findById(id);
         res.status(201).json(updatedUser);
       });
-    });
+    }
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });
