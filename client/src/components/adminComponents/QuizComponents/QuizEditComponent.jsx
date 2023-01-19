@@ -169,6 +169,7 @@ function QuizEditComponent({ setEditing = false, editing }) {
                 });
             };
             if (image) {
+              console.log('Image updated');
               fetch(`${baseUrl}/quiz/addquizImg`, {
                 method: 'POST',
                 body: formData,
@@ -177,9 +178,10 @@ function QuizEditComponent({ setEditing = false, editing }) {
                 .then((data) => {
                   console.log(data);
                   formdata.banner = data.path;
+                  updateQuizApi();
                 });
-              updateQuizApi();
             } else {
+              console.log('no image updated');
               updateQuizApi();
             }
 
