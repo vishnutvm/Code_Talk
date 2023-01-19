@@ -12,18 +12,13 @@ import LoadingPage from '../../LoadingPage/LoadingPage';
 // test
 function HomePage() {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const { _id, profilePicture } = useSelector((state) => state.user.user);
-  setTimeout(() => {
-    setloading(false);
-  }, 500);
+
   return (
     <Box>
       <Navbar />
       {loading ? (
-        // <div role="status" className="max-w-md animate-pulse m-auto">
-        //   <img src="https://i.stack.imgur.com/hzk6C.gif" alt="" />
-        // </div>
         <LoadingPage />
       ) : (
         <Box

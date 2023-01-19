@@ -45,7 +45,7 @@ function ProfilePage() {
   }, []);
   setTimeout(() => {
     setloading(false);
-  }, 500);
+  }, 200);
   if (!user) {
     return null;
   }
