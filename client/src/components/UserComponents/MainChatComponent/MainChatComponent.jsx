@@ -62,7 +62,7 @@ function MainChatComponent({ socket }) {
   // handle messagesending
   const handleSendMsg = async (msg) => {
     const time = moment().utcOffset('+05:30').format(' hh:mm a');
-
+    // moment .js making problems in production(bug found)
     // const time = moment().format('LT');
     // console.log(time);
     // workin with chat
