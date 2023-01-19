@@ -7,6 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import * as moment from 'moment';
+
 import ChatInputComponent from '../ChatInputComponent/ChatInputComponent';
 import axios from '../../../utils/axios';
 import SingleMessageComponent from '../SingleMessageComponent/SingleMessageComponent';
@@ -15,8 +16,6 @@ function MainChatComponent({ socket }) {
   const [message, setMessages] = useState([]);
   const token = useSelector((state) => state.user.token);
 
-  // const dispatch = useDispatch();
-  //   const token = useSelector((state) => state.user.token);
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
   const [arrivalMessage, setarrivalMessage] = useState(null);
@@ -62,7 +61,10 @@ function MainChatComponent({ socket }) {
 
   // handle messagesending
   const handleSendMsg = async (msg) => {
-    const time = moment().format('LT');
+    const time = moment().utcOffset('+05:30').format(' hh:mm a');
+
+    // const time = moment().format('LT');
+    // console.log(time);
     // workin with chat
     axios({
       method: 'POST',
