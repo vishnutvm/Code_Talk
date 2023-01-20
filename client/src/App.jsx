@@ -17,6 +17,8 @@ import QuestionsPage from './pages/userPages/quizPages/questionsPage/QuestionsPa
 import ResultPage from './pages/userPages/quizPages/resultPage/ResultPage';
 import ErrPage from './pages/404Page/ErrPage';
 import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordChangePage';
+import VideoMeating from './pages/userPages/VideoMeating/VideoMeating';
+import CreateMeating from './pages/userPages/VideoMeating/CreateMeating';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -62,6 +64,8 @@ function App() {
             <Route path="/quiz" element={<QuizMainPage />} />
             <Route path="/question" element={<QuestionsPage />} />
             <Route path="/result" element={<ResultPage />} />
+            <Route path="/video" element={<VideoMeating />} />
+            <Route path="/createmeet" element={<CreateMeating />} />
             <Route path="*" element={<ErrPage />} />
           </Routes>
         </ThemeProvider>

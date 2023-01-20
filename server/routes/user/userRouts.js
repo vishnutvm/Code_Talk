@@ -13,6 +13,7 @@ import {
   verifyEmail,
   resentOTP,
   searchUser,
+  addMeating,
 } from '../../controllers/userControllers.js';
 
 // importing middlewares
@@ -32,5 +33,7 @@ router.post('/resetpass/:id', resetpass);
 router.post('/verifyEmail', verifyEmail);
 router.post('/resentOTP', resentOTP);
 router.post('/searchuser', searchUser);
+
+router.post('/addMeatingImage', upload.single('picture'), addMeating);
 
 export default router;

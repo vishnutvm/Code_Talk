@@ -14,6 +14,8 @@ import generateUsername from 'generate-username-from-email';
 import uploadS3 from '../s3.js';
 
 import User from '../models/User.js';
+import Meating from '../models/Meating.js';
+
 import UserOTPVerification from '../models/UserOTPVerification.js';
 import { generateOTP } from '../utils/generateOTP.js';
 import { sendEmail } from '../utils/sendEmail.js';
@@ -329,7 +331,9 @@ export const addRemoveFriends = async (req, res) => {
 // edit user
 export const edituser = async (req, res) => {
   console.log('here');
+  console.log(req.body);
   console.log(req.file);
+
   try {
     if (req.file !== undefined) {
       uploadS3(req.file).then(async (response) => {
@@ -427,5 +431,33 @@ export const searchUser = async (req, res) => {
     console.log(err);
     console.log('error hooo');
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const addMeating = async (req, res) => {
+  console.log(req.body);
+  try {
+    uploadS3(req.file).then(async (response) => {
+      console.log(req.file);
+      console.log(response);
+
+      console.log(req.body);
+      const { discription, title, _id } = req.body;
+
+      const newQuiz = new Meating({
+        title,
+        banner: response.Location,
+        discription,
+        createdby: _id,
+      });
+      await newQuiz.save();
+
+      // after pushing image to s3 craete a meating in DB
+
+      res.status(200).json({ path: response.Location });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(409).json({ error: err.message });
   }
 };

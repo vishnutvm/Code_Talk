@@ -11,9 +11,9 @@ import { Server } from 'socket.io';
 import http from 'http';
 import color from 'colors';
 import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import mongoDB from './config/db.js';
 import { upload } from './middleware/fileUpload.js';
-
 // Routs
 
 import postRouts from './routes/post/postRouts.js';
@@ -29,6 +29,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
+// app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 

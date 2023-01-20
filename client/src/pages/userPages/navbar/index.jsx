@@ -128,7 +128,18 @@ function Navbar({ turnoffDark }) {
 
         {isNotMobileScreen ? (
           <FlexBetween gap="2rem">
-            {/* <VideocamRounded sx={{ fontSize: '25px' }} /> */}
+            <IconButton onClick={() => navigate('/video')}>
+              <Badge color="warning">
+                {theme.palette.mode === 'dark' ? (
+                  <VideocamRounded
+                    sx={{ fontsize: '30px', color: 'primary' }}
+                  />
+                ) : (
+                  <VideocamRounded sx={{ fontsize: '30px', color: 'black' }} />
+                )}
+              </Badge>
+            </IconButton>
+
             <IconButton onClick={() => navigate('/chat')}>
               <Badge color="warning">
                 {theme.palette.mode === 'dark' ? (
@@ -225,7 +236,20 @@ function Navbar({ turnoffDark }) {
               alignItems="center"
               gap="3rem"
             >
-              {/* <VideocamRounded sx={{ fontSize: '25px' }} /> */}
+              <IconButton onClick={() => navigate('/video')}>
+                <Badge color="warning">
+                  {theme.palette.mode === 'dark' ? (
+                    <VideocamRounded
+                      sx={{ fontsize: '30px', color: 'primary' }}
+                    />
+                  ) : (
+                    <VideocamRounded
+                      sx={{ fontsize: '30px', color: 'black' }}
+                    />
+                  )}
+                </Badge>
+              </IconButton>
+
               {/* <Badge badgeContent={4} color="warning"> */}
               <Badge color="warning">
                 <TextsmsRounded
