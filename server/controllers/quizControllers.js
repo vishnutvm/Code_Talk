@@ -24,9 +24,7 @@ export const addQuiz = async (req, res) => {
 
   try {
     console.log(req.body);
-    let {
-      quiz, banner, answers, questions,
-    } = req.body;
+    let { quiz, banner, answers, questions } = req.body;
 
     const newQuiz = new Quiz({
       title: quiz.title,
@@ -91,9 +89,7 @@ export const editQuiz = async (req, res) => {
     const { quizId } = req.params;
     console.log(req.body);
     console.log(quizId);
-    let {
-      quiz, banner, answers, questions,
-    } = req.body;
+    let { quiz, banner, answers, questions } = req.body;
 
     Quiz.findOneAndUpdate(
       { _id: quizId },
@@ -106,10 +102,10 @@ export const editQuiz = async (req, res) => {
         questions,
         answers,
       },
-      { new: true },
+      { new: true }
     ).then(async (update) => {
       console.log(update);
-      res.status(200).json('worki');
+      res.status(200).json('working');
     });
   } catch (err) {
     res.status(404).json({ error: err.message });

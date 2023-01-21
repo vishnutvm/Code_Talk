@@ -6,7 +6,11 @@ const meetingSchema = new mongoose.Schema({
   title: String,
   banner: String,
   discription: String,
-  createdby: String,
+  createdby: {
+    type: mongoose.ObjectId,
+    ref: 'User',
+  },
+  meetid: String,
 });
 
 const Meeeting = mongoose.model('Meeting', meetingSchema);

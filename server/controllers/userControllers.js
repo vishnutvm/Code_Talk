@@ -19,6 +19,7 @@ import Meating from '../models/Meating.js';
 import UserOTPVerification from '../models/UserOTPVerification.js';
 import { generateOTP } from '../utils/generateOTP.js';
 import { sendEmail } from '../utils/sendEmail.js';
+
 // Register user
 
 export const register = async (req, res) => {
@@ -167,7 +168,7 @@ export const getUser = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
-    console.log('error hooo');
+
     res.status(500).json({ error: err.message });
   }
 };
@@ -429,7 +430,7 @@ export const searchUser = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    console.log('error hooo');
+
     res.status(500).json({ error: err.message });
   }
 };
@@ -442,13 +443,14 @@ export const addMeating = async (req, res) => {
       console.log(response);
 
       console.log(req.body);
-      const { discription, title, _id } = req.body;
+      const { discription, title, cratedby, meetid } = req.body;
 
       const newQuiz = new Meating({
         title,
         banner: response.Location,
         discription,
-        createdby: _id,
+        createdby: cratedby,
+        meetid,
       });
       await newQuiz.save();
 
@@ -459,5 +461,41 @@ export const addMeating = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(409).json({ error: err.message });
+  }
+};
+export const getallmeeting = async (req, res) => {
+  console.log('getting meeting');
+  try {
+    // need to populate  by the created user for better update
+    const meeting = await Meating.find().populate('createdby');
+    res.status(200).json(meeting);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+
+export const deleteMeeting = async (req, res) => {
+  try {
+    console.log(req.params);
+    const { id } = req.params;
+    await Meating.deleteOne({ _id: id });
+
+    res.status(200).json({ msg: 'deleted' });
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+export const getmeet = async (req, res) => {
+  try {
+    console.log(req.params);
+    const { meetid } = req.params;
+    let meet = await Meating.findOne({ meetid });
+    if (meet) {
+      res.status(200).json({ msg: 'valid MeetId' });
+    } else {
+      res.status(500).json({ error: 'MeetId not valid' });
+    }
+  } catch (err) {
+    res.status(404).json({ error: err.message });
   }
 };

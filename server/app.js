@@ -9,11 +9,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';
 import http from 'http';
-import color from 'colors';
+// import color from 'colors';
 import morgan from 'morgan';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import mongoDB from './config/db.js';
-import { upload } from './middleware/fileUpload.js';
+// import { upload } from './middleware/fileUpload.js';
 // Routs
 
 import postRouts from './routes/post/postRouts.js';

@@ -42,10 +42,13 @@ function CreateMeatingComponet() {
       ErrNotify('Plees add discription');
     } else {
       const formData = new FormData();
+      const meetId = Math.random().toString(36).substring(2, 7);
+
       formData.append('picture', image);
       formData.append('title', title);
       formData.append('discription', discription);
       formData.append('cratedby', _id);
+      formData.append('meetid', meetId);
       setloading(true);
       // pevented from uploading if not image
 
@@ -190,7 +193,7 @@ function CreateMeatingComponet() {
                 required=""
                 onChange={(e) => setdiscription(e.target.value)}
                 value={discription}
-                maxLength="50"
+                maxLength="100"
               />
             </div>
 

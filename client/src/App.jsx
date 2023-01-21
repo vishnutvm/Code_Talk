@@ -19,6 +19,7 @@ import ErrPage from './pages/404Page/ErrPage';
 import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordChangePage';
 import VideoMeating from './pages/userPages/VideoMeating/VideoMeating';
 import CreateMeating from './pages/userPages/VideoMeating/CreateMeating';
+import Joinmeet from './pages/userPages/JoinMeet/Joinmeet';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -58,14 +59,36 @@ function App() {
               path="/admin"
               element={isAdminAuth ? <AdminHome /> : <AdminLogin />}
             />
-
             <Route path="/verifyEmail" element={<OTPpage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/quiz" element={<QuizMainPage />} />
-            <Route path="/question" element={<QuestionsPage />} />
-            <Route path="/result" element={<ResultPage />} />
-            <Route path="/video" element={<VideoMeating />} />
-            <Route path="/createmeet" element={<CreateMeating />} />
+            <Route
+              path="chat"
+              element={isUserAuth ? <HomePage /> : <Loginpage />}
+            />
+            <Route
+              path="/quiz"
+              element={isUserAuth ? <QuizMainPage /> : <Loginpage />}
+            />
+            <Route
+              path="/question"
+              element={isUserAuth ? <QuestionsPage /> : <Loginpage />}
+            />
+            <Route
+              path="/result"
+              element={isUserAuth ? <ResultPage /> : <Loginpage />}
+            />
+            <Route
+              path="/video"
+              element={isUserAuth ? <VideoMeating /> : <Loginpage />}
+            />
+            <Route
+              path="/createmeet"
+              element={isUserAuth ? <CreateMeating /> : <Loginpage />}
+            />
+
+            <Route
+              path="/video/join/:meetId"
+              element={isUserAuth ? <Joinmeet /> : <Navigate to="/" />}
+            />
             <Route path="*" element={<ErrPage />} />
           </Routes>
         </ThemeProvider>

@@ -14,6 +14,9 @@ import {
   resentOTP,
   searchUser,
   addMeating,
+  getallmeeting,
+  deleteMeeting,
+  getmeet,
 } from '../../controllers/userControllers.js';
 
 // importing middlewares
@@ -27,13 +30,18 @@ router.post('/login', login);
 router.post('/register', register);
 router.get('/:id', getUser);
 router.get('/:id/friends', getUserFriends);
+router.post('/getallmeeting', getallmeeting);
 router.patch('/:id/:friendId', addRemoveFriends);
 router.post('/edituser/:id', verifyToken, upload.single('picture'), edituser);
 router.post('/resetpass/:id', resetpass);
 router.post('/verifyEmail', verifyEmail);
 router.post('/resentOTP', resentOTP);
 router.post('/searchuser', searchUser);
+// /user/${userId}/delete
 
 router.post('/addMeatingImage', upload.single('picture'), addMeating);
+
+router.delete('/:id/delete', deleteMeeting);
+router.get('/getMeet/:meetid', getmeet);
 
 export default router;
