@@ -8,7 +8,7 @@ import { baseUrl } from '../../../constants/constants';
 import PostWidget from '../PostComponent/PostWidget';
 
 // XlviLoader
-function PostsWidget({ userId, isProfile = false }) {
+function PostsWidget({ userId, isProfile = false, socket }) {
   const [loading, setloading] = useState(true);
   // console.log(isProfile);
   const dispatch = useDispatch();
@@ -73,6 +73,7 @@ function PostsWidget({ userId, isProfile = false }) {
               comments={Comments}
               isProfile={isProfile}
               setloading={setloading}
+              socket={socket}
             />
           )
         )

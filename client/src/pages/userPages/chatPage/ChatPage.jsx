@@ -2,24 +2,24 @@
 /* eslint-disable react/button-has-type */
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import ChatContactComponent from '../../../components/UserComponents/ChatContactComponent/ChatContactComponent';
 import MainChatComponent from '../../../components/UserComponents/MainChatComponent/MainChatComponent';
 import EmptyChatComponent from '../../../components/UserComponents/EmptyChatComponent/EmptyChatComponent';
 import { setCurrentChat } from '../../../redux/chatState';
-import { baseUrl } from '../../../constants/constants';
+// import { baseUrl } from '../../../constants/constants';
 
 function ChatPage({ socket }) {
   // const socket = useRef();
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
-  const currentUserId = useSelector((state) => state.user.user._id);
+  // const currentUserId = useSelector((state) => state.user.user._id);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setCurrentChat(null));
     console.log('use effed run');
     // socket.current = io(baseUrl);
-    socket.current.emit('add-user', currentUserId);
+    // socket.current.emit('add-user', currentUserId);
   }, []);
 
   // handling current chat page

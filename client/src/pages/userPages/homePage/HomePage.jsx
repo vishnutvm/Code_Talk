@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,14 +11,22 @@ import QuizWidget from '../../../components/UserComponents/QuizWidget/QuizWidget
 import LoadingPage from '../../LoadingPage/LoadingPage';
 
 // test
-function HomePage() {
+function HomePage({ socket }) {
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const [loading, setloading] = useState(false);
   const { _id, profilePicture } = useSelector((state) => state.user.user);
 
+  useEffect(() => {
+    // setting online users to socket
+    const userId = _id;
+    if (socket && socket.current) {
+      socket.current.emit('add-user', userId);
+    }
+  }, [socket]);
+
   return (
     <Box>
-      <Navbar />
+      <Navbar socket={socket} />
       {loading ? (
         <LoadingPage />
       ) : (
@@ -51,7 +60,7 @@ function HomePage() {
               profilePicture={profilePicture}
               setloading={setloading}
             />
-            <PostsWidget userId={_id} setloading={setloading} />
+            <PostsWidget socket={socket} userId={_id} setloading={setloading} />
           </Box>
 
           {isNotMobileScreen && (

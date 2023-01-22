@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 // import VideoChatOutlinedIcon from '@mui/icons-material/VideoChatOutlined';
 import {
   Box,
@@ -34,14 +34,14 @@ import FlexBetween from '../../../components/UserComponents/FlexBetweenHelperCom
 import { baseUrl } from '../../../constants/constants';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Navbar({ turnoffDark }) {
+function Navbar({ turnoffDark, socket = null }) {
   const [search, setsearch] = useState(null);
   const [isMobile, setIsmobile] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [open, setopen] = useState(false);
-
+  const [notifications, setNotifications] = useState(new Set());
   // console.log(user);
   const isNotMobileScreen = useMediaQuery('(min-width:1000px)');
   const theme = useTheme();
@@ -61,6 +61,28 @@ function Navbar({ turnoffDark }) {
     });
   };
 
+  const addNotification = (notification) => {
+    console.log('bugfoud', notifications);
+    setNotifications((prev) => new Set([...prev, notification]));
+  };
+
+  // const removeNotification = (notification) => {
+  //   setNotifications(new Set(notifications).delete(notification));
+  // };
+  // useeffect for notification
+  useEffect(() => {
+    console.log(socket);
+    // socket.on()
+    if (socket && socket.current) {
+      socket.current.on('getNotification', (data) => {
+        console.log(data);
+        // checking what type of notification
+
+        addNotification(data.msg);
+      });
+    }
+  }, []);
+  console.log(notifications);
   const getUserProfile = () => {
     // const formData = new FormData();
     // formData.append('username', username);
@@ -150,7 +172,7 @@ function Navbar({ turnoffDark }) {
               </Badge>
             </IconButton>
 
-            <Badge color="warning">
+            <Badge badgeContent={notifications.size} color="warning">
               <Notifications sx={{ fontSize: '25px' }} />
             </Badge>
             {!turnoffDark && (
@@ -257,7 +279,7 @@ function Navbar({ turnoffDark }) {
                   sx={{ fontsize: '25px' }}
                 />
               </Badge>
-              <Badge color="warning">
+              <Badge badgeContent={1} color="warning">
                 <Notifications sx={{ fontSize: '25px' }} />
               </Badge>
 

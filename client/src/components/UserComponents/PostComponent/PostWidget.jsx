@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // import { useNavigate } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 
 import FlexBetween from '../FlexBetweenHelperComponent/FlexBetween';
 import Friend from '../FriendComponent/Friend';
@@ -45,10 +45,12 @@ function PostWidget({
   isProfile,
   userPicturePath,
   setloading,
+  socket,
 }) {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const loggedInUserId = useSelector((state) => state.user.user._id);
+  const currentUserName = useSelector((state) => state.user.user.username);
 
   const [updatedComment, setupdatedComment] = useState(comments);
 
@@ -89,6 +91,18 @@ function PostWidget({
     dispatch(setPost({ post: updatedPost }));
     setlikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     setIsLiked(!isLiked);
+
+    // send notification of like to user if the current user is not the post user
+    // currently not given this
+    // send notification through socket
+    if (!isLiked) {
+      socket?.current.emit('sendNotification', {
+        senderName: currentUserName,
+        receiverId: postUserId,
+        type: 'like',
+        msg: `${currentUserName} has liked your post ${discription}`,
+      });
+    }
   };
   const addcomment = async () => {
     console.log(comment);
@@ -114,9 +128,19 @@ function PostWidget({
       // dispatch(setPost({ post: response.data }));
 
       console.log(response.data);
+      // currently not given this
+      // send notification through socket
+
+      socket?.current.emit('sendNotification', {
+        senderName: currentUserName,
+        receiverId: postUserId,
+        type: 'comment',
+        msg: `${currentUserName} has commented on your post ${discription}`,
+      });
     });
 
     // const updatedPost = await response.json();
+    // send notification of like to user if the current user is not the post user
   };
 
   // delete the post

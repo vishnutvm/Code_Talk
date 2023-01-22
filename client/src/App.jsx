@@ -43,7 +43,9 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={isUserAuth ? <HomePage /> : <Loginpage />}
+              element={
+                isUserAuth ? <HomePage socket={socket} /> : <Loginpage />
+              }
             />
             <Route
               path="/home"

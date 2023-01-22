@@ -99,6 +99,15 @@ io.on('connection', (socket) => {
       console.log('user is not live');
     }
   });
+
+  socket.on('sendNotification', ({ senderName, receiverId, type, msg }) => {
+    const sendUserSocket = onlineUsers.get(receiverId);
+    io.to(sendUserSocket).emit('getNotification', {
+      senderName,
+      type,
+      msg,
+    });
+  });
   // disconnect function
 
   socket.on('disconnect', () => {
