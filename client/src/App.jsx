@@ -19,7 +19,7 @@ import ErrPage from './pages/404Page/ErrPage';
 import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordChangePage';
 import VideoMeating from './pages/userPages/VideoMeating/VideoMeating';
 import CreateMeating from './pages/userPages/VideoMeating/CreateMeating';
-import Joinmeet from './pages/userPages/JoinMeet/Joinmeet';
+// import Joinmeet from './pages/userPages/JoinMeet/Joinmeet';
 
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -62,7 +62,7 @@ function App() {
             <Route path="/verifyEmail" element={<OTPpage />} />
             <Route
               path="/chat"
-              element={isUserAuth ? <HomePage /> : <Loginpage />}
+              element={isUserAuth ? <ChatPage /> : <Loginpage />}
             />
             <Route
               path="/quiz"
