@@ -61,7 +61,7 @@ function App() {
             />
             <Route path="/verifyEmail" element={<OTPpage />} />
             <Route
-              path="chat"
+              path="/chat"
               element={isUserAuth ? <HomePage /> : <Loginpage />}
             />
             <Route
