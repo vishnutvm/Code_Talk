@@ -150,9 +150,9 @@ function Navbar({ turnoffDark }) {
               </Badge>
             </IconButton>
 
-            {/* <Badge color="warning">
+            <Badge color="warning">
               <Notifications sx={{ fontSize: '25px' }} />
-            </Badge> */}
+            </Badge>
             {!turnoffDark && (
               <IconButton onClick={() => dispatch(setMode())}>
                 {theme.palette.mode === 'dark' ? (
@@ -257,9 +257,9 @@ function Navbar({ turnoffDark }) {
                   sx={{ fontsize: '25px' }}
                 />
               </Badge>
-              {/* <Badge color="warning">
+              <Badge color="warning">
                 <Notifications sx={{ fontSize: '25px' }} />
-              </Badge> */}
+              </Badge>
 
               <IconButton onClick={() => dispatch(setMode())}>
                 {theme.palette.mode === 'dark' ? (

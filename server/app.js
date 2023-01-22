@@ -98,4 +98,9 @@ io.on('connection', (socket) => {
       console.log('user is not live');
     }
   });
+  // disconnect function
+
+  socket.on('disconnect', () => {
+    console.log('Someone has disconnected');
+  });
 });

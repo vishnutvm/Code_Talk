@@ -16,7 +16,7 @@ function ChatPage() {
 
   useEffect(() => {
     dispatch(setCurrentChat(null));
-    console.log('use effec run');
+    console.log('use effed run');
     socket.current = io(baseUrl);
     socket.current.emit('add-user', currentUserId);
   }, []);
