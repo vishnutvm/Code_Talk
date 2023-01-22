@@ -22,7 +22,7 @@ function HomePage({ socket }) {
     if (socket && socket.current) {
       socket.current.emit('add-user', userId);
     }
-  }, [socket]);
+  }, []);
 
   return (
     <Box>

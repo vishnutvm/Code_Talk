@@ -100,15 +100,19 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('sendNotification', ({ senderName, receiverId, type, msg }) => {
-    console.log('sendnotificaton works');
-    const sendUserSocket = onlineUsers.get(receiverId);
-    io.to(sendUserSocket).emit('getNotification', {
-      senderName,
-      type,
-      msg,
-    });
-  });
+  socket.on(
+    'sendNotification',
+    ({ senderName, receiverId, type, msg, senderImage }) => {
+      console.log('sendnotificaton works');
+      const sendUserSocket = onlineUsers.get(receiverId);
+      io.to(sendUserSocket).emit('getNotification', {
+        senderName,
+        senderImage,
+        type,
+        msg,
+      });
+    }
+  );
   // disconnect function
 
   socket.on('disconnect', () => {

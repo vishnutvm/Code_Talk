@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
 import { React, useEffect, useState } from 'react';
@@ -66,12 +67,13 @@ function Navbar({ turnoffDark, socket = null }) {
 
   const addNotification = (notification) => {
     console.log('bugfoud', notifications);
-    setNotifications((prev) => new Set([...prev, notification]));
+    setNotifications((prev) => new Set([notification, ...prev]));
   };
 
-  // const removeNotification = (notification) => {
-  //   setNotifications(new Set(notifications).delete(notification));
-  // };
+  const clearNotification = () => {
+    console.log('clear call');
+    setNotifications(new Set());
+  };
   // useeffect for notification
   useEffect(() => {
     console.log(socket);
@@ -190,8 +192,8 @@ function Navbar({ turnoffDark, socket = null }) {
               </IconButton>
 
               {/* notification container */}
-              {true && (
-                <div className="notificationDropDown absolute right-20 z-40">
+              {isOpenNotification && notifications.size > 0 && (
+                <div className="notificationDropDown absolute right-20 z-40  ">
                   <div
                     id="toast-notification"
                     className="w-full max-w-xs p-4 text-gray-900 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-300"
@@ -201,56 +203,29 @@ function Navbar({ turnoffDark, socket = null }) {
                       <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
                         New notifications
                       </span>
+
                       <button
-                        onClick={() => setOpenNotification(false)}
+                        onClick={() => {
+                          setOpenNotification(false);
+                          clearNotification();
+                        }}
                         type="button"
-                        className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                        data-dismiss-target="#toast-notification"
-                        aria-label="Close"
+                        className=" ml-auto py-1.5 px-5 mr-2 mb-2 text-xm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                       >
-                        <span className="sr-only">Close</span>
-                        <svg
-                          aria-hidden="true"
-                          className="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        Clear
                       </button>
                     </div>
-                    <div className="notifications flex flex-col gap-2">
+                    <div className="notifications flex flex-col gap-2  max-h-[30vh]	overflow-scroll	 ">
                       {/* loop throught the notification */}
 
                       {[...notifications].map((data, index) => (
-                        <div className="flex items-center" key={index}>
+                        <div className="flex items-center  " key={index}>
                           <div className="relative inline-block shrink-0">
                             <img
                               className="w-12 h-12 rounded-full"
-                              src="https://codtalk.s3.ap-northeast-1.amazonaws.com/png-clipart-computer-icons-user-profile-female-symbol-miscellaneous-purple.png"
-                              alt="Jese Leos "
+                              src={data.senderImage}
+                              alt="profile "
                             />
-                            <span className="absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
-                              <svg
-                                aria-hidden="true"
-                                className="w-4 h-4 text-white"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                              <span className="sr-only">Message icon</span>
-                            </span>
                           </div>
                           <div className="ml-3 text-sm font-normal">
                             <div className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -375,7 +350,7 @@ function Navbar({ turnoffDark, socket = null }) {
                   sx={{ fontsize: '25px' }}
                 />
               </Badge>
-              <div className="div">
+              <div className="div ">
                 <IconButton
                   onClick={() => setOpenNotification(!isOpenNotification)}
                 >
@@ -393,6 +368,58 @@ function Navbar({ turnoffDark, socket = null }) {
                 </IconButton>
 
                 {/* notification container */}
+                {isOpenNotification && notifications.size > 0 && (
+                  <div className="notificationDropDown absolute right-2 left-2 z-40">
+                    <div
+                      id="toast-notification"
+                      className="w-full max-w-xs p-4 text-gray-900 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-300"
+                      role="alert"
+                    >
+                      <div className="flex items-center mb-3">
+                        <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
+                          New notifications
+                        </span>
+
+                        <button
+                          onClick={() => {
+                            setOpenNotification(false);
+                            clearNotification();
+                          }}
+                          type="button"
+                          className=" ml-auto py-1.5 px-5 mr-2 mb-2 text-xm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        >
+                          Clear
+                        </button>
+                      </div>
+                      <div className="notifications flex flex-col gap-2  max-h-[30vh]	overflow-scroll">
+                        {/* loop throught the notification */}
+
+                        {[...notifications].map((data, index) => (
+                          <div className="flex items-center  " key={index}>
+                            <div className="relative inline-block shrink-0">
+                              <img
+                                className="w-12 h-12 rounded-full"
+                                src={data.senderImage}
+                                alt="profile "
+                              />
+                            </div>
+                            <div className="ml-3 text-sm font-normal">
+                              <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                                {data?.senderName}
+                              </div>
+                              <div className="text-sm font-normal">
+                                {data?.msg}
+                              </div>
+                              <span className="text-xs font-medium text-blue-600 dark:text-blue-500">
+                                a few seconds ago
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <IconButton onClick={() => dispatch(setMode())}>

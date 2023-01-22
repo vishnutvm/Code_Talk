@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
@@ -62,6 +62,7 @@ function PostWidget({
   const [likeCount, setlikeCount] = useState(Object.keys(likes).length);
   const curUserId = useSelector((state) => state.user.user._id);
   const { username, profilePicture } = useSelector((state) => state.user.user);
+  const { mode } = useSelector((state) => state.mode);
   // const user = useSelector((state) => state.user.user);
   const [edit, setedit] = useState(null);
   const [model, setModel] = useState(false);
@@ -92,13 +93,16 @@ function PostWidget({
     dispatch(setPost({ post: updatedPost }));
     setlikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     setIsLiked(!isLiked);
-    socket?.current.emit('sendNotification', {
-      senderName: currentUserName,
-      // senderImage: userPicturePath,
-      receiverId: postUserId,
-      type: 'like',
-      msg: `${currentUserName} has liked your post ${discription}`,
-    });
+
+    if (!isLiked && postUserId !== curUserId) {
+      socket?.current.emit('sendNotification', {
+        senderName: currentUserName,
+        senderImage: profilePicture,
+        receiverId: postUserId,
+        type: 'like',
+        msg: `${currentUserName} has liked your post ${discription}`,
+      });
+    }
 
     // send notification of like to user if the current user is not the post user
     // currently not given this
@@ -123,21 +127,22 @@ function PostWidget({
       },
     }).then((response) => {
       setcomment('');
-      setupdatedComment(response.data.Comments);
+      setupdatedComment(response.data.Comments.reverse());
       console.log(updatedComment);
       // dispatch(setPost({ post: response.data }));
 
       console.log(response.data);
       // currently not given this
       // send notification through socket
-
-      socket?.current.emit('sendNotification', {
-        senderName: currentUserName,
-        // senderImage: userPicturePath,
-        receiverId: postUserId,
-        type: 'comment',
-        msg: `${currentUserName} has commented on your post ${discription}`,
-      });
+      if (postUserId !== curUserId) {
+        socket?.current.emit('sendNotification', {
+          senderName: currentUserName,
+          senderImage: profilePicture,
+          receiverId: postUserId,
+          type: 'comment',
+          msg: `${currentUserName} has commented on your post  ${comment}`,
+        });
+      }
     });
 
     // const updatedPost = await response.json();
@@ -169,10 +174,14 @@ function PostWidget({
   //   setcomment('');
   // };
 
+  useEffect(() => {
+    console.log(mode);
+  }, [mode]);
+
   if (edit) {
     return (
       <CreatePost
-        profilePicture={userPicturePath}
+        profilePicture={profilePicture}
         postId={postId}
         setedit={setedit}
         setloading={setloading}
@@ -398,62 +407,122 @@ function PostWidget({
         </FlexBetween>
         {/* <ShareOutlined /> */}
       </FlexBetween>
-      {isComments && (
-        <section className="bg-white dark:bg-gray-900 py-4 lg:py-8">
-          <div className="max-w-2xl mx-auto px-4">
-            <form className="mb-6">
-              <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                <label htmlFor="comment" className="sr-only">
-                  Your comment
-                </label>
-                <textarea
-                  id="comment"
-                  rows={3}
-                  className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                  placeholder="Write a comment..."
-                  required=""
-                  onChange={(e) => setcomment(e.target.value)}
-                  value={comment}
-                />
-              </div>
-              <button
-                type="button"
-                className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 bg-blue-500"
-                onClick={addcomment}
-              >
-                Post comment
-              </button>
-            </form>
-            {updatedComment.length
-              ? updatedComment.map((comment, i) => (
-                  // eslint-disable-next-line react/jsx-indent
-                  <article className="p-3 mb-3 text-base bg-white rounded-lg dark:bg-gray-900">
-                    <footer className="flex justify-between items-center mb-2">
-                      <div className="flex items-center">
-                        <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                          {/* commentd user image */}
-                          {comment.userprofile && (
-                            <img
-                              className="mr-2 w-6 h-6 rounded-full"
-                              src={`${comment.userprofile}`}
-                              alt="Profile image"
-                            />
-                          )}
+      {isComments &&
+        (mode === 'dark' ? (
+          <section className="bg-gray-900 py-4 lg:py-8">
+            <div className="max-w-2xl mx-auto px-4">
+              <form className="mb-6">
+                <div className="py-2 px-4 mb-4 rounded-lg rounded-t-lg border bg-gray-800 border-gray-700">
+                  <label htmlFor="comment" className="sr-only">
+                    Your comment
+                  </label>
+                  <textarea
+                    id="comment"
+                    rows={3}
+                    className="px-0 w-full text-sm  border-0 focus:ring-0 focus:outline-none text-white placeholder-gray-400 bg-gray-800"
+                    placeholder="Write a comment..."
+                    required=""
+                    onChange={(e) => setcomment(e.target.value)}
+                    value={comment}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 bg-blue-500"
+                  onClick={addcomment}
+                >
+                  Post comment
+                </button>
+              </form>
+              <div className="commentListWrap  max-h-[30vh]	overflow-scroll">
+                {updatedComment.length
+                  ? updatedComment.map((comment, i) => (
+                      // eslint-disable-next-line react/jsx-indent
+                      <article className="p-3 mb-3 text-base  rounded-lg bg-gray-900">
+                        <footer className="flex justify-between items-center mb-2">
+                          <div className="flex items-center">
+                            <p className="inline-flex items-center mr-3 text-sm  text-white">
+                              {/* commentd user image */}
+                              {comment.userprofile && (
+                                <img
+                                  className="mr-2 w-6 h-6 rounded-full"
+                                  src={`${comment.userprofile}`}
+                                  alt="Profile image"
+                                />
+                              )}
 
-                          {/* commented user name */}
-                          {comment.username}
+                              {/* commented user name */}
+                              {comment.username}
+                            </p>
+                          </div>
+                        </footer>
+                        <p className="text-gray-400">
+                          {comment.comment}
                         </p>
-                      </div>
-                    </footer>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      {comment.comment}
-                    </p>
-                  </article>
-                ))
-              : ''}
-          </div>
-        </section>
-      )}
+                      </article>
+                    ))
+                  : ''}
+              </div>
+            </div>
+          </section>
+        ) : (
+          <section className="bg-white dark:bg-gray-900 py-4 lg:py-8">
+            <div className="max-w-2xl mx-auto px-4">
+              <form className="mb-6">
+                <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                  <label htmlFor="comment" className="sr-only">
+                    Your comment
+                  </label>
+                  <textarea
+                    id="comment"
+                    rows={3}
+                    className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                    placeholder="Write a comment..."
+                    required=""
+                    onChange={(e) => setcomment(e.target.value)}
+                    value={comment}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 bg-blue-500"
+                  onClick={addcomment}
+                >
+                  Post comment
+                </button>
+              </form>
+              <div className="commentListWrap  max-h-[30vh]	overflow-scroll">
+                {updatedComment.length
+                  ? updatedComment.map((comment, i) => (
+                      // eslint-disable-next-line react/jsx-indent
+                      <article className="p-3 mb-3 text-base bg-white rounded-lg dark:bg-gray-900">
+                        <footer className="flex justify-between items-center mb-2">
+                          <div className="flex items-center">
+                            <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                              {/* commentd user image */}
+                              {comment.userprofile && (
+                                <img
+                                  className="mr-2 w-6 h-6 rounded-full"
+                                  src={`${comment.userprofile}`}
+                                  alt="Profile image"
+                                />
+                              )}
+
+                              {/* commented user name */}
+                              {comment.username}
+                            </p>
+                          </div>
+                        </footer>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          {comment.comment}
+                        </p>
+                      </article>
+                    ))
+                  : ''}
+              </div>
+            </div>
+          </section>
+        ))}
     </WidgetWrapper>
   );
 }

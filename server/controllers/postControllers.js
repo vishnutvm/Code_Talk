@@ -163,7 +163,7 @@ export const likePost = async (req, res) => {
 
 // comment on the post(can all users)
 export const commentPost = async (req, res) => {
-  console.log('like rout gettin');
+  console.log('like rout getting');
   try {
     const { id } = req.params;
     const comment = req.body;

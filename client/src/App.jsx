@@ -27,7 +27,7 @@ function App() {
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state) => state.user.token));
   const isAdminAuth = Boolean(useSelector((state) => state.admin.token));
-  const { _id } = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
   const socket = useRef();
 
   useEffect(() => {
@@ -37,10 +37,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // setting online users to socket
-    const userId = _id;
-    if (socket && socket.current && userId) {
-      socket.current.emit('add-user', userId);
+    if (isUserAuth) {
+      // setting online users to socket
+      const userId = user.user._id;
+      if (socket && socket.current && userId) {
+        socket.current.emit('add-user', userId);
+      }
     }
   }, [socket]);
 
