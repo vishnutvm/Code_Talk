@@ -85,10 +85,10 @@ function App() {
               element={isUserAuth ? <CreateMeating /> : <Loginpage />}
             />
 
-            <Route
+            {/* <Route
               path="/video/join/:meetId"
               element={isUserAuth ? <Joinmeet /> : <Navigate to="/" />}
-            />
+            /> */}
             <Route path="*" element={<ErrPage />} />
           </Routes>
         </ThemeProvider>
