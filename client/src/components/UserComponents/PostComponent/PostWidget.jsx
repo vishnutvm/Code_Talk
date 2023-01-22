@@ -87,22 +87,22 @@ function PostWidget({
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
+
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
     setlikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     setIsLiked(!isLiked);
+    socket?.current.emit('sendNotification', {
+      senderName: currentUserName,
+      // senderImage: userPicturePath,
+      receiverId: postUserId,
+      type: 'like',
+      msg: `${currentUserName} has liked your post ${discription}`,
+    });
 
     // send notification of like to user if the current user is not the post user
     // currently not given this
     // send notification through socket
-    if (!isLiked) {
-      socket?.current.emit('sendNotification', {
-        senderName: currentUserName,
-        receiverId: postUserId,
-        type: 'like',
-        msg: `${currentUserName} has liked your post ${discription}`,
-      });
-    }
   };
   const addcomment = async () => {
     console.log(comment);
@@ -133,6 +133,7 @@ function PostWidget({
 
       socket?.current.emit('sendNotification', {
         senderName: currentUserName,
+        // senderImage: userPicturePath,
         receiverId: postUserId,
         type: 'comment',
         msg: `${currentUserName} has commented on your post ${discription}`,

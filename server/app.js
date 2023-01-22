@@ -101,6 +101,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendNotification', ({ senderName, receiverId, type, msg }) => {
+    console.log('sendnotificaton works');
     const sendUserSocket = onlineUsers.get(receiverId);
     io.to(sendUserSocket).emit('getNotification', {
       senderName,
