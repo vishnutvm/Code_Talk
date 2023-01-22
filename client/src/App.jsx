@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 // import reactLogo from './assets/react.svg'
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { io } from 'socket.io-client';
 import HomePage from './pages/userPages/homePage/HomePage';
 import Loginpage from './pages/userPages/loginPage/Loginpage';
 import ProfilePage from './pages/userPages/profilePage/ProfilePage';
@@ -19,13 +20,20 @@ import ErrPage from './pages/404Page/ErrPage';
 import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordChangePage';
 import VideoMeating from './pages/userPages/VideoMeating/VideoMeating';
 import CreateMeating from './pages/userPages/VideoMeating/CreateMeating';
+import { baseUrl } from './constants/constants';
 // import Joinmeet from './pages/userPages/JoinMeet/Joinmeet';
-
 function App() {
   const mode = useSelector((state) => state.mode.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isUserAuth = Boolean(useSelector((state) => state.user.token));
   const isAdminAuth = Boolean(useSelector((state) => state.admin.token));
+  const socket = useRef();
+
+  useEffect(() => {
+    console.log('use effed run');
+    // setting socket and serving to pages as props
+    socket.current = io(baseUrl);
+  }, []);
 
   return (
     <div className="app">
@@ -62,7 +70,9 @@ function App() {
             <Route path="/verifyEmail" element={<OTPpage />} />
             <Route
               path="/chat"
-              element={isUserAuth ? <ChatPage /> : <Loginpage />}
+              element={
+                isUserAuth ? <ChatPage socket={socket} /> : <Loginpage />
+              }
             />
             <Route
               path="/quiz"

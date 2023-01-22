@@ -75,6 +75,7 @@ const io = new Server(server, {
 global.onlineUsers = new Map(); // holds all active sockets
 
 io.on('connection', (socket) => {
+  console.log('user connected');
   console.log(`User Connected: ${socket.id}`);
   global.chatSocket = socket;
   socket.on('add-user', (userId) => {

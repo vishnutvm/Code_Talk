@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,8 +9,8 @@ import EmptyChatComponent from '../../../components/UserComponents/EmptyChatComp
 import { setCurrentChat } from '../../../redux/chatState';
 import { baseUrl } from '../../../constants/constants';
 
-function ChatPage() {
-  const socket = useRef();
+function ChatPage({ socket }) {
+  // const socket = useRef();
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function ChatPage() {
   useEffect(() => {
     dispatch(setCurrentChat(null));
     console.log('use effed run');
-    socket.current = io(baseUrl);
+    // socket.current = io(baseUrl);
     socket.current.emit('add-user', currentUserId);
   }, []);
 
