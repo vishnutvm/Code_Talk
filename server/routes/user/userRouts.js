@@ -17,6 +17,8 @@ import {
   getallmeeting,
   deleteMeeting,
   getmeet,
+  // sendNotification,
+  // getNotification,
 } from '../../controllers/userControllers.js';
 
 // importing middlewares
@@ -37,10 +39,13 @@ router.post('/resetpass/:id', resetpass);
 router.post('/verifyEmail', verifyEmail);
 router.post('/resentOTP', resentOTP);
 router.post('/searchuser', searchUser);
+router.post('/sendNofication', sendNotification);
+router.get('/getNotification', getNotification);
 // /user/${userId}/delete
 
-router.post('/addMeatingImage', upload.single('picture'), addMeating);
+// !users meet rout , currently under repair(ui issue)
 
+router.post('/addMeatingImage', upload.single('picture'), addMeating);
 router.delete('/:id/delete', deleteMeeting);
 router.get('/getMeet/:meetid', getmeet);
 

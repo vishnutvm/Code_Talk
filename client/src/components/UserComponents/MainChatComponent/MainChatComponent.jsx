@@ -112,7 +112,7 @@ function MainChatComponent({ socket }) {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage]);
 
-  // scroll effect apge
+  // scroll effect page
   useEffect(() => {
     scrollRef.current?.scrollIntoView(false);
   }, [message]);
