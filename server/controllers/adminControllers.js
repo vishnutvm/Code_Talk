@@ -57,7 +57,7 @@ export const blockUsers = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: userId },
       { blocked },
-      { new: true }
+      { new: true },
     );
     console.log(updatedUser);
 

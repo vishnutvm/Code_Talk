@@ -17,8 +17,9 @@ import {
   getallmeeting,
   deleteMeeting,
   getmeet,
-  // sendNotification,
-  // getNotification,
+  sendNotification,
+  getNotification,
+  clearNotification,
 } from '../../controllers/userControllers.js';
 
 // importing middlewares
@@ -40,7 +41,8 @@ router.post('/verifyEmail', verifyEmail);
 router.post('/resentOTP', resentOTP);
 router.post('/searchuser', searchUser);
 router.post('/sendNofication', sendNotification);
-router.get('/getNotification', getNotification);
+router.post('/getNotification', getNotification);
+router.patch('/clearNotification', clearNotification);
 // /user/${userId}/delete
 
 // !users meet rout , currently under repair(ui issue)

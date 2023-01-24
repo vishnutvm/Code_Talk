@@ -22,6 +22,17 @@ function ChatPage({ socket }) {
     // socket.current.emit('add-user', currentUserId);
   }, []);
 
+
+  // useEffect(() => {
+  //   if (isUserAuth) {
+  //     // setting online users to socket
+  //     const userId = user.user._id;
+  //     if (socket && socket.current && userId) {
+  //       socket.current.emit('add-user', userId);
+  //     }
+  //   }
+  // }, [socket]);
+
   // handling current chat page
   return (
     <div className="flex h-screen antialiased text-gray-800">

@@ -53,57 +53,69 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route
+              exact
               path="/"
               element={
                 isUserAuth ? <HomePage socket={socket} /> : <Loginpage />
               }
             />
             <Route
+              exact
               path="/home"
               element={isUserAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route
+              exact
               path="/profile/:userId"
               element={isUserAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
             <Route
+              exact
               path="/editProfile"
               element={isUserAuth ? <ProfileEditPage /> : <Navigate to="/" />}
             />
             <Route
+              exact
               path="/editPassword"
               element={
                 isUserAuth ? <PasswordChangePage /> : <Navigate to="/" />
               }
             />
             <Route
+              exact
               path="/admin"
               element={isAdminAuth ? <AdminHome /> : <AdminLogin />}
             />
-            <Route path="/verifyEmail" element={<OTPpage />} />
+            <Route exact path="/verifyEmail" element={<OTPpage />} />
             <Route
+              exact
               path="/chat"
               element={
                 isUserAuth ? <ChatPage socket={socket} /> : <Loginpage />
               }
             />
             <Route
+              exact
               path="/quiz"
               element={isUserAuth ? <QuizMainPage /> : <Loginpage />}
             />
             <Route
+              exact
               path="/question"
               element={isUserAuth ? <QuestionsPage /> : <Loginpage />}
             />
             <Route
+              exact
               path="/result"
               element={isUserAuth ? <ResultPage /> : <Loginpage />}
             />
             <Route
+              exact
               path="/video"
               element={isUserAuth ? <VideoMeating /> : <Loginpage />}
             />
             <Route
+              exact
               path="/createmeet"
               element={isUserAuth ? <CreateMeating /> : <Loginpage />}
             />
@@ -112,7 +124,7 @@ function App() {
               path="/video/join/:meetId"
               element={isUserAuth ? <Joinmeet /> : <Navigate to="/" />}
             /> */}
-            <Route path="*" element={<ErrPage />} />
+            <Route exact path="*" element={<ErrPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

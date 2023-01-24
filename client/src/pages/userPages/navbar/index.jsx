@@ -72,6 +72,21 @@ function Navbar({ turnoffDark, socket = null }) {
 
   const clearNotification = () => {
     console.log('clear call');
+    axios({
+      method: 'PATCH',
+      url: `${baseUrl}/user/clearNotification`,
+      data: {
+        userId: _id,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // clear the state and change the read bool in db
+
     setNotifications(new Set());
   };
   // useeffect for notification
@@ -87,10 +102,26 @@ function Navbar({ turnoffDark, socket = null }) {
       });
     }
   }, []);
+
+  useEffect(() => {
+    console.log('getting notification');
+    axios({
+      method: 'POST',
+      url: `${baseUrl}/user/getNotification`,
+      data: {
+        userId: _id,
+      },
+    }).then((res) => {
+      console.log(notifications);
+
+      setNotifications(() => new Set([...res.data[0].message]));
+      console.log(res.data[0].message);
+    });
+  }, []);
+
   console.log(notifications);
   const getUserProfile = () => {
-    // const formData = new FormData();
-    // formData.append('username', username);
+
     console.log(search);
 
     axios({

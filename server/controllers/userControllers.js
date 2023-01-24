@@ -27,9 +27,7 @@ export const register = async (req, res) => {
 
   try {
     // destructuring data
-    let {
-      username, email, password, isgoogle = false,
-    } = req.body;
+    let { username, email, password, isgoogle = false } = req.body;
     if (isgoogle) {
       username = generateUsername(email);
     }
@@ -117,9 +115,7 @@ export const register = async (req, res) => {
 // login user
 export const login = async (req, res) => {
   try {
-    const {
-      username, password, isgoogle = false, googleEmail = '',
-    } = req.body;
+    const { username, password, isgoogle = false, googleEmail = '' } = req.body;
     // checking if user exists
     if (isgoogle) {
       var user = await User.findOne({ email: googleEmail });
@@ -206,7 +202,7 @@ export const verifyEmail = async (req, res) => {
             const updatedUser = await User.findByIdAndUpdate(
               { _id: userId },
               { verified: true },
-              { new: true },
+              { new: true }
             );
 
             await UserOTPVerification.deleteMany({ userId });
@@ -270,7 +266,7 @@ export const getUserFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id)),
+      user.friends.map((id) => User.findById(id))
     );
 
     // destructring the results and filtering unwanted data
@@ -315,7 +311,7 @@ export const addRemoveFriends = async (req, res) => {
 
     // get all the frinds details from db
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id)),
+      user.friends.map((id) => User.findById(id))
     );
 
     // destructring the results and filtering unwanted data
@@ -342,9 +338,8 @@ export const edituser = async (req, res) => {
   try {
     if (req.file !== undefined) {
       uploadS3(req.file).then(async (response) => {
-        const {
-          username, phone, email, linkdin, github, location, picture,
-        } = req.body;
+        const { username, phone, email, linkdin, github, location, picture } =
+          req.body;
 
         console.log(picture, 'bugging');
 
@@ -362,7 +357,7 @@ export const edituser = async (req, res) => {
             location,
             profilePicture: response.Location,
           },
-          { new: true },
+          { new: true }
         ).then(async (update) => {
           console.log(update);
           const updatedUser = await User.findById(id);
@@ -370,9 +365,7 @@ export const edituser = async (req, res) => {
         });
       });
     } else {
-      const {
-        username, phone, email, linkdin, github, location,
-      } = req.body;
+      const { username, phone, email, linkdin, github, location } = req.body;
 
       console.log(req.body);
       const { id } = req.params;
@@ -387,7 +380,7 @@ export const edituser = async (req, res) => {
           github,
           location,
         },
-        { new: true },
+        { new: true }
       ).then(async (update) => {
         console.log(update);
         const updatedUser = await User.findById(id);
@@ -450,9 +443,7 @@ export const addMeating = async (req, res) => {
       console.log(response);
 
       console.log(req.body);
-      const {
-        discription, title, cratedby, meetid,
-      } = req.body;
+      const { discription, title, cratedby, meetid } = req.body;
 
       const newQuiz = new Meating({
         title,
@@ -511,19 +502,25 @@ export const getmeet = async (req, res) => {
 
 // sendNotification,
 // getNotification,
+// clearNotification
 
 export const sendNotification = async (req, res) => {
   try {
-    const {
-      senderName, receiverId, type, msg, senderImage,
-    } = req.body;
+    console.log(req.body);
+    const { senderName, receiverId, type, msg, senderImage } = req.body;
 
     const user = await Notification.findOne({ user: receiverId });
     if (user) {
       // if noti for user exist update it
       user.message.push({
-        senderName, type, msg, senderImage,
+        senderName,
+        type,
+        msg,
+        senderImage,
+        read: false,
       });
+      await user.save();
+      res.status(200).json(user);
     } else {
       // else create a new notification in db
       const newNotification = new Notification({
@@ -538,19 +535,34 @@ export const sendNotification = async (req, res) => {
         ],
       });
       await newNotification.save();
+      res.status(200).json({ msg: 'Success' });
     }
   } catch (err) {
-    res.status(404).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 
-// const { discription, title, cratedby, meetid } = req.body;
+export const getNotification = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { userId } = req.body;
+    const notification = await Notification.find({ user: userId });
+    console.log('work', notification);
+    res.status(200).json(notification);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-// const newQuiz = new Meating({
-//   title,
-//   banner: response.Location,
-//   discription,
-//   createdby: cratedby,
-//   meetid,
-// });
-// await newQuiz.save();
+export const clearNotification = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { userId } = req.body;
+    // const notification = await Notification.find({ user: userId });
+    await Notification.findOneAndDelete({ user: userId });
+
+    res.status(200).json({ msg: 'Success' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

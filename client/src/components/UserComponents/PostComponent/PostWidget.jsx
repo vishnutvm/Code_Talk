@@ -95,6 +95,14 @@ function PostWidget({
     setIsLiked(!isLiked);
 
     if (!isLiked && postUserId !== curUserId) {
+      const notification = {
+        senderName: currentUserName,
+        senderImage: profilePicture,
+        receiverId: postUserId,
+        type: 'like',
+        msg: `${currentUserName} has liked your post ${discription}`,
+      };
+
       socket?.current.emit('sendNotification', {
         senderName: currentUserName,
         senderImage: profilePicture,
@@ -102,6 +110,7 @@ function PostWidget({
         type: 'like',
         msg: `${currentUserName} has liked your post ${discription}`,
       });
+      axios.post('/user/sendNofication', notification);
     }
 
     // send notification of like to user if the current user is not the post user
@@ -136,6 +145,13 @@ function PostWidget({
       // send notification through socket
       if (postUserId !== curUserId) {
         socket?.current.emit('sendNotification', {
+          senderName: currentUserName,
+          senderImage: profilePicture,
+          receiverId: postUserId,
+          type: 'comment',
+          msg: `${currentUserName} has commented on your post  ${comment}`,
+        });
+        axios.post('/user/sendNofication', {
           senderName: currentUserName,
           senderImage: profilePicture,
           receiverId: postUserId,
@@ -456,9 +472,7 @@ function PostWidget({
                             </p>
                           </div>
                         </footer>
-                        <p className="text-gray-400">
-                          {comment.comment}
-                        </p>
+                        <p className="text-gray-400">{comment.comment}</p>
                       </article>
                     ))
                   : ''}
