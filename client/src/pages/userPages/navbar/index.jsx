@@ -103,7 +103,7 @@ function Navbar({ turnoffDark, socket = null }) {
     }
   }, []);
 
-  useEffect(() => {
+  const getNotification = () => {
     console.log('getting notification');
     axios({
       method: 'POST',
@@ -113,15 +113,19 @@ function Navbar({ turnoffDark, socket = null }) {
       },
     }).then((res) => {
       console.log(notifications);
-
-      setNotifications(() => new Set([...res.data[0].message]));
-      console.log(res.data[0].message);
+      if (res.data[0]) {
+        setNotifications(() => new Set([...res.data[0].message]));
+        console.log(res.data[0].message);
+      }
     });
+  };
+
+  useEffect(() => {
+    getNotification();
   }, []);
 
   console.log(notifications);
   const getUserProfile = () => {
-
     console.log(search);
 
     axios({
