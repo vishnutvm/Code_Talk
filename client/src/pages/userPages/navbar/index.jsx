@@ -66,12 +66,12 @@ function Navbar({ turnoffDark, socket = null }) {
   };
 
   const addNotification = (notification) => {
-    console.log('bugfoud', notifications);
+    // console.log('bugfoud', notifications);
     setNotifications((prev) => new Set([notification, ...prev]));
   };
 
   const clearNotification = () => {
-    console.log('clear call');
+    // console.log('clear call');
     axios({
       method: 'PATCH',
       url: `${baseUrl}/user/clearNotification`,
@@ -80,7 +80,7 @@ function Navbar({ turnoffDark, socket = null }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -91,11 +91,11 @@ function Navbar({ turnoffDark, socket = null }) {
   };
   // useeffect for notification
   useEffect(() => {
-    console.log(socket);
+    // console.log(socket);
     // socket.on()
     if (socket && socket.current) {
       socket.current.on('getNotification', (data) => {
-        console.log(data);
+        // console.log(data);
         // checking what type of notification
 
         addNotification(data);
@@ -104,7 +104,7 @@ function Navbar({ turnoffDark, socket = null }) {
   }, []);
 
   const getNotification = () => {
-    console.log('getting notification');
+    // console.log('getting notification');
     axios({
       method: 'POST',
       url: `${baseUrl}/user/getNotification`,
@@ -112,10 +112,10 @@ function Navbar({ turnoffDark, socket = null }) {
         userId: _id,
       },
     }).then((res) => {
-      console.log(notifications);
+      // console.log(notifications);
       if (res.data[0]) {
         setNotifications(() => new Set([...res.data[0].message]));
-        console.log(res.data[0].message);
+        // console.log(res.data[0].message);
       }
     });
   };
@@ -124,9 +124,9 @@ function Navbar({ turnoffDark, socket = null }) {
     getNotification();
   }, []);
 
-  console.log(notifications);
+  // console.log(notifications);
   const getUserProfile = () => {
-    console.log(search);
+    // console.log(search);
 
     axios({
       method: 'POST',
@@ -136,7 +136,7 @@ function Navbar({ turnoffDark, socket = null }) {
       },
     })
       .then((data) => {
-        console.log(data.data);
+        // console.log(data.data);
 
         navigate(`/profile/${data.data._id}`);
       })
@@ -157,7 +157,7 @@ function Navbar({ turnoffDark, socket = null }) {
             fontWeight="bold"
             fontSize="clamp(1rem,2rem,2.25rem)"
             color="primary"
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/')}
             sx={{
               '&:hover': {
                 color: primaryLight,
@@ -179,8 +179,8 @@ function Navbar({ turnoffDark, socket = null }) {
                 value={search}
                 placeholder="Search profile ..."
               />
-              <IconButton>
-                <Search onClick={() => getUserProfile()} />
+              <IconButton onClick={() => getUserProfile()}>
+                <Search />
               </IconButton>
             </FlexBetween>
           )}

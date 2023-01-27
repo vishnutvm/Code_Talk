@@ -21,7 +21,6 @@ import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordCha
 import VideoMeating from './pages/userPages/VideoMeating/VideoMeating';
 import CreateMeating from './pages/userPages/VideoMeating/CreateMeating';
 import { baseUrl } from './constants/constants';
-// again test
 // import Joinmeet from './pages/userPages/JoinMeet/Joinmeet';
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -63,7 +62,9 @@ function App() {
             <Route
               exact
               path="/home"
-              element={isUserAuth ? <HomePage /> : <Navigate to="/" />}
+              element={
+                isUserAuth ? <HomePage socket={socket} /> : <Navigate to="/" />
+              }
             />
             <Route
               exact
