@@ -102,9 +102,7 @@ io.on('connection', (socket) => {
 
   socket.on(
     'sendNotification',
-    ({
-      senderName, receiverId, type, msg, senderImage,
-    }) => {
+    ({ senderName, receiverId, type, msg, senderImage }) => {
       console.log('sendnotificaton works');
       const sendUserSocket = onlineUsers.get(receiverId);
       io.to(sendUserSocket).emit('getNotification', {
@@ -113,11 +111,28 @@ io.on('connection', (socket) => {
         type,
         msg,
       });
-    },
+    }
   );
   // disconnect function
 
   socket.on('disconnect', () => {
     console.log('Someone has disconnected');
+  });
+
+  // video calling
+
+  socket.on('callUser', (data) => {
+    const { receiverId, signalData, from } = data;
+    const sendUserSocket = onlineUsers.get(receiverId);
+    io.to(sendUserSocket).emit('callUser', {
+      signal: signalData,
+      from,
+    });
+  });
+
+  socket.on('answerCall', (data) => {
+    const { receiverId } = data;
+    const sendUserSocket = onlineUsers.get(receiverId);
+    io.to(sendUserSocket).emit('callAccepted', signal);
   });
 });
