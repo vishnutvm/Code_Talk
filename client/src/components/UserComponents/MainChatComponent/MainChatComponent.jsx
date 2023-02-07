@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 
 // import * as moment from 'moment';
 
+import Peer from 'simple-peer';
+
 import ChatInputComponent from '../ChatInputComponent/ChatInputComponent';
 import axios from '../../../utils/axios';
 import SingleMessageComponent from '../SingleMessageComponent/SingleMessageComponent';
@@ -18,10 +20,11 @@ function MainChatComponent({ socket }) {
   const token = useSelector((state) => state.user.token);
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
+  const currentUser = useSelector((state) => state.user.user);
   const [arrivalMessage, setarrivalMessage] = useState(null);
   const [chatUserImage, setchatUserImage] = useState(undefined);
   const [videoChat, setVideoChat] = useState(false);
-
+  const [Userstream, setUserStream] = useState();
   const currentUserPicture = useSelector(
     (state) => state.user.user.profilePicture
   );
@@ -122,12 +125,33 @@ function MainChatComponent({ socket }) {
 
   const handleVideoCall = () => {
     console.log('changing page');
+    // const peer = new Peer({
+    //   initiator: true,
+    //   trickle: false,
+    //   stream,
+    // });
+    // peer.on('signal', (data) => {
+    //   socket.current.emit('callUser', {
+    //     userToCall: currentChatUserId,
+    //     signalData: data,
+    //     from: currentUser,
+    //     _id,
+    //     name: currentUser.username,
+    //     profile: currentUser.profilePicture,
+    //   });
+    // });
     setVideoChat(!videoChat);
   };
 
   // changing main chat to video/message according toe videoChat state
   if (videoChat) {
-    return <VideoChatPage handleVideoCall={handleVideoCall} />;
+    return (
+      <VideoChatPage
+        handleVideoCall={handleVideoCall}
+        // stream={stream}
+        setUserStream={setUserStream}
+      />
+    );
   }
   return (
     <div className="flex flex-col flex-auto h-full p-6">
