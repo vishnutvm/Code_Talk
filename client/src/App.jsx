@@ -21,6 +21,7 @@ import PasswordChangePage from './pages/userPages/ChangePasswordPage/PasswordCha
 import VideoMeating from './pages/userPages/VideoMeating/VideoMeating';
 import CreateMeating from './pages/userPages/VideoMeating/CreateMeating';
 import { baseUrl } from './constants/constants';
+import VideoChatPage from './pages/userPages/chatPage/VideoChatPage';
 // import Joinmeet from './pages/userPages/JoinMeet/Joinmeet';
 function App() {
   const mode = useSelector((state) => state.mode.mode);
@@ -120,6 +121,12 @@ function App() {
               exact
               path="/createmeet"
               element={isUserAuth ? <CreateMeating /> : <Loginpage />}
+            />
+            {/* ! For Testing */}
+            <Route
+              exact
+              path="/vid"
+              element={isUserAuth ? <VideoChatPage /> : <Loginpage />}
             />
 
             {/* <Route

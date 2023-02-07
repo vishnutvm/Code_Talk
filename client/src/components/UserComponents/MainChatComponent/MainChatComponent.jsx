@@ -11,15 +11,16 @@ import { useSelector } from 'react-redux';
 import ChatInputComponent from '../ChatInputComponent/ChatInputComponent';
 import axios from '../../../utils/axios';
 import SingleMessageComponent from '../SingleMessageComponent/SingleMessageComponent';
+import VideoChatPage from '../../../pages/userPages/chatPage/VideoChatPage';
 
 function MainChatComponent({ socket }) {
   const [message, setMessages] = useState([]);
   const token = useSelector((state) => state.user.token);
-
   const currentChatUserId = useSelector((state) => state.chat.currentchat);
   const currentUserId = useSelector((state) => state.user.user._id);
   const [arrivalMessage, setarrivalMessage] = useState(null);
   const [chatUserImage, setchatUserImage] = useState(undefined);
+  const [videoChat, setVideoChat] = useState(false);
 
   const currentUserPicture = useSelector(
     (state) => state.user.user.profilePicture
@@ -117,6 +118,17 @@ function MainChatComponent({ socket }) {
     scrollRef.current?.scrollIntoView(false);
   }, [message]);
 
+  // change betweeen videocall and chat
+
+  const handleVideoCall = () => {
+    console.log('changing page');
+    setVideoChat(!videoChat);
+  };
+
+  // changing main chat to video/message according toe videoChat state
+  if (videoChat) {
+    return <VideoChatPage handleVideoCall={handleVideoCall} />;
+  }
   return (
     <div className="flex flex-col flex-auto h-full p-6">
       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
@@ -139,7 +151,10 @@ function MainChatComponent({ socket }) {
         </div>
 
         {/* chatbox */}
-        <ChatInputComponent handleSendMsg={handleSendMsg} />
+        <ChatInputComponent
+          handleSendMsg={handleSendMsg}
+          handleVideoCall={handleVideoCall}
+        />
 
         {/* chatbox ends */}
       </div>

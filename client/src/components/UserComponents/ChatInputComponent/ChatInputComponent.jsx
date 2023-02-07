@@ -2,13 +2,13 @@
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 // import EmojiPicker from 'emoji-picker-react';
-import { BsEmojiSmile } from 'react-icons/bs';
+import { BsEmojiSmile, BsCameraVideo } from 'react-icons/bs';
 import { AiOutlineSend } from 'react-icons/ai';
 
-function ChatInputComponent({ handleSendMsg }) {
+function ChatInputComponent({ handleSendMsg, handleVideoCall }) {
   // const [showEmojiList, setshowEmojiList] = useState(false);
   const [msg, setmsg] = useState('');
-  
+
   // const handleImogy = () => {
   //   setshowEmojiList(!showEmojiList);
   // };
@@ -31,18 +31,22 @@ function ChatInputComponent({ handleSendMsg }) {
   return (
     <form
       onSubmit={(e) => sendChat(e)}
-      className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
+      className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-2"
     >
       {/* <div>sending files in future</div> */}
 
-      <div className="flex-grow ml-4">
+      <div className="flex-grow ml-2">
         <div className="relative w-full">
           {/* imogi section starts */}
           <div className="absolute flex items-center justify-center h-full w-12 right-left top-0 ">
-            <div className="emoji-wrap">
+            <div className="emoji-wrap flex gap-2  md:gap-3">
               <BsEmojiSmile
-                className="w-6 h-6 text-gray-500"
+                className="w-6 h-6 text-gray-500 cursor-pointer hover:scale-105"
                 // onClick={handleImogy}
+              />
+              <BsCameraVideo
+                className="w-6 h-6 text-gray-500   cursor-pointer  hover:scale-105"
+                onClick={() => handleVideoCall(true)}
               />
             </div>
           </div>
@@ -60,7 +64,7 @@ function ChatInputComponent({ handleSendMsg }) {
             placeholder="type your message here..."
             value={msg}
             onChange={(e) => setmsg(e.target.value)}
-            className="pl-11 flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 h-10"
+            className="pl-2 flex w-[80%] md:w-[82%] lg:w-[90%]  xg:w-[93%] ml-[4rem] border rounded-xl focus:outline-none focus:border-indigo-300 h-10"
           />
         </div>
       </div>

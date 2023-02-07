@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { VideocamRounded } from '@mui/icons-material';
 import { setCurrentChat } from '../../../redux/chatState';
 
 function ChatContactComponent() {
