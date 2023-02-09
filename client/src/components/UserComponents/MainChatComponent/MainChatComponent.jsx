@@ -125,22 +125,31 @@ function MainChatComponent({ socket }) {
 
   const handleVideoCall = () => {
     console.log('changing page');
-    // const peer = new Peer({
-    //   initiator: true,
-    //   trickle: false,
-    //   stream,
-    // });
-    // peer.on('signal', (data) => {
-    //   socket.current.emit('callUser', {
-    //     userToCall: currentChatUserId,
-    //     signalData: data,
-    //     from: currentUser,
-    //     _id,
-    //     name: currentUser.username,
-    //     profile: currentUser.profilePicture,
-    //   });
-    // });
-    setVideoChat(!videoChat);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((data) => {
+        setUserStream(data);
+        console.log(data);
+        setVideoChat(!videoChat);
+      });
+
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: Userstream,
+    });
+
+    console.log(peer);
+    peer.on('signal', (data) => {
+      socket.current.emit('callUser', {
+        userToCall: currentChatUserId,
+        signalData: data,
+        from: currentUser,
+        _id,
+        name: currentUser.username,
+        profile: currentUser.profilePicture,
+      });
+    });
   };
 
   // changing main chat to video/message according toe videoChat state
@@ -149,7 +158,7 @@ function MainChatComponent({ socket }) {
       <VideoChatPage
         handleVideoCall={handleVideoCall}
         // stream={stream}
-        setUserStream={setUserStream}
+        Userstream={Userstream}
       />
     );
   }
@@ -164,6 +173,7 @@ function MainChatComponent({ socket }) {
               {message.map((msg) => {
                 return (
                   <SingleMessageComponent
+                    key={msg._id}
                     message={msg}
                     chatUserImage={chatUserImage}
                     currentUserPicture={currentUserPicture}

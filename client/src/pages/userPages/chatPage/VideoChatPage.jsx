@@ -10,10 +10,10 @@ import {
 } from 'react-icons/bs';
 import { IoCallSharp } from 'react-icons/io5';
 
-function VideoChatPage({ handleVideoCall, stream, setUserStream }) {
+function VideoChatPage({ handleVideoCall, stream, Userstream }) {
   const [audio, setAudio] = useState(true);
   const [video, setVideo] = useState(true);
-  const [myStream, setMyStream] = useState('');
+  // const [myStream, setMyStream] = useState('');
 
   const myVideo = useRef();
   const userVideo = useRef();
@@ -33,14 +33,13 @@ function VideoChatPage({ handleVideoCall, stream, setUserStream }) {
     setVideo(!video);
   };
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then(async (streamData) => {
-        await setUserStream(streamData);
-        await setMyStream(streamData);
-        // console.log(myStream);
-        myVideo.current.srcObject = streamData;
-      });
+    // navigator.mediaDevices
+    //   .getUserMedia({ video: true, audio: true })
+    //   .then(async (streamData) => {
+    //     await setUserStream(streamData);
+    //     await setMyStream(streamData);
+    // console.log(myStream);
+    myVideo.current.srcObject = Userstream && Userstream;
   }, []);
 
   return (
@@ -48,7 +47,7 @@ function VideoChatPage({ handleVideoCall, stream, setUserStream }) {
       {/* on the video wall the video will shows as full screen */}
 
       <video
-        ref={myVideo}
+        // ref={myVideo}
         autoPlay
         className="videoWall w-full min-h-full bg-slate-200  z-10 object-cover "
       >
@@ -91,7 +90,7 @@ function VideoChatPage({ handleVideoCall, stream, setUserStream }) {
         </div>
       </div>
       <div className="videoWrapper hidden md:block selfVideo absolute w-[20%] h-[30%] bg-red-500  rounded-xl  bottom-[9rem] right-5">
-        {myStream && (
+        {Userstream && (
           <video
             ref={myVideo}
             autoPlay
