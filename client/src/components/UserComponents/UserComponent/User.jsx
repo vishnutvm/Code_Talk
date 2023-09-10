@@ -41,7 +41,7 @@ function UserWidget({ userId, profilePicture }) {
   const primaryDark = palette.primary.dark;
   const [loading, setloading] = useState(true);
   const isFriend = currentUserFriendList.find(
-    (friend) => friend._id === userId,
+    (friend) => friend._id === userId
   );
   // hearder with token
   const headers = {
@@ -85,15 +85,11 @@ function UserWidget({ userId, profilePicture }) {
     github,
     badges,
   } = user;
+  console.log(user, 'user');
   const allBadges = badges.filter((item, i) => badges.indexOf(item) === i);
-  // console.log(allBadges);
-  // console.log(user);
   const patchFriend = async () => {
     try {
       const response = await axios.patch(`/user/${_id}/${userId}`, headers);
-
-      // const data = await response.json();
-
       dispatch(setFriends({ friends: response.data }));
     } catch (error) {
       console.log(error);
@@ -123,11 +119,7 @@ function UserWidget({ userId, profilePicture }) {
                 >
                   {username}
                 </Typography>
-                <Typography color={medium}>
-                  {friends.length}
-                  {' '}
-                  friends
-                </Typography>
+                <Typography color={medium}>{friends.length} friends</Typography>
               </Box>
             </FlexBetween>
             {_id === userId && (

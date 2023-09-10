@@ -4,13 +4,13 @@ import mongoose from 'mongoose';
 const AdminSchema = new mongoose.Schema({
   username: {
     type: String,
-    require: true,
+    required: true, // Change 'require' to 'required'
     min: 4,
     max: 40,
   },
   password: {
     type: String,
-    require: true,
+    required: true, // Change 'require' to 'required'
     min: 3,
   },
 });

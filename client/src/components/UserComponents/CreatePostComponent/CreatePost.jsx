@@ -119,11 +119,6 @@ function CreatePost({ profilePicture, postId = null, setedit, setloading }) {
   };
   // handle post edit
   const handleEditPost = () => {
-    console.log('wrrrr');
-    // need to clearn the edit componenet
-    // need to update the post state
-    // need to update the post state even the edit post closed
-
     const formData = new FormData();
     formData.append('userId', _id);
     formData.append('postId', editingPost._id);
@@ -396,12 +391,15 @@ function CreatePost({ profilePicture, postId = null, setedit, setloading }) {
             </FlexBetween>
 
             <Button
-              // if there is not post value desable the button
+              style={{
+                color: palette.primary.main,
+                border: `1px solid ${palette.primary.main}`,
+              }}
+              variant="outlined"
               disabled={!post}
               onClick={handlePost}
               sx={{
-                color: palette.background.alt,
-                backgroundColor: palette.primary.main,
+                border: `10px solid ${palette.primary.main}`,
                 borderRadius: '3rem',
               }}
             >

@@ -480,17 +480,17 @@ function PostWidget({
             </div>
           </section>
         ) : (
-          <section className="bg-white dark:bg-gray-900 py-4 lg:py-8">
+          <section className="bg-white  py-4 lg:py-8 rounded-lg  border  shadow-sm">
             <div className="max-w-2xl mx-auto px-4">
               <form className="mb-6">
-                <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border ">
                   <label htmlFor="comment" className="sr-only">
                     Your comment
                   </label>
                   <textarea
                     id="comment"
                     rows={3}
-                    className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                    className="px-0 w-full text-sm  border-0 focus:ring-0 focus:outline-none  dark:placeholder-gray-400 "
                     placeholder="Write a comment..."
                     required=""
                     onChange={(e) => setcomment(e.target.value)}
@@ -505,15 +505,13 @@ function PostWidget({
                   Post comment
                 </button>
               </form>
-              <div className="commentListWrap  max-h-[30vh]	overflow-scroll">
+              <div className="commentListWrap  max-h-[30vh] overflow-scroll">
                 {updatedComment.length
                   ? updatedComment.map((comment, i) => (
-                      // eslint-disable-next-line react/jsx-indent
-                      <article className="p-3 mb-3 text-base bg-white rounded-lg dark:bg-gray-900">
+                      <article className="p-3 mb-3 text-base bg-white rounded-lg  border shadow-sm">
                         <footer className="flex justify-between items-center mb-2">
                           <div className="flex items-center">
-                            <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                              {/* commentd user image */}
+                            <p className="inline-flex items-center mr-3 text-sm text-gray-900 ">
                               {comment.userprofile && (
                                 <img
                                   className="mr-2 w-6 h-6 rounded-full"
@@ -521,8 +519,6 @@ function PostWidget({
                                   alt="Profile image"
                                 />
                               )}
-
-                              {/* commented user name */}
                               {comment.username}
                             </p>
                           </div>

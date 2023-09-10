@@ -30,9 +30,6 @@ function uploadS3(file) {
     const fileType = path.extname(file.originalname);
 
     const fileName = crypto.randomBytes(16).toString('hex') + fileType;
-    console.log(fileName);
-    console.log(file);
-    console.log('debug');
     const params = {
       Bucket: bucketName,
       Body: file.buffer,

@@ -262,8 +262,6 @@ function Loginpage() {
       <div ref={container} className="container">
         <div className="forms-container">
           <div className="signin-signup">
-            {/* login form */}
-
             <form
               onSubmit={handleSubmit}
               action="#"
@@ -461,7 +459,7 @@ function Loginpage() {
             </div>
             <img src={loginPageImage} className="image" alt="" />
           </div>
-          <div className="panel right-panel">
+          <div st className="panel right-panel">
             <div className="content">
               <h3>One of us ?</h3>
               <p>
@@ -481,7 +479,6 @@ function Loginpage() {
           </div>
         </div>
       </div>
-      ;
     </>
   );
 }

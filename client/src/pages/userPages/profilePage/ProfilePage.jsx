@@ -80,7 +80,7 @@ function ProfilePage() {
             flexBasis={isNotMobileScreen ? '42%' : undefined}
             mt={isNotMobileScreen ? undefined : '2rem'}
           >
-            <CreatePost profilePicture={user.profilePicture} />
+            {/* <CreatePost profilePicture={user.profilePicture} /> */}
             <Box m="2rem 0" />
             <PostsWidget userId={userId} isProfile />
           </Box>

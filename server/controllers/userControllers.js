@@ -19,6 +19,7 @@ import Notification from '../models/Notification.js';
 import UserOTPVerification from '../models/UserOTPVerification.js';
 import { generateOTP } from '../utils/generateOTP.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import Post from '../models/Post.js';
 
 // Register user
 
@@ -160,18 +161,23 @@ export const login = async (req, res) => {
 
 // getuser detais
 export const getUser = async (req, res) => {
-  console.log('here');
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
-    console.log(user);
-    res.status(200).json(user);
+    let user = {}
+    user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const userPosts = await Post.find({ createdBy: user._id });
+
+    res.status(200).json({ ...user._doc, posts: userPosts });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Email otp verification
 
